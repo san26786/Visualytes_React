@@ -162,7 +162,7 @@ const premiumTextVariants = {
     transition: { duration: 0.4, ease: "easeIn" },
   },
 };
-export default function PremiumHeroSlider() {
+export default function HomeBanner() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0); // -1 for left, 1 for right
 

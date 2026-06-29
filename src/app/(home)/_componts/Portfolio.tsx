@@ -1,48 +1,4 @@
-// import Image from 'next/image'
-// import React from 'react'
 
-// const Portfolio = () => {
-//   return (
-//     <div>
-//     <button
-// className="
-// text-center
-// mt-5
-// justify-center
-// min-w-[230px]
-// h-[80px]
-// px-[35px]
-// border-[4px]
-// border-[#ff497c]
-// rounded-full
-// bg-transparent
-// text-[#1f2732]
-// text-[12px]
-// font-[700]
-// uppercase
-// tracking-[2.4px]
-// leading-[12px]
-// transition-all
-// duration-[400ms]
-// hover:bg-[#ff497c]
-// hover:border-[#ff497c]
-// hover:text-white
-
-// "
-// >
-// Get Started
-// </button>
-
-// <Image src="/assets/png/vertical_line_pink.png"
-// width={3}
-// height={4}
-// alt="pink_line"
-// />
-// </div>
-//   )
-// }
-
-// export default Portfolio
 "use client";
 
 import { useRef, useState, useCallback } from "react";
@@ -666,6 +622,7 @@ const Portfolio = () => {
                   src={item.image}
                   alt={item.title}
                   fill
+                  sizes="320px"
                   className="object-cover transition duration-700 group-hover:scale-105 border-[0.2px] border-black"
                 />
 

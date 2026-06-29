@@ -79,12 +79,13 @@ export default function ProcessSection() {
         </div>
 
         <div className="relative w-[180px] h-[180px] md:w-[220px] md:h-[220px] rounded-full overflow-hidden border-[6px] border-[#4e5562]">
-          <Image
-            src={step.image}
-            alt={step.title}
-            fill
-            className="object-cover"
-          />
+         <Image
+  src={step.image}
+  alt={step.title}
+  fill
+  sizes="(max-width: 768px) 180px, 220px"
+  className="object-cover"
+/>
         </div>
 
         <p className="text-[#c2c7d0] text-[15px] md:text-[17px] leading-7 mt-6 max-w-lg">

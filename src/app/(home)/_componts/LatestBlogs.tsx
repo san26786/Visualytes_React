@@ -81,12 +81,12 @@ export default function LatestBlogs() {
   const nextRef = useRef(null);
 
   return (
-    <section className="py-24">
+    <section className="py-24 max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
       <h2 className="text-center text-[#1f2732] text-[46px] leading-[56px] font-medium mb-[35px]">
         Our Latest Blogs
       </h2>
 
-      <div className="grid grid-cols-[220px_1fr_220px] items-center max-w-7xl mx-auto">
+      <div className="grid grid-cols-[220px_1fr_220px] items-center max-w-7xl  mx-auto">
         {/* PREV */}
         <div
           ref={prevRef}

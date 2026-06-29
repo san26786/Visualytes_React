@@ -1,152 +1,70 @@
 "use client";
 
-import { useRef } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import Image from "next/image";
+import { FiSearch, FiLink } from "react-icons/fi";
 
-import "swiper/css";
-import "swiper/css/navigation";
+interface Props {
+  image: string;
+  title: string;
+  category: string;
+  url?: string;
+}
 
-import PortfolioCard from "./PortfolioCard";
-
-const blogs = [
-  {
-    image: "/assets/png/blog/blog1.png",
-    title:
-      "How Partnering with a Web Development Company Can Elevate Your Online Presence",
-    tags: ["BLOG", "CUSTOM WEBSITES", "WEB DESIGN"],
-  },
-  {
-    image: "/assets/png/blog/blog2.png",
-    title:
-      "SEO Company in London Shares the Importance of SEO Slugs for Better Rankings",
-    tags: ["BLOG", "BRANDING", "SEO"],
-  },
-  {
-    image: "/assets/png/blog/blog3.png",
-    title:
-      "How Google’s RankBrain Algorithm Impacts Social Media Marketing agency’s strategies",
-    tags: ["BLOG", "BRANDING"],
-  },
-  {
-    image: "/assets/png/blog/blog4.png",
-    title:
-      "How a Web Development Company Creates Impactful Meta Descriptions for Better SEO",
-    tags: ["BLOG", "WEB DESIGN"],
-  },
-  {
-    image: "/assets/png/blog/blog5.png",
-    title: "Eastleigh Mela 2023",
-    tags: ["JUL", "NEWEST"],
-  },
-  {
-    image: "/assets/png/blog/blog6.jpg",
-    title: "Eastleigh Mela 2024",
-    tags: ["JUL", "NEWEST", "SPONSORS"],
-  },
-  {
-    image: "/assets/png/blog/blog7.jpg",
-    title: "Golf Day Championship",
-    tags: ["NEWEST"],
-  },
-  {
-    image: "/assets/png/blog/blog8.jpg",
-    title: "The Big Platinum Festival",
-    tags: ["SPONSORS", "JUL", "NEWEST"],
-  },
-  {
-    image: "/assets/png/blog/blog9.png",
-    title: "Golf Event",
-    tags: ["SEP"],
-  },
-  {
-    image: "/assets/png/blog/blog10.jpg",
-    title: "Eastleigh MELA",
-    tags: ["AUG"],
-  },
-  {
-    image: "/assets/png/blog/blog11.jpg",
-    title: "GOSPORT FESTIVAL 2021",
-    tags: ["JAN-MONTH"],
-  },
-  {
-    image: "/assets/png/blog/blog12.png",
-    title: "Maintenance & Support",
-    tags: ["BRANDING", "SEO"],
-  },
-];
-
-export default function LatestBlogs() {
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
-
+export default function PortfolioCard({
+  image,
+  title,
+  category,
+  url = "#",
+}: Props) {
   return (
-    <section className="py-24">
-      <h2 className="text-center text-[#1f2732] text-[46px] leading-[56px] font-medium mb-[35px]">
-        Our Latest Blogs
-      </h2>
+    <article className="group w-[270px] gap-7">
+      {/* Image */}
+      <div className="relative overflow-hidden aspect-[3/2] gap-4">
+        <Image
+          src={image}
+          alt={title}
+          fill
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          sizes="270px"
+        />
 
-      <div className="grid grid-cols-[220px_1fr_220px] items-center max-w-7xl mx-auto">
-        {/* PREV */}
-        <div
-          ref={prevRef}
-          className="cursor-pointer text-center text-[#dddddd]"
-        >
-          <div className="text-[40px] leading-none font-black uppercase">
-            PREV
-          </div>
-          <div className="text-[40px] leading-none font-black uppercase">
-            POST
-          </div>
-        </div>
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-[#6f7485]/45 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-        {/* SWIPER */}
-        <div className="overflow-hidden">
-          <Swiper
-            modules={[Navigation]}
-            spaceBetween={30}
-            slidesPerView={4}
-            onBeforeInit={(swiper) => {
-              // @ts-ignore
-              swiper.params.navigation.prevEl = prevRef.current;
-              // @ts-ignore
-              swiper.params.navigation.nextEl = nextRef.current;
-            }}
-            navigation={{
-              prevEl: prevRef.current,
-              nextEl: nextRef.current,
-            }}
-            breakpoints={{
-              0: { slidesPerView: 1 },
-              640: { slidesPerView: 2 },
-              1024: { slidesPerView: 4 },
-            }}
+        {/* Icons */}
+        <div className="absolute inset-0 z-10 flex items-center justify-center gap-5">
+          <a
+            href={image}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View Image"
+            className="text-[#ff4f86] text-[42px] opacity-0 -translate-y-20 transition-all duration-700 ease-out group-hover:opacity-100 group-hover:translate-y-0"
           >
-            {blogs.map((item, idx) => (
-              <SwiperSlide key={idx}>
-                <PortfolioCard
-                  image={item.image}
-                  title={item.title}
-                  category={item.tags?.[0] || "BLOG"}
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
+            <FiSearch />
+          </a>
 
-        {/* NEXT */}
-        <div
-          ref={nextRef}
-          className="cursor-pointer text-center text-[#dddddd]"
-        >
-          <div className="text-[40px] leading-none font-semibold">
-            NEXT
-          </div>
-          <div className="text-[40px] leading-none font-semibold">
-            POST
-          </div>
+          <a
+            href={url}
+            aria-label="Open Project"
+            className="text-[#ff4f86] text-[42px] opacity-0 -translate-y-20 transition-all duration-700 delay-100 ease-out group-hover:opacity-100 group-hover:translate-y-0"
+          >
+            <FiLink />
+          </a>
         </div>
       </div>
-    </section>
+
+      {/* Content */}
+      <div className="mt-7 text-center">
+        <h3 className="text-[28px] leading-[1.1] font-medium text-[#2d3443] transition-colors duration-300 hover:text-[#ff497c]">
+          {title}
+        </h3>
+
+        <div className="mt-5">
+          <span className="inline-block rounded-full border border-[#ff4f86] px-4 py-2 text-[12px] uppercase tracking-[2px] text-[#ff4f86] transition-all duration-300 hover:bg-[#ff497c] hover:text-white">
+            {category}
+          </span>
+        </div>
+      </div>
+    </article>
   );
 }
