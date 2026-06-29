@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Search, Menu } from "lucide-react";
+import { Search } from "lucide-react";
 import Logo from "../../../../../../public/assets/svg/Logo";
+import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
+
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -67,8 +69,14 @@ export default function Header() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
 
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "auto";
+  }, [mobileMenuOpen]);
   return (
+    <>
     <header
    
     className={`
@@ -256,9 +264,12 @@ export default function Header() {
           </div>
 
           {/* Mobile Menu */}
-          <button className="flex justify-end text-white lg:hidden">
-            <Menu size={32} />
-          </button>
+          <button
+  onClick={() => setMobileMenuOpen(true)}
+  className="flex justify-end text-white lg:hidden"
+>
+  <Menu size={32} />
+</button>
         </div>
       </div>
 
@@ -293,5 +304,109 @@ export default function Header() {
         </div>
       </button>
     </header>
+    {/* Overlay */}
+
+<div
+  onClick={() => setMobileMenuOpen(false)}
+  className={`fixed inset-0 z-[90] bg-black/60 transition-opacity duration-300 lg:hidden ${
+    mobileMenuOpen
+      ? "opacity-100 visible"
+      : "opacity-0 invisible"
+  }`}
+/>
+
+{/* Sidebar */}
+
+<div
+  className={`fixed top-0 left-0 z-[100] h-full w-[300px] bg-[#1b2436] transform transition-transform duration-300 lg:hidden ${
+    mobileMenuOpen
+      ? "translate-x-0"
+      : "-translate-x-full"
+  }`}
+>
+
+  {/* Close */}
+
+  <div className="flex justify-end p-4 border-b border-white/10">
+    <button onClick={() => setMobileMenuOpen(false)}>
+      <X className="text-white" size={28} />
+    </button>
+  </div>
+
+  <nav>
+
+    {navItems.map((item) => (
+
+      <div
+        key={item.label}
+        className="border-b border-white/10"
+      >
+
+        {/* Menu Item */}
+
+        <div className="flex items-center justify-between">
+
+          <Link
+            href={item.href}
+            onClick={() => setMobileMenuOpen(false)}
+            className={`block w-full px-5 py-4 text-[13px] uppercase tracking-[2px]
+            ${
+              item.label === "Client Login"
+                ? "bg-[#ff497c] text-white font-bold"
+                : "text-white"
+            }`}
+          >
+            {item.label}
+          </Link>
+
+          {item.submenu && (
+            <button
+              onClick={() =>
+                setOpenSubMenu(
+                  openSubMenu === item.label ? null : item.label
+                )
+              }
+              className="px-4 text-white"
+            >
+              {openSubMenu === item.label ? (
+                <ChevronDown size={18} />
+              ) : (
+                <ChevronRight size={18} />
+              )}
+            </button>
+          )}
+        </div>
+
+        {/* Sub Menu */}
+
+        {item.submenu && openSubMenu === item.label && (
+
+          <div className="bg-[#202b40]">
+
+            {item.submenu.map((sub) => (
+
+              <Link
+                key={sub.label}
+                href={sub.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-8 py-3 text-[13px] text-gray-300 hover:text-[#ff497c]"
+              >
+                - {sub.label}
+              </Link>
+
+            ))}
+
+          </div>
+
+        )}
+
+      </div>
+
+    ))}
+
+  </nav>
+
+</div>
+</>
   );
 }

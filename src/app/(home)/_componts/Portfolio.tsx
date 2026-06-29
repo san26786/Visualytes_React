@@ -350,7 +350,7 @@ const portfolio = [
   {
     title: "Sterling Washroom",
     category: "SEO",
-    image: "/assets/webp/portfolio/Sterling-washroom.png",
+    image: "/assets/webp/portfolio/Sterling-washroom.png.bv.webp",
   },
   {
     title: "MW Estate Planning",
@@ -360,17 +360,17 @@ const portfolio = [
   {
     title: "Reeds Central",
     category: "SEO",
-    image: "/assets/webp/portfolio/reeds-central.png",
+    image: "/assets/webp/portfolio/reeds-central.png.bv.webp",
   },
   {
     title: "Marsham Court",
     category: "SEO",
-    image: "/assets/webp/portfolio/Marsham-court.png",
+    image: "/assets/webp/portfolio/Marsham-court.png.bv.webp",
   },
   {
     title: "Positive Branding",
     category: "SEO",
-    image: "/assets/webp/portfolio/positive-branding.png",
+    image: "/assets/webp/portfolio/positive-branding.png.bv.webp",
   },
 
   // Mobile apps
@@ -451,12 +451,12 @@ const portfolio = [
   {
     title: "Geecon Global Extra",
     category: "CORPORATE BRANDING",
-    image: "/assets/webp/portfolio/Geecon-Global.png",
+    image: "/assets/webp/portfolio/Geecon-Global.png.bv.webp",
   },
   {
     title: "Visualytes Extra",
     category: "CORPORATE BRANDING",
-    image: "/assets/webp/portfolio/Visualytes.png",
+    image: "/assets/webp/portfolio/Visualytes.png.bv.webp",
   },
 ];
 const Portfolio = () => {

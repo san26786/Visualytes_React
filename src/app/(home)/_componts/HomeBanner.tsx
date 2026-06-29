@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import type { Variants } from "framer-motion";
 import Image from "next/image";
 const SLIDES = [
   {
@@ -111,9 +112,8 @@ const SLIDES = [
 ];
 
 // Precise Revolution Slider Power4.easeOut mathematical simulation
-const power4EaseOut = [0.25, 1, 0.5, 1];
-
-const premiumTextVariants = {
+const power4EaseOut = [0.25, 1, 0.5, 1] as const;
+const premiumTextVariants: Variants = {
   // Layer 1 & Layer 2 Zoom/Scale In Entry Logic (sX:1.5, sY:1.5)
   zoomEnter: (delay: number) => ({
     scale: 1.5,
@@ -153,13 +153,19 @@ const premiumTextVariants = {
   defaultCenter: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
+    transition: {
+      duration: 0.6,
+      ease: "easeOut" as const,
+    },
   },
 
   exit: {
     opacity: 0,
     y: -25,
-    transition: { duration: 0.4, ease: "easeIn" },
+    transition: {
+      duration: 0.4,
+      ease: "easeIn" as const,
+    },
   },
 };
 export default function HomeBanner() {
@@ -191,32 +197,45 @@ export default function HomeBanner() {
   }, [currentSlide, handleNext]);
 
   // Slide sliding animation variants matching Revolution Slider velocity matrix
-  const slideVariants = {
+  const slideVariants: Variants = {
     enter: (dir: number) => ({
       x: dir > 0 ? "100%" : "-100%",
       opacity: 0,
     }),
+  
     center: {
       x: 0,
       opacity: 1,
       transition: {
-        x: { type: "spring", stiffness: 300, damping: 30 },
-        opacity: { duration: 0.5 },
+        x: {
+          type: "spring" as const,
+          stiffness: 300,
+          damping: 30,
+        },
+        opacity: {
+          duration: 0.5,
+        },
       },
     },
+  
     exit: (dir: number) => ({
       x: dir < 0 ? "100%" : "-100%",
       opacity: 0,
       transition: {
-        x: { type: "spring", stiffness: 300, damping: 30 },
-        opacity: { duration: 0.5 },
+        x: {
+          type: "spring" as const,
+          stiffness: 300,
+          damping: 30,
+        },
+        opacity: {
+          duration: 0.5,
+        },
       },
     }),
   };
 
   return (
-    <section className="relative w-full h-[117vh] min-h-[800px] bg-[#0c1017] text-white overflow-visible select-none">
-      {/* Background Media Crossfader Engine */}
+<section className="relative w-full h-[90vh] sm:h-screen lg:h-[105vh] min-h-[650px] lg:min-h-[800px] bg-[#0c1017] text-white overflow-hidden">      {/* Background Media Crossfader Engine */}
       <div className="absolute inset-0 z-0 w-full h-full">
         {/* Center Banner Image */}
         <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
@@ -226,7 +245,17 @@ export default function HomeBanner() {
             width={700}
             height={700}
             priority
-            className="w-auto h-auto max-w-[80%] md:max-w-[700px] opacity-100"
+            className="
+hidden
+md:block
+w-auto
+h-auto
+max-w-[320px]
+lg:max-w-[450px]
+xl:max-w-[550px]
+2xl:max-w-[620px]
+opacity-95
+"
           />
         </div>
         <AnimatePresence initial={false} custom={direction}>
@@ -241,8 +270,8 @@ export default function HomeBanner() {
           >
            {currentSlide.videoSrc ? (
   <video
-    className="w-full h-full object-cover"
-    autoPlay
+  className="w-full h-full object-cover object-[center_20%]"
+      autoPlay
     muted
     playsInline
     src={currentSlide.videoSrc}
@@ -317,12 +346,35 @@ export default function HomeBanner() {
         <ChevronRight size={22} />
       </button>
 
-<div className="relative z-20 container mx-auto h-full px-6 flex flex-col justify-center items-center text-center">
-  <AnimatePresence mode="wait">
+      <div className="
+relative
+z-20
+container
+mx-auto
+h-full
+flex
+flex-col
+justify-center
+items-center
+text-center
+px-5
+md:px-6
+pt-32
+sm:pt-36
+md:pt-20
+lg:pt-10
+">
+    <AnimatePresence mode="wait">
     <motion.div
       key={currentSlide.id}
-      className="flex flex-col items-center max-w-6xl w-full"
-    >
+      className="
+      flex
+      flex-col
+      items-center
+      max-w-5xl
+      w-full
+      px-4
+      "    >
       {/* Top Minimal Callout Description */}
       <motion.span
         variants={premiumTextVariants}
@@ -330,7 +382,17 @@ export default function HomeBanner() {
         animate={currentSlide.isZoomVariant ? "zoomCenter" : "defaultCenter"}
         exit="exit"
         custom={currentSlide.timings?.topTextDelay || 0}
-        className="text-xs sm:text-sm md:text-base font-bold tracking-[6px] md:tracking-[10px] uppercase text-white/80 mb-6 block"
+        className="pt-6
+md:pt-0
+text-xs
+sm:text-sm
+md:text-base
+font-bold
+tracking-[6px]
+md:tracking-[10px]
+uppercase
+text-white/80
+mb-6"
       >
         {currentSlide.topText}
       </motion.span>
@@ -342,7 +404,13 @@ export default function HomeBanner() {
         animate={currentSlide.isZoomVariant ? "zoomCenter" : "defaultCenter"}
         exit="exit"
         custom={currentSlide.timings?.mainTitleDelay || 0.2}
-        className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[110px] font-extrabold uppercase tracking-wide leading-none mb-4 drop-shadow-md select-none font-sans"
+        className="text-[38px]
+sm:text-[55px]
+md:text-[72px]
+lg:text-[90px]
+xl:text-[110px]
+leading-[1]
+md:leading-[0.95]font-extrabold uppercase tracking-wide leading-none mb-5 md:mb-6 drop-shadow-md select-none font-sans"
       >
         {currentSlide.mainTitle}
       </motion.h1>
@@ -355,15 +423,36 @@ export default function HomeBanner() {
           animate="sublineCenter"
           exit="exit"
           custom={(currentSlide.timings?.sublineStart || 1.4) + 0.05}
-          className="text-2xl sm:text-4xl md:text-5xl font-bold uppercase tracking-widest text-white/90 mb-8"
-        >
+          className="
+          text-lg
+          sm:text-2xl
+          md:text-4xl
+          lg:text-5xl
+          font-bold
+          uppercase
+          tracking-[4px]
+          md:tracking-widest
+          text-white/90
+          mb-6
+          "        >
           {currentSlide.ExtraTitle}
         </motion.h2>
       )}
 
       {/* Subline Segment Group containing colored string text blocks */}
-      <div className="flex items-center justify-center text-base sm:text-xl md:text-2xl lg:text-3xl font-medium tracking-wide mb-12 whitespace-nowrap overflow-visible">
-        {currentSlide.sublines.map((item, idx) => (
+      <div
+  className="
+  flex
+  flex-wrap
+  justify-center
+  items-center
+gap-x-3
+gap-y-4
+  text-center
+  mb-10
+  px-4
+"
+>        {currentSlide.sublines.map((item, idx) => (
           <motion.div 
             key={idx} 
             className="flex items-center shrink-0"
@@ -374,7 +463,15 @@ export default function HomeBanner() {
             exit="exit"
             custom={(currentSlide.timings?.sublineStart || 1.4) + (idx * 0.08)}
           >
-            <span className={`${item.color} font-medium text-xl md:text-3xl lg:text-[45px] tracking-[1px]`}>
+            <span className={`
+${item.color}
+font-medium
+text-sm
+sm:text-lg
+md:text-2xl
+lg:text-[34px]
+xl:text-[42px]
+`}>
               {item.text}
             </span>
 
@@ -400,7 +497,7 @@ export default function HomeBanner() {
     </motion.div>
   </AnimatePresence>
 </div>
-      <div className="absolute bottom-[140px] left-1/2 -translate-x-1/2 z-[9999] flex items-center justify-center">
+      <div className="absolute bottom-8 md:bottom-24 left-1/2 -translate-x-1/2 z-[9999] flex items-center justify-center">
         <div className="relative w-[40px] h-[60px] border-2 border-white rounded-full">
           <motion.div
             animate={{ y: [8, 28, 8] }}

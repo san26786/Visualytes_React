@@ -33,31 +33,36 @@ const steps = [
 export default function ProcessSection() {
   return (
     <div
-      className="bg-[#1f2732] mx-auto"
-      style={{
-        backgroundPosition: "center",
-        transform: "skewY(3deg)",
-        marginLeft: "-100px",
-        marginRight: "-100px",
-      }}
-    >
+  className="relative overflow-hidden bg-[#1f2732]"
+  style={{
+    backgroundPosition: "center",
+    transform: "skewY(3deg)",
+  }}
+>
       <VerticalLineBig variant="black" className="mx-auto justify-center" />
 
       <section
         className="relative overflow-hidden"
         style={{
           backgroundColor: "#1f2732",
-          backgroundImage: "url('/assets/png/texture.png')",
+          backgroundImage: "url('/assets/png/texture_2.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <div
-          className="max-w-[1200px] mx-auto px-6 relative"
-          style={{ transform: "skewY(-3deg)" }}
-        >
-          <h2 className="text-center text-white text-5xl md:text-6xl font-light mb-20">
-            Our Process
+       <div
+  className="
+    mx-auto
+    max-w-7xl
+    px-5
+    sm:px-6
+    lg:px-10
+    relative
+  "
+  style={{ transform: "skewY(-3deg)" }}
+>
+<h2 className="text-center text-white text-5xl md:text-6xl font-light mb-20">
+              Our Process
           </h2>
           <div className="lg:hidden space-y-12 pb-16">
     {steps.map((step, index) => (
@@ -109,7 +114,6 @@ export default function ProcessSection() {
     ))}
   </div>
   <div className="hidden lg:block">
-
           <div className="space-y-8">
             {steps.map((step, index) => {
               const leftSide = index % 2 === 0;
@@ -155,23 +159,25 @@ export default function ProcessSection() {
 
                       {/* IMAGE */}
                       <div className="relative flex justify-center z-20">
-                        <div className="relative w-[220px] h-[220px] rounded-full overflow-hidden border-[8px] border-[#4e5562]">
-                          <Image
-                            src={step.image}
-                            alt={step.title}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
+                      <div className="relative w-[220px] h-[220px] rounded-full overflow-hidden border-[8px] border-[#4e5562]">
+                        <Image
+                          src={step.image}
+                          alt={step.title}
+                          fill
+                          sizes="220px"
+                          className="object-cover"
+                        />
+                      </div>
 
                         {index !== steps.length - 1 && (
-                          <Image
-                            src="/assets/png/right_arrow.png"
-                            alt=""
-                            width={40}
-                            height={40}
-                            className="absolute top-[185px] left-2/2 -translate-x-1/2 hidden lg:block"
-                          />
+                         <Image
+                         src="/assets/png/right_arrow.png"
+                         alt=""
+                         width={40}
+                         height={40}
+                         style={{ height: "auto" }}
+                         className="absolute top-[185px] left-2/2 -translate-x-1/2 hidden lg:block"
+                       />
                         )}
                       </div>
 
@@ -194,22 +200,24 @@ export default function ProcessSection() {
                       {/* IMAGE */}
                       <div className="relative flex justify-center z-20">
                         <div className="relative w-[220px] h-[220px] rounded-full overflow-hidden border-[8px] border-[#4e5562]">
-                          <Image
-                            src={step.image}
-                            alt={step.title}
-                            fill
-                            className="object-cover"
-                          />
+                        <Image
+                          src={step.image}
+                          alt={step.title}
+                          fill
+                          sizes="220px"
+                          className="object-cover"
+                        />
                         </div>
 
                         {index !== steps.length - 1 && (
                           <Image
-                            src="/assets/png/left_arrow.png"
-                            alt=""
-                            width={40}
-                            height={40}
-                            className="absolute top-[185px] right-2/3 -translate-x-3/2 hidden lg:block "
-                          />
+                          src="/assets/png/left_arrow.png"
+                          alt=""
+                          width={40}
+                          height={40}
+                          style={{ height: "auto" }}
+                          className="absolute top-[185px] right-2/3 -translate-x-3/2 hidden lg:block"
+                        />
                         )}
                       </div>
 
