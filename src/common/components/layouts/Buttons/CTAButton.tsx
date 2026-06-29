@@ -42,3 +42,21 @@ export default function CTAButton({
     </Link>
   );
 }
+
+// inline-flex
+//             items-center
+//             justify-center
+//             h-[52px]
+//             px-10
+//             rounded-full
+//             border-2
+//             border-[#ff4b84]
+//             text-[#1f2732]
+//             uppercase
+//             tracking-[3px]
+//             text-[11px]
+//             font-semibold
+//             transition-all
+//             duration-300
+//             hover:bg-[#ff4b84]
+//             hover:text-white

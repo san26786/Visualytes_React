@@ -6,7 +6,7 @@ interface PageBannerProps {
 
 export default function PageBanner({ title }: PageBannerProps) {
   return (
-    <section className="relative h-[214px] overflow-visible">
+    <section className="relative h-[214px] overflow-visible mt-[130px]">
       {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -42,7 +42,7 @@ export default function PageBanner({ title }: PageBannerProps) {
             </Link>
           </li>
 
-          <li className="px-4 text-[5px] text-[#1f2732] xl:px-[34px]">
+          <li className="px-8 text-[9px]  text-[#1f2732] xl:px-[34px]">    
             ●
           </li>
 
