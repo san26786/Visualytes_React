@@ -1,5 +1,3 @@
-import CTAButton from "@/src/common/components/layouts/Buttons/CTAButton";
-import UnhoverButton from "@/src/common/components/layouts/Buttons/UnHoverButton";
 import VerticalLine from "@/src/common/icons/VerticalLine";
 import ServicesGrid from "./ServicesGrid";
 
@@ -9,7 +7,7 @@ const DigitalMarketingIntro = () => {
       <div className="max-w-[780px] mx-auto px-[15px] text-center">
         
         <div className="flex justify-center mb-[35px]">
-          <VerticalLine variant="pink" />
+                     <VerticalLine variant="pink" className="h-[94px] w-[4px]"/>
         </div>
 
         <h2 className="text-[#1f2732] text-[32px] md:text-[32px] leading-[1.15] font-medium">
@@ -22,7 +20,7 @@ const DigitalMarketingIntro = () => {
 
         <p className="text-[#7f7f7f] text-[16px] leading-[30px] font-light">
           Getting online is easy. Succeeding online is a different story.
-          You'll need more than just a beautiful website to stand out these
+          You&apos;ll need more than just a beautiful website to stand out these
           days. Online marketing solutions are essential to implement in your
           business. Conversion-based web design, coupled with a lead generating
           marketing plan, will make your online success inevitable.
@@ -45,7 +43,7 @@ const DigitalMarketingIntro = () => {
         <div className="h-[35px]" />
 
         <p className="text-[#7f7f7f] text-[16px] leading-[30px] font-light">
-          Generating just enough revenue is everybody's cup of tea. However, it
+          Generating just enough revenue is everybody&apos;s cup of tea. However, it
           takes strategy, planning, knowledge of the latest technology, and
           hands on experience to make a mark.
         </p>
@@ -56,7 +54,7 @@ const DigitalMarketingIntro = () => {
         </p>
 
         <div className="flex justify-center my-[35px]">
-          <VerticalLine variant="pink" />
+                     <VerticalLine variant="pink" className="h-[94px] w-[4px]"/>
         </div>
 
         <button
@@ -92,7 +90,7 @@ const DigitalMarketingIntro = () => {
       href="/our-services"
     /> */}
         <div className="flex justify-center mt-[35px]">
-          <VerticalLine variant="pink" />
+                     <VerticalLine variant="pink" className="h-[94px] w-[4px]"/>
         </div>
 
       </div>

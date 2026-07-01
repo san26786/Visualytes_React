@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -77,8 +78,8 @@ const blogs = [
 ];
 
 export default function LatestBlogs() {
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
+  const prevRef = useRef<HTMLDivElement | null>(null);
+const nextRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <section className="py-10 max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -102,26 +103,45 @@ export default function LatestBlogs() {
 
         {/* SWIPER */}
         <div className="overflow-hidden">
-          <Swiper
-            modules={[Navigation]}
-            spaceBetween={30}
-            slidesPerView={4}
-            onBeforeInit={(swiper) => {
-              // @ts-ignore
-              swiper.params.navigation.prevEl = prevRef.current;
-              // @ts-ignore
-              swiper.params.navigation.nextEl = nextRef.current;
-            }}
-            navigation={{
-              prevEl: prevRef.current,
-              nextEl: nextRef.current,
-            }}
-            breakpoints={{
-              0: { slidesPerView: 1 },
-              640: { slidesPerView: 2 },
-              1024: { slidesPerView: 4 },
-            }}
-          >
+        <Swiper
+  modules={[Navigation]}
+  navigation
+  spaceBetween={30}
+  slidesPerView={4}
+  onBeforeInit={(swiper: SwiperType) => {
+    if (
+      swiper.params.navigation &&
+      typeof swiper.params.navigation !== "boolean"
+    ) {
+      const navigation = swiper.params.navigation;
+
+      navigation.prevEl = prevRef.current;
+      navigation.nextEl = nextRef.current;
+    }
+  }}
+  onSwiper={(swiper) => {
+    setTimeout(() => {
+      if (
+        swiper.params.navigation &&
+        typeof swiper.params.navigation !== "boolean"
+      ) {
+        const navigation = swiper.params.navigation;
+
+        navigation.prevEl = prevRef.current;
+        navigation.nextEl = nextRef.current;
+
+        swiper.navigation.destroy();
+        swiper.navigation.init();
+        swiper.navigation.update();
+      }
+    });
+  }}
+  breakpoints={{
+    0: { slidesPerView: 1 },
+    640: { slidesPerView: 2 },
+    1024: { slidesPerView: 4 },
+  }}
+>
             {blogs.map((item, idx) => (
               <SwiperSlide key={idx}>
                 <PortfolioCard

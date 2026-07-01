@@ -1,7 +1,7 @@
 import React from 'react'
-import HomeButton from '../Buttons/CTAButton'
 import CTAButton from '../Buttons/CTAButton'
 import UnhoverButton from '../Buttons/UnHoverButton'
+import Link from 'next/link'
 
 const firstsection = () => {
   return (
@@ -24,12 +24,9 @@ const firstsection = () => {
 
         <ol className="mt-4 flex items-center justify-center gap-2 text-sm">
           <li>
-            <a
-              href="/"
-              className="transition hover:text-primary"
-            >
-              Home
-            </a>
+          <Link href="/" className="transition hover:text-primary">
+  Home
+</Link>
           </li>
  <CTAButton
         title="Other Services"

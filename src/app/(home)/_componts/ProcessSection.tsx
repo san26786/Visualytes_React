@@ -39,7 +39,7 @@ export default function ProcessSection() {
     transform: "skewY(3deg)",
   }}
 >
-      <VerticalLineBig variant="black" className="mx-auto justify-center" />
+      <VerticalLineBig variant="black" className="mx-auto justify-center h-[134px] w-[4px]" />
 
       <section
         className="relative overflow-hidden"

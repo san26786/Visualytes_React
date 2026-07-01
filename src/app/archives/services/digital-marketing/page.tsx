@@ -35,8 +35,8 @@ const testimonials = [
         "I highly recommend this company for all. I'm very happy with the new redesigned and restructured website.",
     },
   ];
-const page = () => {
-    const [selectedIndex, setSelectedIndex] = useState(0);
+  const Page = () => {
+        const [selectedIndex, setSelectedIndex] = useState(0);
 
     const [emblaRef, emblaApi] = useEmblaCarousel(
       {
@@ -58,11 +58,13 @@ const page = () => {
   
     useEffect(() => {
       if (!emblaApi) return;
-  
-      onSelect();
-  
+    
+      requestAnimationFrame(() => {
+        setSelectedIndex(emblaApi.selectedScrollSnap());
+      });
+    
       emblaApi.on("select", onSelect);
-  
+    
       return () => {
         emblaApi.off("select", onSelect);
       };
@@ -187,4 +189,4 @@ intro=""
 </> )
 }
 
-export default page
+export default Page;

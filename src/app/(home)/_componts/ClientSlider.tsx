@@ -42,10 +42,13 @@ export default function ClientSlider() {
 
   useEffect(() => {
     if (!emblaApi) return;
-
-    onSelect();
+  
+    requestAnimationFrame(() => {
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+    });
+  
     emblaApi.on("select", onSelect);
-
+  
     return () => {
       emblaApi.off("select", onSelect);
     };

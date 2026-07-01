@@ -35,7 +35,7 @@ const AppointmentTalk = () => {
             </a>
           </div>
           <div className="flex justify-center mb-[35px]">
-            <VerticalLine variant="pink" />
+                       <VerticalLine variant="pink" className="h-[94px] w-[4px]"/>
           </div>
 
                   {/* <h2 className="text-[#1f2732] text-[32px] md:text-[32px] leading-[1.15] font-medium">
@@ -55,7 +55,7 @@ const AppointmentTalk = () => {
           </p>
 
           <div className="flex justify-center my-10">
-            <VerticalLine variant="pink" />
+                       <VerticalLine variant="pink" className="h-[94px] w-[4px]"/>
           </div>
 
           <a
@@ -94,7 +94,8 @@ const AppointmentTalk = () => {
                 href="/our-services"
               /> */}
           <div className="flex justify-center mt-[35px]">
-            <VerticalLine variant="pink" />
+                       <VerticalLine variant="pink" className="h-[94px] w-[4px]"/>
+
           </div>
         
         </div>

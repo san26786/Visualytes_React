@@ -519,7 +519,7 @@
 //     Get Started
 //   </button>
 
-//   <VerticalLine variant="pink" />
+//              <VerticalLine variant="pink" className="h-[94px] w-[4px]"/>
 // </div>
 
 //       {/* Heading */}

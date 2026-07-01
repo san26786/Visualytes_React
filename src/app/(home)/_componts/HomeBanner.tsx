@@ -115,7 +115,7 @@ const SLIDES = [
 const power4EaseOut = [0.25, 1, 0.5, 1] as const;
 const premiumTextVariants: Variants = {
   // Layer 1 & Layer 2 Zoom/Scale In Entry Logic (sX:1.5, sY:1.5)
-  zoomEnter: (delay: number) => ({
+  zoomEnter: () => ({
     scale: 1.5,
     opacity: 0,
     transition: { duration: 0 },
@@ -172,7 +172,7 @@ export default function HomeBanner() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0); // -1 for left, 1 for right
 
-  const slideDuration = 6000; // 6-second interval rotation
+  // const slideDuration = 6000; // 6-second interval rotation
 
   const handleNext = useCallback(() => {
     setDirection(1);

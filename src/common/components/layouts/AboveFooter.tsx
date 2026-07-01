@@ -1,3 +1,4 @@
+import Image from "next/image";
 
 const items = [
     {
@@ -76,11 +77,13 @@ const items = [
       >
         <div className="flex justify-center">
             
-          <img
-            src="/assets/png/vertical_line3.png"
-            alt=""
-            className="h-auto"
-          />
+        <Image
+  src="/assets/png/vertical_line3.png"
+  alt=""
+  width={20}      // Use the actual image width
+  height={120}    // Use the actual image height
+  className="h-auto h-[94px] w-[4px]"
+/>
         </div>
         
         <div className="mx-auto max-w-[1170px] px-[15px] py-[85px]">
@@ -121,11 +124,13 @@ const items = [
   
           {/* Vertical Decoration */}
           <div className="mt-[60px] flex justify-center">
-            <img
-              src="/assets/png/vertical_line3.png"
-              alt=""
-              className="h-auto"
-            />
+          <Image
+  src="/assets/png/vertical_line3.png"
+  alt=""
+  width={20}      // Use the actual image width
+  height={120}    // Use the actual image height
+  className="h-auto h-[94px] w-[4px]"
+/>
           </div>
         </div>
       </section>

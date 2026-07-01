@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-
+import type { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 
@@ -24,8 +24,8 @@ interface PortfolioSliderProps {
 export default function PortfolioSlider({
   items,
 }: PortfolioSliderProps) {
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
+  const prevRef = useRef<HTMLButtonElement | null>(null);
+  const nextRef = useRef<HTMLButtonElement | null>(null);
 
   return (
     <>
@@ -71,40 +71,57 @@ export default function PortfolioSlider({
         </button>
 
         <Swiper
-          modules={[Navigation, Autoplay]}
-          onBeforeInit={(swiper) => {
-            // @ts-ignore
-            swiper.params.navigation.prevEl = prevRef.current;
+  modules={[Navigation, Autoplay]}
+  navigation
+  autoplay={{
+    delay: 2000,
+    disableOnInteraction: false,
+  }}
+  loop
+  centeredSlides
+  spaceBetween={12}
+  onBeforeInit={(swiper: SwiperType) => {
+    if (
+      swiper.params.navigation &&
+      typeof swiper.params.navigation !== "boolean"
+    ) {
+      const navigation = swiper.params.navigation;
+      navigation.prevEl = prevRef.current;
+      navigation.nextEl = nextRef.current;
+    }
+  }}
+  onSwiper={(swiper) => {
+    requestAnimationFrame(() => {
+      if (
+        swiper.params.navigation &&
+        typeof swiper.params.navigation !== "boolean"
+      ) {
+        const navigation = swiper.params.navigation;
 
-            // @ts-ignore
-            swiper.params.navigation.nextEl = nextRef.current;
-          }}
-          navigation={{
-            prevEl: prevRef.current,
-            nextEl: nextRef.current,
-          }}
-          autoplay={{
-            delay: 2000,
-            disableOnInteraction: false,
-          }}
-          loop
-          centeredSlides
-          spaceBetween={12}
-          breakpoints={{
-            320: {
-              slidesPerView: 1,
-            },
-            640: {
-              slidesPerView: 2,
-            },
-            1024: {
-              slidesPerView: 3,
-            },
-            1440: {
-              slidesPerView: 5,
-            },
-          }}
-        >
+        navigation.prevEl = prevRef.current;
+        navigation.nextEl = nextRef.current;
+
+        swiper.navigation.destroy();
+        swiper.navigation.init();
+        swiper.navigation.update();
+      }
+    });
+  }}
+  breakpoints={{
+    320: {
+      slidesPerView: 1,
+    },
+    640: {
+      slidesPerView: 2,
+    },
+    1024: {
+      slidesPerView: 3,
+    },
+    1440: {
+      slidesPerView: 5,
+    },
+  }}
+>
           {items.map((item,index) => (
             <SwiperSlide
             key={`${item.category}-${item.title}-${index}`}

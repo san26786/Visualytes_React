@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
-
+import { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -20,8 +20,8 @@ const members = [
 ];
 
 export default function BusinessCommunities() {
-  const swiperRef = useRef<any>(null);
-  const [activeDot, setActiveDot] = useState(0);
+  const swiperRef = useRef<SwiperType | null>(null);
+    const [activeDot, setActiveDot] = useState(0);
 
   return (
     <section className="relative overflow-hidden bg-white py-10">

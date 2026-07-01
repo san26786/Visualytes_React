@@ -1,4 +1,3 @@
-import VerticalLine from "@/src/common/icons/VerticalLine";
 import VerticalLineBig from "@/src/common/icons/VerticalLineBIg";
 import Image from "next/image";
 const services = [
@@ -82,7 +81,7 @@ const ServicesGrid = () => {
         </div>
 
         <div className="flex flex-col items-center my-[35px]">
-        <VerticalLineBig variant="pink" />
+        <VerticalLineBig variant="pink" className="h-[134px] w-[4px]" />
         
         <button
   className="

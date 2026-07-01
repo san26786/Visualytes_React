@@ -134,7 +134,7 @@ export default function BooksSection() {
       </div>
 
       <div className="absolute bottom-0 left-1/2 z-20 -translate-x-1/2">
-        <VerticalLine variant="pink" />
+                   <VerticalLine variant="pink" className="h-[94px] w-[4px]"/>
       </div>
 
       <div className="absolute bottom-0 left-0 w-full">

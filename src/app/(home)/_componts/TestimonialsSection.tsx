@@ -92,10 +92,13 @@ export default function TestimonialsSection() {
 
   useEffect(() => {
     if (!emblaApi) return;
-
-    updateDots();
+  
+    requestAnimationFrame(() => {
+      setActiveDot(Math.floor(emblaApi.selectedScrollSnap() / 3));
+    });
+  
     emblaApi.on("select", updateDots);
-
+  
     return () => {
       emblaApi.off("select", updateDots);
     };

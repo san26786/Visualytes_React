@@ -10,8 +10,6 @@ import HomeBanner from "./_componts/HomeBanner";
 import AppointmentTalk from "./_componts/AppointmentTalk";
 import ClientSlider from "./_componts/ClientSlider";
 import Portfolio from "./_componts/Portfolio";
-import ServicesPage from "../our-services/_componets/Services";
-import ServiceWrapper from "../our-services/_componets/ServicesWrapper";
 import BusinessCommunities from "./_componts/BusinessCommunities";
 import LatestBlogs from "./_componts/LatestBlogs";
 export default function HomeWrapper() {

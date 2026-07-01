@@ -1,5 +1,4 @@
 import VerticalLine from "@/src/common/icons/VerticalLine";
-import ServicesGrid from "./ServicesGrid";
 import VerticalLineBig from "@/src/common/icons/VerticalLineBIg";
 
 export default function CaseStudy() {
@@ -63,7 +62,7 @@ export default function CaseStudy() {
       <div className="max-w-[980px] mx-auto px-10 text-center">
         
         <div className="flex justify-center mb-10 mt-10">
-          <VerticalLine variant="pink" />
+                     <VerticalLine variant="pink" className="h-[94px] w-[4px]"/>
         </div>
 
        
@@ -71,7 +70,7 @@ export default function CaseStudy() {
         <div className="h-[35px]" />
 
         <p className="text-[#7f7f7f] text-[16px] leading-[30px] font-light text-center max-w-[1028px] mx-auto ">
-  Visualytes is not just another IT agency on the Internet; we work with a different approach to your requirement, 99/100 times we are able to exceed our client's expectations. About the one time, well we over-exceeded them.
+  Visualytes is not just another IT agency on the Internet; we work with a different approach to your requirement, 99/100 times we are able to exceed our client&apos;s expectations. About the one time, well we over-exceeded them.
 </p>
 
         
@@ -108,8 +107,8 @@ export default function CaseStudy() {
       </div>
       <div className="flex justify-center">
       <div className="justify-center mb-10 mt-10">
-      <VerticalLine variant="pink" />
-          <VerticalLineBig variant="pink" />
+                 <VerticalLine variant="pink" className="h-[94px] w-[4px]"/>
+          <VerticalLineBig variant="pink" className="h-[134px] w-[4px]" />
         </div>
         </div>
         
