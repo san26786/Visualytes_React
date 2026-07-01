@@ -202,7 +202,7 @@ export default function HomeBanner() {
       x: dir > 0 ? "100%" : "-100%",
       opacity: 0,
     }),
-  
+
     center: {
       x: 0,
       opacity: 1,
@@ -217,7 +217,7 @@ export default function HomeBanner() {
         },
       },
     },
-  
+
     exit: (dir: number) => ({
       x: dir < 0 ? "100%" : "-100%",
       opacity: 0,
@@ -235,29 +235,28 @@ export default function HomeBanner() {
   };
 
   return (
-<section className="relative w-full h-[90vh] sm:h-screen lg:h-[105vh] min-h-[650px] lg:min-h-[800px] bg-[#0c1017] text-white overflow-hidden">      {/* Background Media Crossfader Engine */}
+    <section className="relative w-full h-[100vh] sm:h-screen lg:h-[115vh] min-h-[650px] lg:min-h-[800px] bg-[#0c1017] text-white overflow-hidden">      {/* Background Media Crossfader Engine */}
       <div className="absolute inset-0 z-0 w-full h-full">
         {/* Center Banner Image */}
         <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-          <Image
-            src="/assets/jpg/banner/centerHome.png"
-            alt="Center Banner"
-            width={700}
-            height={700}
-            priority
-            className="
-hidden
-md:block
-w-auto
-h-auto
-max-w-[320px]
-lg:max-w-[450px]
-xl:max-w-[550px]
-2xl:max-w-[620px]
-opacity-95
-"
-          />
-        </div>
+  <Image
+    src="/assets/jpg/banner/centerHome.png"
+    alt="Center Banner"
+    width={2200}
+    height={2200}
+    priority
+    className="
+      w-[85vw]
+      sm:w-[75vw]
+      md:w-[65vw]
+      lg:w-[50vw]
+      xl:w-[42vw]
+      2xl:w-[36vw]
+      h-auto
+      object-contain
+    "
+  />
+</div>
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={currentSlide.id}
@@ -268,42 +267,42 @@ opacity-95
             exit="exit"
             className="absolute inset-0 w-full h-full"
           >
-           {currentSlide.videoSrc ? (
-  <video
-  className="w-full h-full object-cover object-[center_20%]"
-      autoPlay
-    muted
-    playsInline
-    src={currentSlide.videoSrc}
-    onEnded={handleNext}
-  />
-) : (
-  <div
-    className="w-full h-full bg-cover bg-center bg-no-repeat"
-    style={{
-      backgroundImage: `url(${currentSlide.imageFallback})`,
-    }}
-  />
-)}
+            {currentSlide.videoSrc ? (
+              <video
+                className="w-full h-full object-cover object-[center_20%]"
+                autoPlay
+                muted
+                playsInline
+                src={currentSlide.videoSrc}
+                onEnded={handleNext}
+              />
+            ) : (
+              <div
+                className="w-full h-full bg-cover bg-center bg-no-repeat"
+                style={{
+                  backgroundImage: `url(${currentSlide.imageFallback})`,
+                }}
+              />
+            )}
 
-{/* Dark Overlay */}
-<div
-  className="absolute inset-0 z-[1]"
-  style={{
-    backgroundColor: "rgba(31,39,50,0.7)",
-  }}
-/>
+            {/* Dark Overlay */}
+            <div
+              className="absolute inset-0 z-[1]"
+              style={{
+                backgroundColor: "rgba(31,39,50,0.7)",
+              }}
+            />
 
-{/* Texture Overlay */}
-<div
-  className="absolute inset-0 z-[2] pointer-events-none bg-center bg-cover"
-  style={{
-    backgroundImage:
-      "url('/assets/jpg/banner/transparent-100x50.png')",
-    mixBlendMode: "screen",
-    opacity: 0.8,
-  }}
-/>{" "}
+            {/* Texture Overlay */}
+            <div
+              className="absolute inset-0 z-[2] pointer-events-none bg-center bg-cover"
+              style={{
+                backgroundImage:
+                  "url('/assets/jpg/banner/transparent-100x50.png')",
+                mixBlendMode: "screen",
+                opacity: 0.8,
+              }}
+            />{" "}
           </motion.div>
         </AnimatePresence>
       </div>
@@ -364,10 +363,10 @@ sm:pt-36
 md:pt-20
 lg:pt-10
 ">
-    <AnimatePresence mode="wait">
-    <motion.div
-      key={currentSlide.id}
-      className="
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentSlide.id}
+            className="
       flex
       flex-col
       items-center
@@ -375,14 +374,14 @@ lg:pt-10
       w-full
       px-4
       "    >
-      {/* Top Minimal Callout Description */}
-      <motion.span
-        variants={premiumTextVariants}
-        initial={currentSlide.isZoomVariant ? "zoomEnter" : "defaultEnter"}
-        animate={currentSlide.isZoomVariant ? "zoomCenter" : "defaultCenter"}
-        exit="exit"
-        custom={currentSlide.timings?.topTextDelay || 0}
-        className="pt-6
+            {/* Top Minimal Callout Description */}
+            <motion.span
+              variants={premiumTextVariants}
+              initial={currentSlide.isZoomVariant ? "zoomEnter" : "defaultEnter"}
+              animate={currentSlide.isZoomVariant ? "zoomCenter" : "defaultCenter"}
+              exit="exit"
+              custom={currentSlide.timings?.topTextDelay || 0}
+              className="pt-6
 md:pt-0
 text-xs
 sm:text-sm
@@ -393,37 +392,37 @@ md:tracking-[10px]
 uppercase
 text-white/80
 mb-6"
-      >
-        {currentSlide.topText}
-      </motion.span>
+            >
+              {currentSlide.topText}
+            </motion.span>
 
-      {/* Giant Bold Core Heading */}
-      <motion.h1
-        variants={premiumTextVariants}
-        initial={currentSlide.isZoomVariant ? "zoomEnter" : "defaultEnter"}
-        animate={currentSlide.isZoomVariant ? "zoomCenter" : "defaultCenter"}
-        exit="exit"
-        custom={currentSlide.timings?.mainTitleDelay || 0.2}
-        className="text-[38px]
+            {/* Giant Bold Core Heading */}
+            <motion.h1
+              variants={premiumTextVariants}
+              initial={currentSlide.isZoomVariant ? "zoomEnter" : "defaultEnter"}
+              animate={currentSlide.isZoomVariant ? "zoomCenter" : "defaultCenter"}
+              exit="exit"
+              custom={currentSlide.timings?.mainTitleDelay || 0.2}
+              className="text-[38px]
 sm:text-[55px]
 md:text-[72px]
 lg:text-[90px]
 xl:text-[110px]
 leading-[1]
 md:leading-[0.95]font-extrabold uppercase tracking-wide leading-none mb-5 md:mb-6 drop-shadow-md select-none font-sans"
-      >
-        {currentSlide.mainTitle}
-      </motion.h1>
+            >
+              {currentSlide.mainTitle}
+            </motion.h1>
 
-      {/* Extra Title Component Row (Layers 4 & 12 Hybrid) */}
-      {currentSlide.ExtraTitle && (
-        <motion.h2
-          variants={premiumTextVariants}
-          initial="sublineEnter"
-          animate="sublineCenter"
-          exit="exit"
-          custom={(currentSlide.timings?.sublineStart || 1.4) + 0.05}
-          className="
+            {/* Extra Title Component Row (Layers 4 & 12 Hybrid) */}
+            {currentSlide.ExtraTitle && (
+              <motion.h2
+                variants={premiumTextVariants}
+                initial="sublineEnter"
+                animate="sublineCenter"
+                exit="exit"
+                custom={(currentSlide.timings?.sublineStart || 1.4) + 0.05}
+                className="
           text-lg
           sm:text-2xl
           md:text-4xl
@@ -435,13 +434,13 @@ md:leading-[0.95]font-extrabold uppercase tracking-wide leading-none mb-5 md:mb-
           text-white/90
           mb-6
           "        >
-          {currentSlide.ExtraTitle}
-        </motion.h2>
-      )}
+                {currentSlide.ExtraTitle}
+              </motion.h2>
+            )}
 
-      {/* Subline Segment Group containing colored string text blocks */}
-      <div
-  className="
+            {/* Subline Segment Group containing colored string text blocks */}
+            <div
+              className="
   flex
   flex-wrap
   justify-center
@@ -452,18 +451,18 @@ gap-y-4
   mb-10
   px-4
 "
->        {currentSlide.sublines.map((item, idx) => (
-          <motion.div 
-            key={idx} 
-            className="flex items-center shrink-0"
-            variants={premiumTextVariants}
-            initial="sublineEnter"
-            // Applies micro-staggers sequentially using the true telemetry start parameters
-            animate="sublineCenter"
-            exit="exit"
-            custom={(currentSlide.timings?.sublineStart || 1.4) + (idx * 0.08)}
-          >
-            <span className={`
+            >        {currentSlide.sublines.map((item, idx) => (
+              <motion.div
+                key={idx}
+                className="flex items-center shrink-0"
+                variants={premiumTextVariants}
+                initial="sublineEnter"
+                // Applies micro-staggers sequentially using the true telemetry start parameters
+                animate="sublineCenter"
+                exit="exit"
+                custom={(currentSlide.timings?.sublineStart || 1.4) + (idx * 0.08)}
+              >
+                <span className={`
 ${item.color}
 font-medium
 text-sm
@@ -472,32 +471,32 @@ md:text-2xl
 lg:text-[34px]
 xl:text-[42px]
 `}>
-              {item.text}
-            </span>
+                  {item.text}
+                </span>
 
-            {idx < currentSlide.sublines.length - 1 && (
-              <span className="mx-3 md:mx-4 w-[8px] h-[8px] md:w-[10px] md:h-[10px] rounded-full bg-white inline-block shrink-0" />
-            )}
+                {idx < currentSlide.sublines.length - 1 && (
+                  <span className="mx-3 md:mx-4 w-[8px] h-[8px] md:w-[10px] md:h-[10px] rounded-full bg-white inline-block shrink-0" />
+                )}
+              </motion.div>
+            ))}
+            </div>
+
+            {/* CTA Interaction Layer */}
+            <motion.a
+              href="#get-started"
+              variants={premiumTextVariants}
+              initial="sublineEnter"
+              animate="sublineCenter"
+              exit="exit"
+              custom={(currentSlide.timings?.sublineStart || 1.4) + 0.4}
+              className="relative inline-flex items-center justify-center bg-[#ff497c] text-white text-[10px] sm:text-xs font-bold uppercase tracking-[3px] rounded-full px-8 py-4 sm:px-10 sm:py-5 overflow-hidden transition-all duration-300 border-2 border-transparent hover:border-[#ff497c] hover:bg-transparent shadow-lg hover:shadow-none"
+            >
+              Get Started
+            </motion.a>
           </motion.div>
-        ))}
+        </AnimatePresence>
       </div>
-
-      {/* CTA Interaction Layer */}
-      <motion.a
-        href="#get-started"
-        variants={premiumTextVariants}
-        initial="sublineEnter"
-        animate="sublineCenter"
-        exit="exit"
-        custom={(currentSlide.timings?.sublineStart || 1.4) + 0.4}
-        className="relative inline-flex items-center justify-center bg-[#ff497c] text-white text-[10px] sm:text-xs font-bold uppercase tracking-[3px] rounded-full px-8 py-4 sm:px-10 sm:py-5 overflow-hidden transition-all duration-300 border-2 border-transparent hover:border-[#ff497c] hover:bg-transparent shadow-lg hover:shadow-none"
-      >
-        Get Started
-      </motion.a>
-    </motion.div>
-  </AnimatePresence>
-</div>
-      <div className="absolute bottom-8 md:bottom-24 left-1/2 -translate-x-1/2 z-[9999] flex items-center justify-center">
+      <div className="absolute bottom-8 md:bottom-24 left-1/2 -translate-x-1/2 z-10 flex items-center justify-center">
         <div className="relative w-[40px] h-[60px] border-2 border-white rounded-full">
           <motion.div
             animate={{ y: [8, 28, 8] }}
@@ -512,8 +511,8 @@ xl:text-[42px]
       </div>
 
       {/* Bottom Structural Angle Vector Curve Mask Layer */}
-      <div className="absolute bottom-0 left-0 right-0 z-10 w-full pointer-events-none h-[40px] md:h-[120px]">
-        {" "}
+      <div className="hidden md:block absolute bottom-0 left-0 right-0 z-0 w-full pointer-events-none h-[120px]">
+                {" "}
         <svg
           viewBox="0 0 1440 60"
           className="w-full h-full fill-white"

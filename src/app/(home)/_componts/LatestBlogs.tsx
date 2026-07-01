@@ -81,8 +81,8 @@ export default function LatestBlogs() {
   const nextRef = useRef(null);
 
   return (
-    <section className="py-24 max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 className="text-center text-[#1f2732] text-[46px] leading-[56px] font-medium mb-[35px]">
+    <section className="py-10 max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 className="text-center text-[#1f2732] text-[46px] leading-[56px] font-medium mb-10">
         Our Latest Blogs
       </h2>
 

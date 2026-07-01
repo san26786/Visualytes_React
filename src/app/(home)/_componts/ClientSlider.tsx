@@ -52,13 +52,13 @@ export default function ClientSlider() {
   }, [emblaApi, onSelect]);
 
   return (
-    <section className="w-full bg-white py-[50px]">
+    <section className="w-full bg-white py-10">
       <div className="mx-auto max-w-[1600px]">
         <h2 className="mb-[35px] text-center text-[46px] leading-[56px] font-medium text-[#1f2732]">
           Our Latest Client
         </h2>
 
-        <div className="relative px-10">
+        <div className="relative ">
           {/* Previous */}
           <button
             onClick={() => emblaApi?.scrollPrev()}

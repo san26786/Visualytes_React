@@ -61,10 +61,10 @@ export default function ProcessSection() {
   "
   style={{ transform: "skewY(-3deg)" }}
 >
-<h2 className="text-center text-white text-5xl md:text-6xl font-light mb-20">
+<h2 className="text-center text-white text-5xl md:text-6xl font-light mb-10">
               Our Process
           </h2>
-          <div className="lg:hidden space-y-12 pb-16">
+          <div className="lg:hidden space-y-12 pb-10">
     {steps.map((step, index) => (
       <div
         key={step.title}
@@ -93,7 +93,7 @@ export default function ProcessSection() {
 />
         </div>
 
-        <p className="text-[#c2c7d0] text-[15px] md:text-[17px] leading-7 mt-6 max-w-lg">
+        <p className="text-[#c2c7d0] text-[15px] md:text-[17px] leading-7 mt-2 max-w-lg">
           {step.text}
         </p>
 
@@ -258,7 +258,7 @@ export default function ProcessSection() {
             })}
           </div>
 </div>
-          <div className="flex justify-center mt-12 mb-16">
+          <div className="flex justify-center mt-10 mb-10">
             <div className="w-[4px] h-24 bg-white" />
           </div>
         </div>

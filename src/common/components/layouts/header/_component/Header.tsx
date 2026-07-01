@@ -5,13 +5,14 @@ import Link from "next/link";
 import { Search } from "lucide-react";
 import Logo from "../../../../../../public/assets/svg/Logo";
 import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 
 const navItems = [
   { label: "Home", href: "/" },
   {
     label: "Services",
-    href: "/services",
+    href: "/our-services",
     submenu: [
       { label: "Web Development", href: "/services/web-development" },
       { label: "Digital Marketing", href: "/services/digital-marketing" },
@@ -73,30 +74,57 @@ export default function Header() {
   const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
 
   useEffect(() => {
-    document.body.style.overflow = mobileMenuOpen ? "hidden" : "auto";
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    }
+  
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    };
   }, [mobileMenuOpen]);
+  const pathname = usePathname();
+const isHome = pathname === "/";
   return (
     <>
-    <header
-   
-    className={`
-      fixed top-0 left-0 z-50 w-full
-      transition-all duration-300 ease-in-out
-      ${
-        scrolled
-          ? "bg-[#1b2436] shadow-lg"
-          : "bg-[rgba(27,36,54,0.72)] backdrop-blur-md"
-      }
-    `}
-  >
+  <header
+  className={`
+fixed top-0 left-0 z-50 w-full
+transition-all duration-300 ease-in-out
+${
+  isHome
+    ? scrolled
+      ? "bg-[#232833] shadow-lg"
+      : "bg-[#232833]/20 backdrop-blur-sm backdrop-saturate-100 border-b border-white/10 shadow-lg"
+    : "bg-[#232833] shadow-lg"
+}
+`}
+>
       <div className="mx-auto max-w-[1800px] px-10">
-        <div
-          className={`
-            grid grid-cols-[280px_1fr_320px] items-center
-            transition-all duration-300
-            ${scrolled ? "h-[90px]" : "h-[130px]"}
-          `}
-        >
+      <div
+  className={`
+    flex items-center justify-between
+    lg:grid lg:grid-cols-[280px_1fr_320px]
+    transition-all duration-300
+    ${scrolled ? "h-[90px]" : "h-[130px]"}
+  `}
+>
+<button
+  onClick={() => setMobileMenuOpen(true)}
+  className="flex justify-start lg:hidden text-white"
+>
+  <Menu size={32} />
+</button>
           {/* Logo */}
           <div
             className={`
@@ -264,12 +292,7 @@ export default function Header() {
           </div>
 
           {/* Mobile Menu */}
-          <button
-  onClick={() => setMobileMenuOpen(true)}
-  className="flex justify-end text-white lg:hidden"
->
-  <Menu size={32} />
-</button>
+         
         </div>
       </div>
 
@@ -327,7 +350,7 @@ export default function Header() {
 
   {/* Close */}
 
-  <div className="flex justify-end p-4 border-b border-white/10">
+  <div className="flex justify-end p-4 border-b border-white/10 ">
     <button onClick={() => setMobileMenuOpen(false)}>
       <X className="text-white" size={28} />
     </button>

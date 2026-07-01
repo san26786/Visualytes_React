@@ -28,6 +28,7 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      
       colors: {
         primaryPink: "#ff497c",
       },
@@ -40,7 +41,8 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/line-clamp")],
+
 };
 
 export default config;

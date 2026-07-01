@@ -41,21 +41,21 @@ const services = [
   ];
 const ServicesGrid = () => {
   return (
-    <section className="py-[35px]">
+    <section className="py-10">
       <div className="max-w-[1170px] mx-auto px-[15px]">
         
-        <h2 className="text-center text-[#1f2732] text-[46px] leading-[56px] font-medium mb-[35px]">
+        <h2 className="text-center text-[#1f2732] text-[46px] leading-[56px] font-medium mb-10">
           Service We Offer
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-[90px]  ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-10  ">
           {services.map((service) => (
             <div
               key={service.title}
               className="text-center  flex flex-col items-center"
             >
               {/* Icon */}
-              <div className="mb-[25px]">
+              <div className="mb-10">
                 <div className="w-[170px] h-[160px] rounded-full   flex items-center justify-center">
                   <div className="w-[126px] h-[126px] rounded-full  flex items-center justify-center">
                     <Image

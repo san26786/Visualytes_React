@@ -5,7 +5,7 @@ const services = [
   {
     title: "Website Designing",
     image:
-      "https://www.visualytes.com/wp-content/uploads/2020/08/Website-designing-600x600.png",
+      "/assets/png/services/Website-designing-600x600.png",
     href: "/archives/services/web-designing",
     description:
       "Our creative web designers can read between the colours. Let the website design talk to your customers directly, while they easily navigate through your sales funnel.",
@@ -13,7 +13,7 @@ const services = [
   {
     title: "Digital Marketing",
     image:
-      "https://www.visualytes.com/wp-content/uploads/2021/10/Digital-header-600x600.jpg",
+      "/assets/png/services/Digital-header-600x600.jpg",
     href: "/archives/services/digital-marketing",
     description:
       "Performance marketing services are led by a team of professional digital marketers.",
@@ -21,7 +21,7 @@ const services = [
   {
     title: "Mobile App Development",
     image:
-      "https://www.visualytes.com/wp-content/uploads/2021/05/mobile-app-development.jpg-min-600x600.png",
+      "/assets/png/services/mobile-app-development.jpg-min-600x600.png",
     href: "/archives/services/app-development",
     description:
       "Launch a beast of a business in the app store and turn all the spotlight on your mobile app.",
@@ -29,7 +29,7 @@ const services = [
   {
     title: "Corporate Branding",
     image:
-      "https://www.visualytes.com/wp-content/uploads/2021/05/corporate-branding-min-600x600.png",
+      "/assets/png/services/corporate-branding-min-600x600.png",
     href: "/archives/services/corporate-branding",
     description:
       "The first impression is indeed the last one and branding can boost conversion.",
@@ -37,7 +37,7 @@ const services = [
   {
     title: "Bespoke Software",
     image:
-      "https://www.visualytes.com/wp-content/uploads/2020/08/Bespoke-Software-Development-600x600.png",
+      "/assets/png/services/Bespoke-Software-Development-600x600.png",
     href: "/archives/services/bespoke-software-branding",
     description:
       "Do you have a business model in mind? Let’s get it into the market.",
@@ -45,7 +45,7 @@ const services = [
   {
     title: "Website Hosting Services",
     image:
-      "https://www.visualytes.com/wp-content/uploads/2021/05/website-hosting-services-min-600x600.png",
+      "/assets/png/services/website-hosting-services-min-600x600.png",
     href: "/archives/services/hosting-services",
     description:
       "Reliable hosting services with advanced features to drive high traffic.",
@@ -53,7 +53,7 @@ const services = [
   {
     title: "Quality Assurance",
     image:
-      "https://www.visualytes.com/wp-content/uploads/2021/05/Quality-Assurance-min-600x600.png",
+      "/assets/png/services/Quality-Assurance-min-600x600.png",
     href: "/archives/services/quality-assurance",
     description:
       "Experienced QA team capable of detecting flaws at an early stage.",
@@ -61,7 +61,7 @@ const services = [
   {
     title: "Maintenance & Support",
     image:
-      "https://www.visualytes.com/wp-content/uploads/2021/05/maintenance-and-support-1170x780-min-600x600.png",
+      "/assets/png/services/maintenance-and-support-1170x780-min-600x600.png",
     href: "/archives/services/maintenance-and-support",
     description:
       "Support your app or website and take it to the level you desire.",
@@ -71,40 +71,15 @@ const services = [
 export default function ServicesPage() {
   return (
     <>
-      <section
-        className="relative py-10 text-white"
-        style={{
-          backgroundImage: "url('/breadcrumbs.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="absolute inset-0 bg-black/50"></div>
 
-        <div className="relative mx-auto max-w-[1170px] px-4 text-center">
-          <h1 className="text-4xl font-medium md:text-5xl lg:text-[54px]">
-            Services
-          </h1>
-
-          <nav className="mt-4 text-sm">
-            <ol className="flex justify-center gap-2">
-              <li>
-                <Link href="/">Home</Link>
-              </li>
-              <li>/</li>
-              <li>Services</li>
-            </ol>
-          </nav>
-        </div>
-      </section>
 
       <section className="py-[150px]">
-        <div className="mx-auto max-w-[1170px] px-4">
+        <div className="mx-auto max-w-[1170px] px-4 ">
           <div className="grid gap-[30px] md:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => (
               <article
                 key={service.title}
-                className="overflow-hidden bg-[#f4f4f5]"
+                className="group overflow-hidden bg-[#f4f4f5]"
               >
                 <div className="relative aspect-square overflow-hidden">
                   <Image
@@ -113,20 +88,30 @@ export default function ServicesPage() {
                     alt={service.title}
                     className="object-cover"
                   />
+
+                  {/* White overlay on image */}
+                  <div className="absolute inset-0 bg-white/90 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+
+                  <Link
+                    href={service.href}
+                    className="absolute inset-0 z-10"
+                    aria-label={service.title}
+                  />
                 </div>
 
                 <div className="px-10 py-8 text-center">
-                  <h5 className="mb-4 text-[24px] font-medium">
+                  <h5 className="mb-4 text-[#337ab7] text-[19px] font-medium hover:text-[#ff497c]">
                     {service.title}
                   </h5>
 
-                  <p className="mb-6 text-[16px] leading-[30px] text-[#7f7f7f]">
+                  <p className="mb-6 overflow-hidden text-[16px] leading-[30px] font-light text-[#7F7F7F] [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3]">
                     {service.description}
                   </p>
 
                   <Link
                     href={service.href}
-                    className="inline-block text-[12px] font-bold uppercase tracking-[0.2em]"
+                    className="inline-block text-[12px] font-bold uppercase tracking-[0.2em] text-[#337ab7]  hover:text-[#ff497c]"
                   >
                     Read More
                   </Link>

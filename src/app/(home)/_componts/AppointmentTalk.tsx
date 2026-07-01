@@ -6,7 +6,7 @@ const AppointmentTalk = () => {
     <div>
       <section className="">
         <div className="max-w-[780px] mx-auto px-[15px] text-center">
-          <div className="mt-2 flex justify-center mt-[35px] mb-[35px]">
+          <div className="mt-2 flex justify-center mt-10 mb-10">
             <a
               href="https://www.visualytes.com/testimonials"
               target="_blank"
@@ -29,7 +29,7 @@ const AppointmentTalk = () => {
                 duration-300
                 hover:bg-white
                 hover:text-black
-                hover:border-[#ff497c] mt-5"
+                hover:border-[#ff497c]"
             >
               SEE THE TESTIMONIAL
             </a>
@@ -43,7 +43,7 @@ const AppointmentTalk = () => {
                 Your Project          <br />
                   Digital Marketing Company
                 </h2> */}
-          <h2 className="text-center text-[#1f2732] text-[46px] leading-[56px] font-medium mb-[35px]">
+          <h2 className="text-center text-[#1f2732] text-[46px] leading-[56px] font-medium ">
             Lets Get Started
             <br />
             Your Project
@@ -54,7 +54,7 @@ const AppointmentTalk = () => {
             We’ll help to achieve your goals and to grow business
           </p>
 
-          <div className="flex justify-center my-[35px]">
+          <div className="flex justify-center my-10">
             <VerticalLine variant="pink" />
           </div>
 
@@ -66,7 +66,7 @@ const AppointmentTalk = () => {
     inline-flex
     items-center
     justify-center
-    mt-5
+  
     min-w-[230px]
     h-[80px]
     px-[35px]

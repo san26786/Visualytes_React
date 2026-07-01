@@ -43,9 +43,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${roboto.variable}`}
     >
-<body className={poppins.className}>        <Mainheader />
+<body className={poppins.className}>       
+   <Mainheader />
 
-        <main>{children}</main>
+        <main className="">{children}</main>
 
         <Footer />
       </body>

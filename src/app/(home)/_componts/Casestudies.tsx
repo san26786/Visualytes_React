@@ -7,7 +7,7 @@ export default function CaseStudy() {
       <section className="w-full bg-white ">
         <div className="max-w-7xl mx-auto px-4">
   
-        <h3 className="text-center text-4xl md:text-6xl lg:text-[42px] font-medium text-[#1f2732] mb-10 normal-case mt-10">
+        <h3 className="text-center text-4xl md:text-6xl lg:text-[42px] font-medium text-[#1f2732] mb-10 normal-case mt-5">
   Few Selected Case Studies
 </h3>
   
@@ -60,9 +60,9 @@ export default function CaseStudy() {
           </div>
         </div>
         <section className="">
-      <div className="max-w-[980px] mx-auto px-[15px] text-center">
+      <div className="max-w-[980px] mx-auto px-10 text-center">
         
-        <div className="flex justify-center mb-[25px] mt-[150px]">
+        <div className="flex justify-center mb-10 mt-10">
           <VerticalLine variant="pink" />
         </div>
 
@@ -70,7 +70,7 @@ export default function CaseStudy() {
 
         <div className="h-[35px]" />
 
-        <p className="text-[#7f7f7f] text-[16px] leading-[30px] font-light text-center max-w-[1028px] mx-auto mb-5">
+        <p className="text-[#7f7f7f] text-[16px] leading-[30px] font-light text-center max-w-[1028px] mx-auto ">
   Visualytes is not just another IT agency on the Internet; we work with a different approach to your requirement, 99/100 times we are able to exceed our client's expectations. About the one time, well we over-exceeded them.
 </p>
 
@@ -107,7 +107,7 @@ export default function CaseStudy() {
 
       </div>
       <div className="flex justify-center">
-      <div className="justify-center mb-[5px] mt-[50px]">
+      <div className="justify-center mb-10 mt-10">
       <VerticalLine variant="pink" />
           <VerticalLineBig variant="pink" />
         </div>
