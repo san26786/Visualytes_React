@@ -11,7 +11,6 @@ import AppointmentTalk from "./_componts/AppointmentTalk";
 import ClientSlider from "./_componts/ClientSlider";
 import Portfolio from "./_componts/Portfolio";
 import BusinessCommunities from "./_componts/BusinessCommunities";
-import LatestBlogs from "./_componts/LatestBlogs";
 export default function HomeWrapper() {
   return (
     <>
@@ -26,7 +25,7 @@ export default function HomeWrapper() {
       <TestimonialsSection/>
       <AppointmentTalk/> 
       <ClientSlider/>
-      <LatestBlogs />
+      {/* <BlogSlider/> */}
       <AboveFooter />
     </>
   );

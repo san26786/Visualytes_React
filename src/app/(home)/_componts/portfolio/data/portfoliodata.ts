@@ -6,6 +6,21 @@ export const categories = [
     "CORPORATE BRANDING",
     "ECOMMERCE WEBSITE",
   ];
+  export const categoryRoutes: Record<string, string> = {
+    "WEB DESIGN": "/archives/portfolio/web-design-shortcode",
+    SEO: "/archives/portfolio/seo-shortcode",
+    "MOBILE APPS": "/archives/portfolio/mobile-apps",
+    "ECOMMERCE WEBSITE": "/archives/portfolio/ecommerce-website-shortcode",
+    "CORPORATE BRANDING": "/archives/portfolio/corporate-branding-shortcode",
+    ALL: "/archives/portfolio",
+  };
+  export const slugMap: Record<string, string> = {
+    "web-design-shortcode": "WEB DESIGN",
+    "seo-shortcode": "SEO",
+    "mobile-apps": "MOBILE APPS",
+    "ecommerce-website-shortcode": "ECOMMERCE WEBSITE",
+    "corporate-branding-shortcode": "CORPORATE BRANDING",
+  };
 export const allOnlyPortfolio = [
     {
       title: "Blogs on Web",
@@ -159,6 +174,11 @@ export const allOnlyPortfolio = [
       image: "/assets/webp/portfolio/lcr.jpg",
     },
     {
+      title: "London Car Rentals",
+      category: "WEB DESIGN",
+      image: "/assets/webp/portfolio/image_2023_08_23T12_30_38_821Z-600x571.png",
+    },
+    {
       title: "Marsham Court Hotel",
       category: "WEB DESIGN",
       image: "/assets/webp/portfolio/marsham.jpg",
@@ -304,21 +324,7 @@ export const allOnlyPortfolio = [
     },
   
     // ================= ECOMMERCE =================
-    {
-      title: "Lillies Online Store",
-      category: "ECOMMERCE WEBSITE",
-      image: "/assets/webp/portfolio/lilles.jpg",
-    },
-    {
-      title: "ShopsFit",
-      category: "ECOMMERCE WEBSITE",
-      image: "/assets/webp/portfolio/shopfits.jpg",
-    },
-    {
-      title: "Skinni Snax",
-      category: "ECOMMERCE WEBSITE",
-      image: "/assets/webp/portfolio/skinnisnax.jpg",
-    },
+  
   
     // ================= ADDED FROM YOUR LINKS =================
   
@@ -388,6 +394,11 @@ export const allOnlyPortfolio = [
       image: "/assets/webp/portfolio/learning-on-web-400x399.jpg",
     },
     {
+      title: "TOC Events",
+      category: "MOBILE APPS",
+      image: "/assets/webp/portfolio/Toc-mobile-app-300x300.png",
+    },
+    {
       title: "Blog System",
       category: "MOBILE APPS",
       image: "/assets/webp/portfolio/blogs-on-web-400x399.jpg",
@@ -416,14 +427,5 @@ export const allOnlyPortfolio = [
     },
   
     // Corporate branding extras
-    {
-      title: "Geecon Global Extra",
-      category: "CORPORATE BRANDING",
-      image: "/assets/webp/portfolio/Geecon-Global.png.bv.webp",
-    },
-    {
-      title: "Visualytes Extra",
-      category: "CORPORATE BRANDING",
-      image: "/assets/webp/portfolio/Visualytes.png.bv.webp",
-    },
+    
   ];

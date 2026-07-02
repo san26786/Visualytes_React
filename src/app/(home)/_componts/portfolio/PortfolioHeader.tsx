@@ -58,8 +58,8 @@ export default function PortfolioHeader({
         {categories.map((item) => (
           <button
             key={item}
-            onClick={() => setActive(item)}
-            className={`uppercase tracking-[3px] text-[13px] font-bold transition duration-300 ${
+            onClick={() => setActive?.(item)}
+                        className={`uppercase tracking-[3px] text-[13px] font-bold transition duration-300 ${
               active === item
                 ? "text-[#ff497c]"
                 : "text-[#1f2732] hover:text-[#ff497c]"
