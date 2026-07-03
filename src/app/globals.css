@@ -144,6 +144,11 @@ body {
 .rt-icon2-location2:before 
 {content: "\e65f";}
 
+.rt-icon2-pin-alt:before {
+  content: "\e6b3";
+  color: #ff497c;
+
+}
 
 
 @font-face {
@@ -218,3 +223,19 @@ body {
   font-size: 24px;
 }
 
+/* blog icons footer */
+.views-count:before {
+  content: "\f06e";   /* eye */
+}
+
+.comment-count:before {
+  content: "\f086";   /* comment */
+}
+
+.like-count:before {
+  content: "\f004";   /* heart */
+}
+
+.share_button i {
+  font-family: FontAwesome;
+}

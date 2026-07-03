@@ -4,6 +4,7 @@ import "./globals.css";
 
 import Mainheader from "../common/components/layouts/header/_component/Mainheader";
 import Footer from "../common/components/layouts/footer/_component/footer";
+import ScrollToTop from "../common/components/layouts/footer/_component/ScrollToTop";
 
 
 
@@ -46,7 +47,8 @@ export default function RootLayout({
 <body className={poppins.className}>       
    <Mainheader />
 
-        <main className="">{children}</main>
+        <main className="">{children}         <ScrollToTop />
+        </main>
 
         <Footer />
       </body>
