@@ -18,6 +18,16 @@ const SLIDES = [
     ],
     videoSrc: "/assets/jpg/banner/dotdigital-cut-1.mp4",
     imageFallback: "/images/brand-bg.jpg",
+    button: [{
+      text: "Get Started",
+      href: "#get-started",
+      target: "_self",
+    },{
+      text: "Get your seo score",
+      href: "#get-started",
+      target: "_self",
+    }
+  ],
   },
   // {
   //   id: "slide-2", // Matches the exact parameters from your rs-slide payload
@@ -49,6 +59,15 @@ const SLIDES = [
       { text: "Ecommerce", color: "text-[#a074c4]" },
     ],
     videoSrc: null,
+    button: [{
+      text: "Get Started",
+      href: "#get-started",
+      target: "_self",
+    },{
+      text: "Get folio",
+      href: "#portfolio ",
+      target: "_self",
+    }],
     imageFallback: "/assets/jpg/slide_03.jpg",
     // Injected Telemetry Keys
     isZoomVariant: true,
@@ -57,6 +76,7 @@ const SLIDES = [
       mainTitleDelay: 1.0, // st:1000
       sublineStart: 1.48, // st:1480
     },
+    
   },
   {
     id: "slide-3",
@@ -72,6 +92,11 @@ const SLIDES = [
       { text: "Games", color: "text-[#e65100]" },
     ],
     videoSrc: null,
+    button: [{
+      text: "Get Started",
+      href: "#get-started",
+      target: "_self",
+    }],
     // Pulled straight from your data-src-rs-ref attribute:
     imageFallback: "/assets/jpg/slide_02.jpg",
   },
@@ -90,6 +115,11 @@ const SLIDES = [
       { text: "Content Writing", color: "text-[#e65100]" },
     ],
     videoSrc: null,
+    button: [{
+      text: "Get Started",
+      href: "#get-started",
+      target: "_self",
+    }],
     // Pulled straight from your data-src-rs-ref attribute
     imageFallback: "/assets/jpg/slider-6.jpg",
   },
@@ -105,6 +135,11 @@ const SLIDES = [
       { text: "Brand Video", color: "text-[#e65100]" },
     ],
     videoSrc: null,
+    button: [{
+      text: "Get Started",
+      href: "#get-started",
+      target: "_self",
+    }],
     // Pulled straight from your data-src-rs-ref attribute
     imageFallback: "/assets/jpg/img_37.jpg",
   },
@@ -482,17 +517,37 @@ xl:text-[42px]
             </div>
 
             {/* CTA Interaction Layer */}
-            <motion.a
-              href="#get-started"
-              variants={premiumTextVariants}
-              initial="sublineEnter"
-              animate="sublineCenter"
-              exit="exit"
-              custom={(currentSlide.timings?.sublineStart || 1.4) + 0.4}
-              className="relative inline-flex items-center justify-center bg-[#ff497c] text-white text-[10px] sm:text-xs font-bold uppercase tracking-[3px] rounded-full px-8 py-4 sm:px-10 sm:py-5 overflow-hidden transition-all duration-300 border-2 border-transparent hover:border-[#ff497c] hover:bg-transparent shadow-lg hover:shadow-none"
-            >
-              Get Started
-            </motion.a>
+            <div className="flex flex-wrap justify-center gap-4">
+  {currentSlide.button?.map((btn, index) => (
+    <motion.a
+      key={index}
+      href={btn.href}
+      target={btn.target}
+      variants={premiumTextVariants}
+      initial="sublineEnter"
+      animate="sublineCenter"
+      exit="exit"
+      custom={(currentSlide.timings?.sublineStart || 1.4) + 0.4 + index * 0.1}
+      className={`relative inline-flex items-center justify-center
+        px-8 py-4 sm:px-10 sm:py-5
+        rounded-full
+        text-[10px] sm:text-xs
+        font-bold
+        uppercase
+        tracking-[3px]
+        transition-all
+        duration-300
+        border-2
+        ${
+          index === 0
+            ? "bg-[#ff497c] text-white border-transparent hover:border-[#ff497c] hover:bg-transparent"
+            : "bg-transparent text-white border-white hover:bg-white hover:text-[#1f2732]"
+        }`}
+    >
+      {btn.text}
+    </motion.a>
+  ))}
+</div>
           </motion.div>
         </AnimatePresence>
       </div>

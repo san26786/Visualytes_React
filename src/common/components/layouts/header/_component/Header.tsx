@@ -50,7 +50,7 @@ const navItems = [
       { label: "Careers", href: "/careers" },
       { label: "FAQ", href: "/faq" },
     ],
-  },  { label: "Contact Us", href: "/contact" },
+  },  { label: "Contact Us", href: "/contact-us" },
   { label: "Client Login", href: "/client-login" },
 ];
 
@@ -287,7 +287,7 @@ ${
                 text-white
               "
             >
-              <span className="text-[#ff497c]">023</span> 8097 0305
+              <span className="text-[#ff497c] text-[24px] font-extralight font-[Poppins]">+023 8097 0305</span>
             </a>
           </div>
 
