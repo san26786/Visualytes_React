@@ -6,8 +6,13 @@ const nextConfig = {
         protocol: "https",
         hostname: "www.visualytes.com",
       },
+      {
+        protocol: "https",
+        hostname: "secure.gravatar.com",
+      },
     ],
   },
+  
 };
 
 module.exports = nextConfig;

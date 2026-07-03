@@ -64,6 +64,7 @@ export default function PortfolioSlider({ items }: PortfolioSliderProps) {
         </button>
 
         <Swiper
+        className="w-full min-h-[370px]"
           modules={[Navigation, Autoplay]}
           loop
           centeredSlides
