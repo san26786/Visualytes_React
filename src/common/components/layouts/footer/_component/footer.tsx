@@ -200,7 +200,7 @@ export default function Footer() {
           </div>
 
           {/* Footer Text */}
-          <div className="text-[15px] leading-[30px] font-light">
+          <div className="text-[15px] leading-[30px] ">
             <p className="mb-1">
               Visualytes Limited is registered in England and Wales, Company
               number{" "}

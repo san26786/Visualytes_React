@@ -1,9 +1,12 @@
 import React from 'react'
+import ScrollToTop from './_component/ScrollToTop'
 
 
 const page = () => {
-  return (
-    <footer />
+  return (<>    <footer />
+    <ScrollToTop />
+    </>
+
   )
 }
 

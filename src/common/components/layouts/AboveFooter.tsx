@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const items = [
+export const items = [
     {
       title: "Call Us",
       icon: "rt-icon2-phone5",
@@ -19,7 +19,7 @@ const items = [
     {
       title: "Write Us",
       icon: "rt-icon2-pen",
-      color: "#00BCD4",
+      color: "#00bea3",
       content: (
         <>
 <p>
