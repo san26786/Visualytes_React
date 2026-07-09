@@ -15,7 +15,7 @@ export default function ServicePageBanner({
   breadcrumbs = [],
 }: PageBannerProps) {
   return (
-<section className="relative pt-10 sm:pt-0 mt-[80px] sm:mt-[100px] lg:mt-[130px] h-[214px] overflow-hidden">  {/* Background */}
+<section className="relative pt-10 sm:pt-0 mt-[80px] sm:mt-[100px] lg:mt-[130px] h-[290px] overflow-hidden">  {/* Background */}
   <div
     className="absolute inset-0 bg-cover bg-center bg-no-repeat"
     style={{
@@ -24,7 +24,7 @@ export default function ServicePageBanner({
     }}
   />
 
-  <div className="relative z-10 flex h-full flex-col items-center justify-start pt-8 sm:pt-10 lg:justify-center lg:pt-0 px-4 text-center">
+  <div className="relative z-10 flex h-full flex-col items-center justify-center pt-8 sm:pt-10 lg:justify-center lg:pt-0 px-4 text-center max-w-6xl mx-auto  ">
     <h1 className="mb-2 text-[28px] sm:text-[40px] lg:text-[56px] leading-tight font-medium text-[#1f2732]">
       {title}
     </h1>

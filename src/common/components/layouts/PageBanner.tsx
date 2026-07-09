@@ -28,7 +28,7 @@ export default function PageBanner({ title }: PageBannerProps) {
 
       {/* Content */}
       <div className="relative z-10 flex h-full flex-col items-center justify-center">
-        <h1 className="mb-3 text-[56px] leading-none text-[#1f2732]">
+        <h1 className="mb-3 text-[56px] font-medium leading-none text-[#1f2732]">
           {title}
         </h1>
 
