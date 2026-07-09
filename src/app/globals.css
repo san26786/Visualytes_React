@@ -139,6 +139,9 @@ body {
   content: "\e664";
 }
 .rt-icon2-pen:before {content: "\e65c";}
+.rt-icon2-user:before {content: "\e654";}
+.rt-icon2-diamond2:before {content: "\e65d";}
+.rt-icon2-like:before {content: "\e667";}
 
 
 .rt-icon2-location2:before 
@@ -238,4 +241,20 @@ body {
 
 .share_button i {
   font-family: FontAwesome;
+}
+
+/* carrer page sliding message */
+@keyframes marquee {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  display: inline-block;
+  animation: marquee 30s linear infinite;
 }

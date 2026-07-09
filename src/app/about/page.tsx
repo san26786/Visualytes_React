@@ -1,11 +1,30 @@
-import BreadcrumbHero from '@/src/common/components/layouts/Breadcrumb'
-import React from 'react'
 
-const page = () => {
+import Map from './_componets/Map';
+import HelpCards from './_componets/ HelpCards';
+import HexagonCrads from './_componets/HexagonCrads';
+import AboutIntro from './_componets/AboutIntro';
+import History from './_componets/History';
+import Milestone from './_componets/Milestone';
+import Details from './_componets/Details';
+
+export default function AboutBrandSection() {
   return (
-    <BreadcrumbHero title="About Us" />
+    <>
+     <AboutIntro/>
+     <Details/>
+     <History/>
 
-  )
+
+      
+     <Milestone/>
+
+
+<HexagonCrads/>
+   
+      <HelpCards/>
+
+        <Map/>
+     
+    </>
+  );
 }
-
-export default page
