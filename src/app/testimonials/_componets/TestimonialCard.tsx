@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Quote } from "lucide-react";
 
 interface TestimonialProps {
-  id: number;
+  id?: number;
   image: string;
   name: string;
   designation: string;
@@ -11,12 +11,15 @@ interface TestimonialProps {
 }
 
 export default function TestimonialCard({
+  id,
   image,
   name,
   designation,
   company,
   content,
 }: TestimonialProps) {
+  console.log(id);
+
   return (
     <article className="flex flex-col items-center text-center px-4">
       {/* Avatar */}
@@ -60,7 +63,9 @@ export default function TestimonialCard({
 
       <p className="mt-4 max-w-md italic leading-9 text-[#8d8d8d] text-[18px]">
         {content}
+        
       </p>
     </article>
+
   );
 }
