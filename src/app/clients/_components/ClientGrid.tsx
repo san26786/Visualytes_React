@@ -2,18 +2,20 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import SearchBar from "./SearchBar";
+import {
+  BRAND_MOTION,
+  BRAND_SURFACE,
+  BRAND_TEXT,
+} from "@/src/common/components/ui/brand/theme";
 
 interface Client {
   name: string;
   image: string;
 }
 
-export default function ClientGrid({
-  clients,
-}: {
-  clients: Client[];
-}) {
+export default function ClientGrid({ clients }: { clients: Client[] }) {
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {
@@ -23,56 +25,38 @@ export default function ClientGrid({
   }, [clients, search]);
 
   return (
-    <section className="py-10 md:py-16">
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="px-4 pb-24 pt-4">
+      <div className="mx-auto max-w-7xl">
         <SearchBar value={search} onChange={setSearch} />
 
         {filtered.length > 0 ? (
-          <div className="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 lg:grid-cols-4 lg:gap-8">
-            {filtered.map((client) => (
-              <div
+          <div className="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
+            {filtered.map((client, index) => (
+              <motion.div
                 key={client.image}
-                className="
-                  flex
-                  items-center
-                  justify-center
-                  bg-[#f7f7f7]
-                  h-[120px]
-                  sm:h-[150px]
-                  md:h-[170px]
-                  lg:h-[180px]
-                  p-4
-                  transition-all
-                  duration-300
-                  hover:shadow-lg
-                "
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: "-20px" }}
+                transition={{ duration: 0.4, delay: (index % 8) * 0.04 }}
+                className={`group flex h-[110px] items-center justify-center p-4 sm:h-[140px] md:h-[160px] lg:h-[170px] ${BRAND_SURFACE.mutedGlassCard} ${BRAND_MOTION.softTransition} hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-[0_20px_50px_rgba(34,211,238,0.1)]`}
               >
                 <Image
                   src={client.image}
                   alt={client.name}
                   width={250}
                   height={150}
-                  className="
-                    w-auto
-                    h-auto
-                    max-w-full
-                    max-h-full
-                    object-contain
-                  "
+                  className="h-auto max-h-full w-auto max-w-full object-contain brightness-90 transition-all duration-300 group-hover:brightness-110"
                 />
-              </div>
+              </motion.div>
             ))}
           </div>
         ) : (
           <div className="flex items-center justify-center py-20 md:py-28">
-            <div className="text-center px-4">
-              <h3 className="text-xl sm:text-2xl font-semibold text-gray-700">
-                No Client Found
-              </h3>
-
-              <p className="mt-2 text-sm sm:text-base text-gray-500 break-words">
+            <div className={`px-8 py-10 text-center ${BRAND_SURFACE.glassCard}`}>
+              <h3 className={BRAND_TEXT.cardTitle}>No Client Found</h3>
+              <p className={`mt-3 ${BRAND_TEXT.cardBody}`}>
                 No results found for{" "}
-                <span className="font-medium">&quot;{search}&quot;</span>
+                <span className="font-medium text-cyan-300">&quot;{search}&quot;</span>
               </p>
             </div>
           </div>

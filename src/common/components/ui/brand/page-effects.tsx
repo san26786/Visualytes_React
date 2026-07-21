@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 type ParticleConfig = {
@@ -50,6 +51,30 @@ export const sectionReveal = {
 };
 
 export function BrandPageBackdrop() {
+  const [showParticles, setShowParticles] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const show = () => {
+      if (!cancelled) setShowParticles(true);
+    };
+
+    if (typeof requestIdleCallback === "function") {
+      const id = requestIdleCallback(show);
+      return () => {
+        cancelled = true;
+        cancelIdleCallback(id);
+      };
+    }
+
+    const id = window.setTimeout(show, 150);
+    return () => {
+      cancelled = true;
+      clearTimeout(id);
+    };
+  }, []);
+
   return (
     <>
       <div className="pointer-events-none fixed -top-48 left-0 h-[700px] w-[700px] rounded-full bg-cyan-500/10 blur-[160px]" />
@@ -65,11 +90,13 @@ export function BrandPageBackdrop() {
         }}
       />
 
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        {sharedParticles.map((particle, index) => (
-          <Particle key={index} {...particle} />
-        ))}
-      </div>
+      {showParticles ? (
+        <div className="pointer-events-none fixed inset-0 overflow-hidden">
+          {sharedParticles.map((particle, index) => (
+            <Particle key={index} {...particle} />
+          ))}
+        </div>
+      ) : null}
     </>
   );
 }

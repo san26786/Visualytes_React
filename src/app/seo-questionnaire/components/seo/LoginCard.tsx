@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useState } from "react";
-import BusinessContact from "../BusinessContact";
+import BusinessContact, {
+  BusinessContactData,
+} from "../BusinessContact";
 
 export default function LoginCard() {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,8 +15,22 @@ export default function LoginCard() {
   const [error, setError] = useState("");
 
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({});
-
+  const [formData, setFormData] =
+  useState<BusinessContactData>({
+    businessName: "",
+    fullName: "",
+    mobilePhone: "",
+    businessPhone: "",
+    websiteUrl: "",
+    email: "",
+    address1: "",
+    address2: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    country: "",
+  });
+  
   const steps = [
     "Business Contact Details",
     "About Business",
@@ -240,7 +256,7 @@ export default function LoginCard() {
 
         <div className="mb-10 overflow-x-auto">
         <div className="flex min-w-max items-center">
-{step === 2 && (
+{/* {step === 2 && (
   <BusinessContact
     data={formData}
     setData={setFormData}
@@ -299,7 +315,7 @@ export default function LoginCard() {
     setData={setFormData}
     previous={() => setStep(7)}
   />
-)}
+)} */}
       </div>
       </div> 
       </div>

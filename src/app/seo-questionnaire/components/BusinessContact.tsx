@@ -1,6 +1,6 @@
 "use client";
 
-interface BusinessContactData {
+export interface BusinessContactData {
   businessName: string;
   fullName: string;
   mobilePhone: string;
@@ -20,7 +20,10 @@ type Props = {
   setData: React.Dispatch<React.SetStateAction<BusinessContactData>>;
 };
 
-export default function BusinessContact({ data, setData }: Props) {
+export default function BusinessContact({
+  data,
+  setData,
+}: Props) {
 
 
   const handleChange = (

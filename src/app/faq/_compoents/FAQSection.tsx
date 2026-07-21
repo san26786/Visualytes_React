@@ -1,148 +1,110 @@
 "use client";
 
 import { useState } from "react";
-import { Pencil, Plus, Minus } from "lucide-react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { HelpCircle, Minus, Plus, ArrowUpRight } from "lucide-react";
 import { faqs } from "./data";
-import PageBanner from "@/src/common/components/layouts/PageBanner";
+import {
+  BRAND_MOTION,
+  BRAND_SURFACE,
+  BRAND_TEXT,
+} from "@/src/common/components/ui/brand/theme";
 
 export default function FAQSection() {
-  const [open, setOpen] = useState<number | null>(null);
+  const [open, setOpen] = useState<number | null>(0);
 
   return (
     <>
-    <PageBanner title="FAQ"/>
-    {/* <section className="bg-white py-14 md:py-24">
-      <div className="mx-auto max-w-7xl px-5">
-        <div className="space-y-4">
-          {faqs.map((item, index) => {
-            const active = open === index;
+      <section className="px-4 pb-16 pt-4">
+        <div className="mx-auto max-w-4xl">
+          <div className="space-y-4">
+            {faqs.map((item, index) => {
+              const active = open === index;
 
-            return (
-                <div
-                key={index}
-                className={`overflow-hidden transition-all duration-300 ${
-                  active ? "rounded-[40px]" : "rounded-full"
-                }`}
-              >
-                <button
-                  onClick={() => setOpen(active ? null : index)}
-                  className={`flex w-full items-center justify-between px-8 py-6 text-left transition-colors duration-300 ${
-                    active
-                      ? "rounded-t-[40px] bg-[#5d374b]"
-                      : "rounded-full bg-[#212833] hover:bg-[#2b3340]"
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-20px" }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  className={`overflow-hidden ${BRAND_SURFACE.mutedGlassCard} ${BRAND_MOTION.softTransition} ${
+                    active ? "border-cyan-300/30" : "hover:border-white/20"
                   }`}
                 >
-                  <div className="flex items-center gap-4">
-                    <Pencil size={14} className="text-[#ff497c]" />
-              
-                    <span className="text-[13px] font-bold uppercase tracking-[3px] text-white">
-                      {item.question}
+                  <button
+                    type="button"
+                    onClick={() => setOpen(active ? null : index)}
+                    className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left sm:px-7 sm:py-6"
+                  >
+                    <div className="flex items-start gap-3 sm:gap-4">
+                      <HelpCircle
+                        size={18}
+                        className={`mt-0.5 shrink-0 ${active ? "text-cyan-300" : "text-fuchsia-300"}`}
+                      />
+                      <span className="text-sm font-semibold leading-snug text-white sm:text-base">
+                        {item.question}
+                      </span>
+                    </div>
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors ${
+                        active
+                          ? "border-cyan-300/40 bg-cyan-300/10 text-cyan-300"
+                          : "border-white/15 bg-white/5 text-white/70"
+                      }`}
+                    >
+                      {active ? <Minus size={16} /> : <Plus size={16} />}
                     </span>
-                  </div>
-              
-                  {active ? (
-                    <Minus size={18} className="text-white" />
-                  ) : (
-                    <Plus size={18} className="text-white" />
-                  )}
-                </button>
-              
-                <div
-                  className={`grid transition-all duration-500 ease-in-out ${
-                    active ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                  }`}
-                >
-                  <div className="overflow-hidden">
-                    <div className="rounded-b-[40px] bg-[#5d374b] px-8 pb-8 pt-3 text-[15px] leading-8 text-white/90 whitespace-pre-line">
-                      {item.answer}
+                  </button>
+
+                  <div
+                    className={`grid transition-all duration-400 ease-in-out ${
+                      active ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                    }`}
+                  >
+                    <div className="overflow-hidden">
+                      <div className="border-t border-white/10 px-5 pb-6 pt-4 sm:px-7">
+                        <p className={`whitespace-pre-line ${BRAND_TEXT.cardBody}`}>
+                          {item.answer}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            );
-          })}
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </section> */}
+      </section>
 
-    <section className="bg-white py-14 md:py-24">
-      <div className="mx-auto max-w-6xl px-5">
-        <div className="space-y-5">
-          {faqs.map((item, index) => {
-            const active = open === index;
+      <section className="relative mx-4 mb-24 overflow-hidden rounded-[2rem] border border-white/12 sm:mx-6 lg:mx-auto lg:max-w-5xl">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/assets/jpg/bg_2.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" />
+        <div className="pointer-events-none absolute -left-20 top-0 h-60 w-60 rounded-full bg-cyan-500/15 blur-[80px]" />
+        <div className="pointer-events-none absolute -right-20 bottom-0 h-60 w-60 rounded-full bg-fuchsia-500/15 blur-[80px]" />
 
-            return (
-              <div key={index}>
-                {/* Header */}
-                <button
-                  onClick={() => setOpen(active ? -1 : index)}
-                  className={`flex w-full items-center justify-between rounded-full px-8 py-6 transition-all duration-300 ${
-                    active
-                      ? "bg-[#ff497c]"
-                      : "bg-[#212833] hover:bg-[#ff497c]"
-                  }`}
-                >
-                  <div className="flex items-center gap-4">
-                    <Pencil
-                      size={13}
-                      className="fill-[#ff497c] text-white"
-                    />
-
-                    <span className="text-[13px] font-bold uppercase tracking-[3px] text-white">
-                      {item.question}
-                    </span>
-                  </div>
-
-                  {active ? (
-                    <Minus size={15} className="text-white" />
-                  ) : (
-                    <Plus size={15} className="text-white" />
-                  )}
-                </button>
-
-                {/* Body */}
-                <div
-                  className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                    active
-                      ? "max-h-[500px] opacity-100"
-                      : "max-h-0 opacity-0"
-                  }`}
-                >
-                  <div className="px-4 py-4">
-                    <p className="text-[17px] leading-10 text-[#8b8b8b] whitespace-pre-line">
-                      {item.answer}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        <div className="relative px-6 py-16 text-center sm:px-10 sm:py-20">
+          <p className={BRAND_TEXT.sectionEyebrow}>Still Have Questions?</p>
+          <h2 className={`mt-4 ${BRAND_TEXT.sectionTitle}`}>
+            Any Unanswered Questions?
+          </h2>
+          <p className={`mx-auto mt-4 max-w-xl ${BRAND_TEXT.sectionBody}`}>
+            Our team is ready to help. Reach out and we&apos;ll get back to you
+            with the answers you need.
+          </p>
+          <Link
+            href="/contact-us"
+            className="mt-8 inline-flex items-center gap-2 rounded-full border border-cyan-300/40 bg-cyan-300/10 px-8 py-4 text-xs font-bold uppercase tracking-[0.25em] text-cyan-300 transition-all hover:border-cyan-300 hover:bg-cyan-300 hover:text-slate-950"
+          >
+            Contact Us
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
         </div>
-      </div>
-    </section>
-    <section
-  className="relative w-full bg-cover bg-top bg-no-repeat py-[150px]"
-  style={{
-    backgroundImage: "url('/assets/jpg/bg_2.jpg')",
-  }}
->
-  <div className="absolute inset-0 " />
-
-  <div className="relative mx-auto flex max-w-7xl flex-col items-center px-5 text-center">
-    <h2 className="text-[42px] font-light leading-tight text-black md:text-[52px]">
-      Any Unanswered Questions?
-    </h2>
-
-    <div className="mt-10 flex justify-center">
-  <a
-    href="/contact-us"
-    className="mt-5 flex h-[82px] min-w-[255px] items-center justify-center rounded-full border-2 border-[#ff497c] bg-[#ff497c] px-14 text-[13px] font-bold uppercase tracking-[3px] text-white transition-all duration-300 hover:bg-transparent hover:text-white hover:border-[#ff497c]"
-  >
-    CONTACT US
-  </a>
-</div>
-  </div>
-</section>
-  </>
+      </section>
+    </>
   );
 }

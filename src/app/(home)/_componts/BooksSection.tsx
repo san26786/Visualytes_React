@@ -4,12 +4,39 @@ import { useCallback, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
 import Link from "next/link";
-
-import VerticalLine from "@/src/common/icons/VerticalLine";
+import { motion } from "framer-motion";
+import HomeSection from "./shared/HomeSection";
+import { popIn, staggerContainer } from "./shared/motion";
+import { BRAND_HOVER, BRAND_SURFACE } from "@/src/common/components/ui/brand/theme";
 
 const certificates = [
   "/assets/jpg/0001-scaled.jpg",
   "/assets/jpg/0002-scaled.jpg",
+];
+
+const items = [
+  {
+    image: "/assets/png/corportae-profile.png",
+    alt: "Corporate Profile",
+    label: "Corporate Profile",
+    href: "https://www.visualytes.com/#downloadcorporateprofie",
+    cta: "Download Profile",
+  },
+  {
+    image: null,
+    alt: "Certificates",
+    label: "Our Certificates",
+    href: "https://www.visualytes.com/#Enquiry",
+    cta: "Our Certificate",
+    isSlider: true,
+  },
+  {
+    image: "/assets/png/broucehr-profile.png",
+    alt: "Brochure",
+    label: "Company Brochure",
+    href: "https://www.visualytes.com/#downloadbroucher",
+    cta: "Download Brochure",
+  },
 ];
 
 export default function BooksSection() {
@@ -20,11 +47,7 @@ export default function BooksSection() {
 
   const autoplay = useCallback(() => {
     if (!emblaApi) return;
-
-    const interval = setInterval(() => {
-      emblaApi.scrollNext();
-    }, 3000);
-
+    const interval = setInterval(() => emblaApi.scrollNext(), 3000);
     return () => clearInterval(interval);
   }, [emblaApi]);
 
@@ -34,113 +57,80 @@ export default function BooksSection() {
   }, [autoplay]);
 
   return (
-    <section className="relative overflow-hidden bg-[#f4f4f5] py-24">
-      {/* Top Shape */}
-      <div
-        className="
-          absolute top-0 left-0 z-10 h-0 w-full
-          before:absolute before:-top-[30px] before:left-0
-          before:h-[60px] before:w-1/2
-          before:skew-y-[3deg]
-          before:bg-white
-          before:content-['']
-          after:absolute after:-top-[30px] after:right-0
-          after:h-[60px] after:w-1/2
-          after:-skew-y-[3deg]
-          after:bg-white
-          after:content-['']
-        "
-      />
+    <section className="relative overflow-hidden py-10">
+      <div className="pointer-events-none absolute left-1/2 top-0 h-64 w-64 -translate-x-1/2 rounded-full bg-indigo-500/10 blur-[80px]" />
 
-      <div className="relative z-10 mx-auto mb-18 max-w-7xl px-5">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
-          {/* Corporate Profile */}
-          <div className="flex flex-col items-center">
-            <div className="h-[520px] w-[360px] overflow-hidden border border-[#333]">
-              <Image
-                src="/assets/png/corportae-profile.png"
-                alt="Corporate Profile"
-                width={360}
-                height={520}
-                className="h-full w-full object-cover"
-              />
-            </div>
-
-            <Link
-              href="https://www.visualytes.com/#downloadcorporateprofie"
-              target="_blank"
-              className="mt-7 flex h-[82px] min-w-[255px] items-center justify-center rounded-full border-2 border-[#ff497c] bg-[#ff497c] px-14 text-[13px] font-bold uppercase tracking-[3px] text-white transition-all duration-300 hover:border-[#ff497c] hover:bg-white hover:text-black"
+      <HomeSection
+        eyebrow="Resources"
+        title="Profiles &"
+        highlight="Certifications"
+        subtitle="Download our corporate profile, browse certifications, and explore our company brochure."
+      >
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          className="grid grid-cols-1 gap-8 md:grid-cols-3"
+        >
+          {items.map((item, i) => (
+            <motion.div
+              key={item.label}
+              custom={i}
+              variants={popIn}
+              className="flex flex-col items-center"
             >
-              Download Profile
-            </Link>
-          </div>
+              <div
+                className={`group relative overflow-hidden rounded-2xl ${BRAND_SURFACE.glassCard} ${BRAND_HOVER.card}`}
+              >
+                <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-cyan-500/20 to-fuchsia-500/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-          {/* Certificate Slider */}
-          <div className="flex flex-col items-center">
-            <div
-              className="w-[360px] overflow-hidden"
-              ref={emblaRef}
-            >
-              <div className="flex">
-                {certificates.map((img, i) => (
-                  <div
-                    key={i}
-                    className="min-w-full flex-[0_0_100%]"
-                  >
-                    <div className="h-[520px] w-[360px] overflow-hidden border border-[#333]">
-                      <Image
-                        src={img}
-                        alt={`Certificate ${i + 1}`}
-                        width={360}
-                        height={520}
-                        className="h-full w-full object-cover"
-                      />
+                {item.isSlider ? (
+                  <div className="relative h-[420px] w-[280px] overflow-hidden" ref={emblaRef}>
+                    <div className="flex h-full">
+                      {certificates.map((img, ci) => (
+                        <div key={ci} className="min-w-full flex-[0_0_100%]">
+                          <Image
+                            src={img}
+                            alt={`Certificate ${ci + 1}`}
+                            width={280}
+                            height={420}
+                            loading="lazy"
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        </div>
+                      ))}
                     </div>
                   </div>
-                ))}
+                ) : (
+                  <div className="relative h-[420px] w-[280px] overflow-hidden">
+                    <Image
+                      src={item.image!}
+                      alt={item.alt}
+                      width={280}
+                      height={420}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                )}
               </div>
-            </div>
 
-            <Link
-              href="https://www.visualytes.com/#Enquiry"
-              target="_blank"
-              className="mt-7 flex h-[82px] min-w-[255px] items-center justify-center rounded-full border-2 border-[#ff497c] bg-[#ff497c] px-14 text-[13px] font-bold uppercase tracking-[3px] text-white transition-all duration-300 hover:border-[#ff497c] hover:bg-white hover:text-black"
-            >
-              Our Certificate
-            </Link>
-          </div>
+              <p className="mt-4 text-sm font-semibold uppercase tracking-wider text-cyan-300/80">
+                {item.label}
+              </p>
 
-          {/* Brochure */}
-          <div className="flex flex-col items-center">
-            <div className="h-[520px] w-[360px] overflow-hidden border-[3px] border-[#333]">
-              <Image
-                src="/assets/png/broucehr-profile.png"
-                alt="Brochure"
-                width={360}
-                height={520}
-                className="h-full w-full object-cover"
-              />
-            </div>
-
-            <Link
-              href="https://www.visualytes.com/#downloadbroucher"
-              target="_blank"
-              className="mt-7 flex h-[82px] min-w-[255px] items-center justify-center rounded-full border-2 border-[#ff497c] bg-[#ff497c] px-14 text-[13px] font-bold uppercase tracking-[3px] text-white transition-all duration-300 hover:border-[#ff497c] hover:bg-white hover:text-black"
-            >
-              Download Profile
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      <div className="absolute bottom-0 left-1/2 z-20 -translate-x-1/2">
-                   <VerticalLine variant="pink" className="h-[94px] w-[4px]"/>
-      </div>
-
-      <div className="absolute bottom-0 left-0 w-full">
-        <div className="absolute -bottom-[30px] left-0 h-[60px] w-1/2 skew-y-[3deg] bg-[#232b38]" />
-        <div className="absolute -bottom-[30px] right-0 h-[60px] w-1/2 -skew-y-[3deg] bg-[#232b38]" />
-      </div>
+              <Link
+                href={item.href}
+                target="_blank"
+                className="mt-4 inline-flex items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-300/5 px-8 py-3 text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-200 transition-all duration-300 hover:scale-105 hover:border-cyan-300 hover:bg-cyan-300/15"
+              >
+                {item.cta}
+              </Link>
+            </motion.div>
+          ))}
+        </motion.div>
+      </HomeSection>
     </section>
   );
 }

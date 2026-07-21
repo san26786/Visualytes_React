@@ -5,17 +5,8 @@ export const faqs = [
         "The choice of domain name depends on how you plan to use it. In most cases, it makes sense to choose one that is easy to pronounce and spell if you will be telling people about it over the phone. Above all, you should choose a name that is memorable and not confusing.",
     },
     {
-      question: "What does Your Company Consulting do?",
-      answer: `
-  We help entrepreneurs get ready to raise capital. This usually consists of some or all of the following services:
-  
-  • Business plan development
-  • Financial forecast development
-  • Pitch deck (investor presentation) preparation
-  • Strategy development
-  • Market research and analysis
-  
-  Please note that we cannot help our clients raise capital.`,
+      question: "What does Visualytes do?",
+      answer: `Visualytes is a full-service digital agency specialising in web design, development, SEO, and digital marketing. We help businesses build high-performing websites, improve search visibility, and grow their online presence — from strategy through to launch and ongoing support.`,
     },
     {
       question: "How long will it take for my website to be designed?",
@@ -52,8 +43,8 @@ export const faqs = [
         "Project proposal, keyword reports, activity plans, weekly progress reports, monthly ranking reports, and content recommendations.",
     },
     {
-      question: "How does the process work?",
+      question: "Can you redesign an existing website?",
       answer:
-        "Yes. We can redesign existing websites and retain your organization's style or provide a completely new modern design.",
+        "Yes. We can redesign existing websites and retain your organization's style or provide a completely new modern design tailored to your brand and business goals.",
     },
   ];

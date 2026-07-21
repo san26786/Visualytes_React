@@ -3,8 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 
 import "swiper/css";
-import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, MapPin } from "lucide-react";
+
 
 const milestones = [
   {
@@ -54,7 +53,7 @@ const milestones = [
   },
 ];
 
-const CARD_WIDTH = 280;
+// const CARD_WIDTH = 280;
 
 export default function JourneyTimeline() {
   return (

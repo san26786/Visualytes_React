@@ -15,15 +15,17 @@ const SERVICES = [
 ];
 
 const ABOUT = [
-  { label: "Our Story", href: "/about/our-story" },
-  { label: "Our Team", href: "/about/our-team" },
-  { label: "Our Process", href: "/about/our-process" },
-  { label: "Clientele", href: "/about/clientele" },
-  { label: "Testimonials", href: "/about/testimonials" },
-  { label: "Case Studies", href: "/about/case-studies" },
-  { label: "Media & PR", href: "/about/media-pr" },
-  { label: "Careers", href: "/about/careers" },
-  { label: "FAQ", href: "/about/faq" },
+  { label: "Our Story", href: "/our-story" },
+  { label: "Our Team", href: "/team" },
+  { label: "Our Process", href: "/our-process" },
+  { label: "About", href: "/about" },
+  { label: "Clientele", href: "/clients" },
+  { label: "Testimonials", href: "/testimonials" },
+  { label: "Case Studies", href: "/case-study" },
+  { label: "Media & PR", href: "/media-and-pr" },
+  { label: "We Sponsored", href: "/we-sponsor" },
+  { label: "Careers", href: "/careers" },
+  { label: "FAQ", href: "/faq" },
 ];
 
 interface DropdownProps {

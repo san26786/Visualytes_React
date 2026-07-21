@@ -1,60 +1,38 @@
 "use client";
 
 import { Search, X } from "lucide-react";
+import { BRAND_MOTION, BRAND_SURFACE } from "@/src/common/components/ui/brand/theme";
 
 interface SearchBarProps {
   value: string;
   onChange: (value: string) => void;
 }
 
-export default function SearchBar({
-  value,
-  onChange,
-}: SearchBarProps) {
+export default function SearchBar({ value, onChange }: SearchBarProps) {
   return (
-    <div className="flex justify-center mb-16">
-      <div className="w-full max-w-[380px]">
-        <div className="relative">
-          {/* Search Icon */}
+    <div className="mb-12 flex justify-center md:mb-16">
+      <div className="w-full max-w-md">
+        <div className={`relative ${BRAND_SURFACE.mutedGlassCard} ${BRAND_MOTION.softTransition} focus-within:border-cyan-300/40`}>
           <Search
             size={18}
-            className="absolute left-5 top-1/2 -translate-y-1/2 text-black"
+            className="absolute left-5 top-1/2 -translate-y-1/2 text-cyan-300"
             strokeWidth={1.5}
           />
-
-          {/* Input */}
           <input
             type="text"
-            placeholder="Enter Name"
+            placeholder="Search clients..."
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className="
-              h-[62px]
-              w-full
-              bg-[#f4f4f4]
-              pl-14
-              pr-14
-              text-[18px]
-              font-medium
-              text-[#666]
-              placeholder:text-[#777]
-              outline-none
-              border-none
-            "
+            className="h-14 w-full bg-transparent pl-14 pr-14 text-base font-medium text-white placeholder:text-slate-400 outline-none sm:h-16 sm:text-lg"
           />
-
-          {/* Clear Button */}
           {value && (
             <button
               type="button"
               onClick={() => onChange("")}
-              className="absolute right-5 top-1/2 -translate-y-1/2"
+              className="absolute right-5 top-1/2 -translate-y-1/2 rounded-full p-1 text-slate-400 transition-colors hover:text-white"
+              aria-label="Clear search"
             >
-              <X
-                size={20}
-                strokeWidth={1.8}
-                className="text-black hover:text-gray-600 transition-colors"
-              />
+              <X size={20} strokeWidth={1.8} />
             </button>
           )}
         </div>

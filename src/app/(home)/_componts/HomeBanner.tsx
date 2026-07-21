@@ -11,10 +11,10 @@ const SLIDES = [
     topText: "Welcome To",
     mainTitle: "IT Agency",
     sublines: [
-      { text: "Web", color: "text-[#8aba40]" },
-      { text: "Mobile App", color: "text-[#4a90e2]" },
-      { text: "Marketing", color: "text-[#a074c4]" },
-      { text: "Branding", color: "text-[#e65100]" },
+      { text: "Web", color: "text-cyan-300" },
+      { text: "Mobile App", color: "text-fuchsia-300" },
+      { text: "Marketing", color: "text-pink-300" },
+      { text: "Branding", color: "text-emerald-300" },
     ],
     videoSrc: "/assets/jpg/banner/dotdigital-cut-1.mp4",
     imageFallback: "/images/brand-bg.jpg",
@@ -52,11 +52,11 @@ const SLIDES = [
     mainTitle: "Development",
     ExtraTitle: "website solutions",
     sublines: [
-      { text: "Portfolio", color: "text-[#8aba40]" },
-      { text: "Corporate", color: "text-[#4a90e2]" },
-      { text: "Blogger", color: "text-[#a074c4]" },
-      { text: "Charity", color: "text-[#a074c4]" },
-      { text: "Ecommerce", color: "text-[#a074c4]" },
+      { text: "Portfolio", color: "text-cyan-300" },
+      { text: "Corporate", color: "text-fuchsia-300" },
+      { text: "Blogger", color: "text-pink-300" },
+      { text: "Charity", color: "text-violet-300" },
+      { text: "Ecommerce", color: "text-emerald-300" },
     ],
     videoSrc: null,
     button: [{
@@ -86,10 +86,10 @@ const SLIDES = [
     mainTitle: "Mobile App",
     ExtraTitle: "DEVELOPMENT",
     sublines: [
-      { text: "Android ", color: "text-[#8aba40]" },
-      { text: "IOS", color: "text-[#4a90e2]" },
-      { text: "Augmented Reality", color: "text-[#a074c4]" },
-      { text: "Games", color: "text-[#e65100]" },
+      { text: "Android ", color: "text-cyan-300" },
+      { text: "IOS", color: "text-fuchsia-300" },
+      { text: "Augmented Reality", color: "text-pink-300" },
+      { text: "Games", color: "text-emerald-300" },
     ],
     videoSrc: null,
     button: [{
@@ -109,10 +109,10 @@ const SLIDES = [
     // Extracted from the split lines / characters array inside the "Sports-Subline" layer
     ExtraTitle: "SOLUTIONS",
     sublines: [
-      { text: "SEO ", color: "text-[#8aba40]" },
-      { text: "Social Media", color: "text-[#4a90e2]" },
-      { text: "Email", color: "text-[#a074c4]" },
-      { text: "Content Writing", color: "text-[#e65100]" },
+      { text: "SEO ", color: "text-cyan-300" },
+      { text: "Social Media", color: "text-fuchsia-300" },
+      { text: "Email", color: "text-pink-300" },
+      { text: "Content Writing", color: "text-emerald-300" },
     ],
     videoSrc: null,
     button: [{
@@ -129,10 +129,10 @@ const SLIDES = [
     topText: "Get Famous with exclusive",
     mainTitle: "Brand Building",
     sublines: [
-      { text: "Guideline ", color: "text-[#8aba40]" },
-      { text: "Designing", color: "text-[#4a90e2]" },
-      { text: "Branding", color: "text-[#a074c4]" },
-      { text: "Brand Video", color: "text-[#e65100]" },
+      { text: "Guideline ", color: "text-cyan-300" },
+      { text: "Designing", color: "text-fuchsia-300" },
+      { text: "Branding", color: "text-pink-300" },
+      { text: "Brand Video", color: "text-emerald-300" },
     ],
     videoSrc: null,
     button: [{
@@ -219,6 +219,17 @@ export default function HomeBanner() {
     setCurrentIndex((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
   }, []);
   const currentSlide = SLIDES[currentIndex];
+
+  // Preload the next slide image so transitions stay smooth without loading everything upfront
+  useEffect(() => {
+    const nextIndex = (currentIndex + 1) % SLIDES.length;
+    const nextSlide = SLIDES[nextIndex];
+    if (!nextSlide.imageFallback) return;
+
+    const preload = new window.Image();
+    preload.src = nextSlide.imageFallback;
+  }, [currentIndex]);
+
   // Interval hook management
   useEffect(() => {
     // If current slide has a video, don't use timer
@@ -270,8 +281,12 @@ export default function HomeBanner() {
   };
 
   return (
-    <section className="relative w-full h-[100vh] sm:h-screen lg:h-[115vh] min-h-[650px] lg:min-h-[800px] bg-[#0c1017] text-white overflow-hidden">      {/* Background Media Crossfader Engine */}
-      <div className="absolute inset-0 z-0 w-full h-full">
+    <section className="relative min-h-[650px] h-[100vh] w-full overflow-hidden bg-slate-950 text-white sm:h-screen lg:min-h-[800px] lg:h-[115vh]">
+      {/* Ambient glow orbs */}
+      <div className="pointer-events-none absolute -left-32 top-20 z-[5] h-[400px] w-[400px] rounded-full bg-cyan-500/15 blur-[120px]" />
+      <div className="pointer-events-none absolute -right-24 bottom-32 z-[5] h-[350px] w-[350px] rounded-full bg-fuchsia-500/15 blur-[100px]" />
+
+      <div className="absolute inset-0 z-0 h-full w-full">
         {/* Center Banner Image */}
         <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
   <Image
@@ -304,29 +319,30 @@ export default function HomeBanner() {
           >
             {currentSlide.videoSrc ? (
               <video
-                className="w-full h-full object-cover object-[center_20%]"
+                className="h-full w-full object-cover object-[center_20%]"
                 autoPlay
                 muted
                 playsInline
+                preload="metadata"
                 src={currentSlide.videoSrc}
                 onEnded={handleNext}
               />
             ) : (
-              <div
-                className="w-full h-full bg-cover bg-center bg-no-repeat"
-                style={{
-                  backgroundImage: `url(${currentSlide.imageFallback})`,
-                }}
-              />
+              <div className="relative h-full w-full">
+                <Image
+                  src={currentSlide.imageFallback}
+                  alt=""
+                  fill
+                  priority={currentIndex === 0}
+                  sizes="100vw"
+                  className="object-cover object-center"
+                />
+              </div>
             )}
 
-            {/* Dark Overlay */}
-            <div
-              className="absolute inset-0 z-[1]"
-              style={{
-                backgroundColor: "rgba(31,39,50,0.7)",
-              }}
-            />
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 z-[1] bg-gradient-to-b from-slate-950/80 via-slate-950/60 to-slate-950/90" />
+            <div className="absolute inset-0 z-[1] bg-gradient-to-r from-cyan-500/10 via-transparent to-fuchsia-500/10" />
 
             {/* Texture Overlay */}
             <div
@@ -352,11 +368,13 @@ export default function HomeBanner() {
     z-30
     w-[80px] h-[80px]
     rounded-r-full
-    bg-white/10 hover:bg-[#ff497c]
+    border border-white/10 bg-white/5 backdrop-blur-sm
+    hover:bg-gradient-to-r hover:from-cyan-500 hover:to-fuchsia-500
+    hover:shadow-[0_0_30px_rgba(34,211,238,0.4)]
     transition-all duration-300
     flex items-center justify-end
     pr-[14px] hover:pr-[40px]
-    text-white
+    text-white hover:scale-105
   "
       >
         <ChevronLeft size={22} />
@@ -370,11 +388,13 @@ export default function HomeBanner() {
     z-30
     w-[80px] h-[80px]
     rounded-l-full
-    bg-white/10 hover:bg-[#ff497c]
+    border border-white/10 bg-white/5 backdrop-blur-sm
+    hover:bg-gradient-to-l hover:from-fuchsia-500 hover:to-pink-500
+    hover:shadow-[0_0_30px_rgba(244,114,182,0.4)]
     transition-all duration-300
     flex items-center justify-start
     pl-[14px] hover:pl-[40px]
-    text-white
+    text-white hover:scale-105
   "
       >
         <ChevronRight size={22} />
@@ -425,7 +445,7 @@ font-bold
 tracking-[6px]
 md:tracking-[10px]
 uppercase
-text-white/80
+text-cyan-300/90
 mb-6"
             >
               {currentSlide.topText}
@@ -444,7 +464,9 @@ md:text-[72px]
 lg:text-[90px]
 xl:text-[110px]
 leading-[1]
-md:leading-[0.95]font-extrabold uppercase tracking-wide leading-none mb-5 md:mb-6 drop-shadow-md select-none font-sans"
+md:leading-[0.95]
+font-extrabold uppercase tracking-wide leading-none mb-5 md:mb-6 drop-shadow-md select-none font-sans
+bg-gradient-to-b from-white via-white to-slate-300 bg-clip-text text-transparent"
             >
               {currentSlide.mainTitle}
             </motion.h1>
@@ -537,11 +559,11 @@ xl:text-[42px]
         tracking-[3px]
         transition-all
         duration-300
-        border-2
+        hover:scale-105
         ${
           index === 0
-            ? "bg-[#ff497c] text-white border-transparent hover:border-[#ff497c] hover:bg-transparent"
-            : "bg-transparent text-white border-white hover:bg-white hover:text-[#1f2732]"
+            ? "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 text-white border-2 border-transparent shadow-[0_8px_30px_rgba(168,85,247,0.4)] hover:shadow-[0_12px_40px_rgba(34,211,238,0.5)]"
+            : "bg-transparent text-white border-2 border-cyan-300/50 hover:bg-cyan-300/10 hover:border-cyan-300"
         }`}
     >
       {btn.text}
@@ -551,8 +573,8 @@ xl:text-[42px]
           </motion.div>
         </AnimatePresence>
       </div>
-      <div className="absolute bottom-8 md:bottom-24 left-1/2 -translate-x-1/2 z-10 flex items-center justify-center">
-        <div className="relative w-[40px] h-[60px] border-2 border-white rounded-full">
+      <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center md:bottom-24">
+        <div className="relative h-[60px] w-[40px] rounded-full border-2 border-cyan-300/50">
           <motion.div
             animate={{ y: [8, 28, 8] }}
             transition={{
@@ -560,23 +582,13 @@ xl:text-[42px]
               duration: 1.5,
               ease: "easeInOut",
             }}
-            className="absolute left-1/2 top-[10px] -translate-x-1/2 w-[4px] h-[10px] bg-white rounded-full"
+            className="absolute left-1/2 top-[10px] h-[10px] w-[4px] -translate-x-1/2 rounded-full bg-gradient-to-b from-cyan-300 to-fuchsia-400"
           />
         </div>
       </div>
 
-      {/* Bottom Structural Angle Vector Curve Mask Layer */}
-      <div className="hidden md:block absolute bottom-0 left-0 right-0 z-0 w-full pointer-events-none h-[120px]">
-                {" "}
-        <svg
-          viewBox="0 0 1440 60"
-          className="w-full h-full fill-white"
-          preserveAspectRatio="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M0,60 L1440,60 L1440,20 L720,55 L0,20 Z" />
-        </svg>
-      </div>
+      {/* Bottom fade into page */}
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[15] h-32 bg-gradient-to-t from-slate-950 to-transparent" />
     </section>
   );
 }

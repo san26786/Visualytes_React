@@ -20,3 +20,20 @@ export const BRAND_MOTION = {
   softTransition: "transition-all duration-300 ease-out",
   fastTransition: "transition-all duration-200 ease-out",
 };
+
+export const BRAND_GRADIENT = {
+  text: "bg-gradient-to-r from-cyan-300 via-fuchsia-300 to-pink-400 bg-clip-text text-transparent",
+  textSubtle:
+    "bg-gradient-to-r from-cyan-200/90 via-fuchsia-200/90 to-pink-300/90 bg-clip-text text-transparent",
+  button:
+    "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 hover:from-cyan-400 hover:via-fuchsia-400 hover:to-pink-400",
+  ring: "ring-1 ring-white/15 hover:ring-cyan-300/40",
+  glow: "shadow-[0_0_50px_rgba(34,211,238,0.2)]",
+  glowPink: "shadow-[0_0_50px_rgba(244,114,182,0.2)]",
+};
+
+export const BRAND_HOVER = {
+  card: "transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:border-cyan-300/40 hover:shadow-[0_25px_60px_rgba(34,211,238,0.12)]",
+  pop: "transition-transform duration-300 ease-out hover:scale-110",
+  image: "transition-transform duration-500 ease-out group-hover:scale-110",
+};

@@ -1,29 +1,31 @@
+import BrandSubPageShell from "@/src/common/components/ui/brand/BrandSubPageShell";
 import { testimonials } from "./_componets/data";
 import TestimonialCard from "./_componets/TestimonialCard";
-import PageBanner from "@/src/common/components/layouts/PageBanner";
-
 
 export default function TestimonialsPage() {
   return (
-    <>
-      <PageBanner title="Testimonials" />
-    <section className="py-20 lg:py-28">
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-20">
-          {testimonials.map((item) => (
-            <TestimonialCard
-              key={item.id}
-              image={item.image}
-              name={item.name}
-              designation={item.designation}
-              company={item.company}
-              content={item.review}
-            />
-          ))}
+    <BrandSubPageShell
+      title="Testimonials"
+      eyebrow="Client Voices"
+      subtitle="Real stories from businesses who trusted Visualytes to transform their digital presence."
+    >
+      <section className="px-4 pb-24 pt-4">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
+            {testimonials.map((item, index) => (
+              <TestimonialCard
+                key={item.id}
+                image={item.image}
+                name={item.name}
+                designation={item.designation}
+                company={item.company}
+                content={item.review}
+                index={index}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
-
-    </>
+      </section>
+    </BrandSubPageShell>
   );
 }
