@@ -1,0 +1,111 @@
+/* we sponser page styles */
+
+/* Ticker */
+.tickerViewport {
+    overflow: hidden;
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      black 40px,
+      black calc(100% - 40px),
+      transparent 100%
+    );
+  }
+  
+  .tickerTrack {
+    display: flex;
+    width: max-content;
+    animation: marquee 28s linear infinite;
+  }
+  
+  .tickerViewport:hover .tickerTrack {
+    animation-play-state: paused;
+  }
+  
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  
+  /* Flip card */
+  .flipCard {
+    perspective: 1200px;
+  }
+  
+  .flipInner {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  
+  .flipCard:hover .flipInner,
+  .flipCard:focus-within .flipInner {
+    transform: rotateY(180deg);
+  }
+  
+  .flipFace {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  
+  .flipBack {
+    position: absolute;
+    inset: 0;
+    transform: rotateY(180deg);
+  }
+  
+  .flipFront {
+    position: relative;
+  }
+  
+  /* Entrance */
+  .enter {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: enter 0.5s ease-out forwards;
+  }
+  
+  @keyframes enter {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Respect reduced motion: disable marquee scroll, 3D flip and entrance
+     animation for users who've asked for less motion. Content still fully
+     readable via a plain hover background swap instead. */
+  @media (prefers-reduced-motion: reduce) {
+    .tickerTrack {
+      animation: none;
+    }
+  
+    .flipInner {
+      transition: none;
+    }
+  
+    .flipCard:hover .flipInner,
+    .flipCard:focus-within .flipInner {
+      transform: none;
+    }
+  
+    .flipBack {
+      position: static;
+      transform: none;
+      margin-top: 0.75rem;
+    }
+  
+    .flipFront {
+      display: none;
+    }
+  
+    .enter {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }

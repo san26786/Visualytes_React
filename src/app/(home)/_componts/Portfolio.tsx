@@ -699,8 +699,7 @@ export default function Portfolio() {
     return portfolio.filter((item) => item.category === active);
   }, [active]);
   
-  console.log(active);
-  console.log(filtered);
+ 
 
   return (
     <section className="relative overflow-hidden bg-white">

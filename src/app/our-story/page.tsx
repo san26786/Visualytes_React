@@ -2,11 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import Timeline from "./_componets/ Timeline";
 import PageBanner from "@/src/common/components/layouts/PageBanner";
+import JourneyTimelines from "./_componets/JourneyTimelines";
 
 export default function Page() {
   return (
     <>
-      <section>
+      <section className="">
             <PageBanner title="Our Story" />
             <section
       className="
@@ -95,8 +96,11 @@ export default function Page() {
         </div>
       </div>
     </section>
-            </section>
+    <div className="pb-32 bg-[#232b37]">
             <Timeline/>
+            </div>
+            </section>
+
     </>
   );
 }

@@ -175,7 +175,7 @@ export default function Trial() {
               Contact Us
             </Link>
             <Link
-              href="/client-login"
+              href="/seo-questionnaire"
               className="text-[13px] font-semibold text-[#1a1a1a] uppercase tracking-wide hover:text-[#e63329] transition-colors py-2 px-3"
             >
               Client Login
@@ -286,7 +286,7 @@ export default function Trial() {
               Contact Us
             </Link>
             <Link
-              href="/client-login"
+              href="/seo-questionnaire"
               className="py-3 text-[13px] font-semibold text-[#1a1a1a] uppercase tracking-wide border-b border-gray-100 hover:text-[#e63329]"
               onClick={() => setMobileOpen(false)}
             >

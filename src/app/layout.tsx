@@ -30,9 +30,17 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "Visualytes",
-  description: "Web Designing & Digital Marketing Company",
+  title: "Web Designing & Digital Marketing Company London-Visualytes",
+  description: "Visualytes",
+
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "36x346", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
 };
+
 
 export default function RootLayout({
   children,

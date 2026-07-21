@@ -14,22 +14,22 @@ const navItems = [
     label: "Services",
     href: "/our-services",
     submenu: [
-      { label: "Web Development", href: "/services/web-development" },
-      { label: "Digital Marketing", href: "/services/digital-marketing" },
-      { label: "Mobile App Development", href: "/services/mobile-app-development" },
-      { label: "Corporate Branding", href: "/services/corporate-branding" },
+      { label: "Web Development", href: "/archives/services/web-designing" },
+      { label: "Digital Marketing", href: "/archives/services/digital-marketing" },
+      { label: "Mobile App Development", href: "/archives/services/app-development" },
+      { label: "Corporate Branding", href: "/archives/services/corporate-branding" },
       {
         label: "Bespoke Software Development",
-        href: "/services/bespoke-software-development",
+        href: "/archives/services/bespoke-software-branding",
       },
       {
         label: "Website Hosting Services",
-        href: "/services/hosting-services",
+        href: "/archives/services/hosting-services",
       },
-      { label: "Quality Assurance", href: "/services/quality-assurance" },
+      { label: "Quality Assurance", href: "/archives/services/quality-assurance" },
       {
         label: "Website Maintenance & Support",
-        href: "/services/maintenance-support",
+        href: "/archives/services/maintenance-and-support",
       },
     ],
   },
@@ -51,7 +51,7 @@ const navItems = [
       { label: "FAQ", href: "/faq" },
     ],
   },  { label: "Contact Us", href: "/contact-us" },
-  { label: "Client Login", href: "/client-login" },
+  { label: "Client Login", href: "/seo-questionnaire" },
 ];
 
 export default function Header() {
