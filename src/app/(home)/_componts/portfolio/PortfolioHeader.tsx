@@ -1,6 +1,7 @@
 "use client";
 
-import VerticalLine from "@/src/common/icons/VerticalLine";
+import { motion } from "framer-motion";
+import { BRAND_GRADIENT } from "@/src/common/components/ui/brand/theme";
 
 export interface PortfolioHeaderProps {
   active: string;
@@ -14,61 +15,35 @@ export default function PortfolioHeader({
   categories,
 }: PortfolioHeaderProps) {
   return (
-    <>
-      {/* Top CTA */}
-      <div className="flex flex-col items-center justify-center gap-3">
-        <button
-          className="
-            text-center
-            min-w-[230px]
-            h-[80px]
-            px-[35px]
-            border-[4px]
-            border-[#ff497c]
-            rounded-full
-            bg-transparent
-            text-[#1f2732]
-            text-[12px]
-            font-[700]
-            uppercase
-            tracking-[2.4px]
-            leading-[12px]
-            transition-all
-            duration-300
-            hover:bg-[#ff497c]
-            hover:border-[#ff497c]
-            hover:text-white
-            mt-6
-            mb-14
-          "
-        >
-          Get Started
-        </button>
+    <div className="mb-16 text-center">
+      <span className="inline-block rounded-full border border-cyan-300/30 bg-cyan-300/10 px-5 py-1.5 text-[11px] font-bold uppercase tracking-[0.3em] text-cyan-300">
+        Our Work
+      </span>
 
-                   <VerticalLine variant="pink" className="h-[94px] w-[4px]"/>
-      </div>
-
-      {/* Heading */}
-      <h2 className="mt-8 text-center text-[42px] font-medium leading-none text-[#1f2732]">
-        Our Portfolio
+      <h2 className="mt-5 text-[38px] font-bold text-white sm:text-[46px]">
+        Featured{" "}
+        <span className={BRAND_GRADIENT.text}>
+          Projects
+        </span>
       </h2>
 
-      {/* Categories */}
-      <div className="mt-12 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 px-5">
+      <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
         {categories.map((item) => (
-          <button
+          <motion.button
             key={item}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.97 }}
             onClick={() => setActive?.(item)}
-                        className={`uppercase tracking-[3px] text-[13px] font-bold transition duration-300 ${
+            className={`px-6 py-3 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${
               active === item
-                ? "text-[#ff497c]"
-                : "text-[#1f2732] hover:text-[#ff497c]"
+                ? "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 text-white shadow-lg shadow-fuchsia-500/30"
+                : "border border-white/15 bg-slate-900/80 text-slate-300 hover:border-cyan-300/40 hover:text-cyan-300"
             }`}
           >
             {item}
-          </button>
+          </motion.button>
         ))}
       </div>
-    </>
+    </div>
   );
 }

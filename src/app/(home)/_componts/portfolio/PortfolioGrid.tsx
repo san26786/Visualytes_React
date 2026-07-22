@@ -3,9 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
-import { BRAND_HOVER, BRAND_SURFACE } from "@/src/common/components/ui/brand/theme";
+import { BRAND_HOVER } from "@/src/common/components/ui/brand/theme";
+
+import { PortfolioHeaderProps } from "./PortfolioHeader";
 import { categoryRoutes } from "./data/portfoliodata";
+import { useState } from "react";
 
 interface PortfolioItem {
   image: string;
@@ -13,66 +15,62 @@ interface PortfolioItem {
   category: string;
 }
 
-interface PortfolioGridProps {
+interface Props extends PortfolioHeaderProps {
   items: PortfolioItem[];
-  active: string;
-  setActive: (category: string) => void;
-  categories: string[];
 }
 
-export default function PortfolioGrid({ items }: PortfolioGridProps) {
+export default function PortfolioGrid({
+  items,
+}: Props) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-
   return (
-    <div className="mx-auto max-w-7xl">
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         <AnimatePresence mode="popLayout">
-          {items.slice(0, 12).map((item, index) => (
-            <motion.article
+          {items.map((item, index) => (
+            <motion.div
               key={`${item.title}-${item.category}-${index}`}
-              layout
-              initial={{ opacity: 0, scale: 0.85, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.85, y: 20 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              layout="position"
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.85 }}
+              transition={{
+                duration: 0.45,
+                ease: [0.22, 1, 0.36, 1],
+              }}
               onClick={() =>
                 setActiveIndex(activeIndex === index ? null : index)
               }
-              className={`group relative cursor-pointer overflow-hidden rounded-2xl ${BRAND_SURFACE.mutedGlassCard} ${BRAND_HOVER.card}`}
+              className={`group relative overflow-hidden rounded-3xl border border-white/15 bg-slate-900/80 shadow-[0_22px_60px_rgba(2,6,23,0.55)] backdrop-blur-xl ${BRAND_HOVER.card}`}
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <Image
                   src={item.image}
                   alt={item.title}
-                  fill
-                  loading="lazy"
-                  sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 25vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  width={800}
+                  height={600}
+                  className={`h-full w-full object-cover ${BRAND_HOVER.image}`}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent opacity-60 transition-opacity group-hover:opacity-80" />
-              </div>
+                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <div className="px-6 text-center">
+                    <Link
+                      href={
+                        categoryRoutes[item.category] ??
+                        "/archives/portfolio"
+                      }
+                    >
+                      <p className="text-[11px] uppercase tracking-[3px] text-cyan-300 transition-colors duration-300">
+                        {item.category}
+                      </p>
+                    </Link>
 
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/80 opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:opacity-100">
-                <Link
-                  href={categoryRoutes[item.category] ?? "/archives/portfolio"}
-                  className="text-[10px] font-bold uppercase tracking-[0.25em] text-cyan-300 transition-colors hover:text-white"
-                >
-                  {item.category}
-                </Link>
-                <h3 className="mt-3 max-w-[90%] px-4 text-center text-lg font-semibold text-white">
-                  {item.title}
-                </h3>
+                    <h3 className="mt-3 text-[22px] font-bold text-white">
+                      {item.title}
+                    </h3>
+                  </div>
+                </div>
               </div>
-
-              <div className="absolute bottom-0 left-0 right-0 translate-y-full p-4 transition-transform duration-300 group-hover:translate-y-0">
-                <p className="truncate text-sm font-medium text-white">
-                  {item.title}
-                </p>
-                <p className="text-[10px] uppercase tracking-wider text-cyan-300/80">
-                  {item.category}
-                </p>
-              </div>
-            </motion.article>
+            </motion.div>
           ))}
         </AnimatePresence>
       </div>

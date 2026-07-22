@@ -1,10 +1,5 @@
-import HomeWrapper from "./(home)/HomeWrapper";
+import HomeClient from "./(home)/HomeClient";
 
 export default function Home() {
-  return (
-    <>
-    <HomeWrapper/>
-    </>
-  );
+  return <HomeClient />;
 }
-

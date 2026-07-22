@@ -12,6 +12,11 @@ import "@/styles/style6.css"; */
 @import 'slick-carousel/slick/slick.css';
 @import 'slick-carousel/slick/slick-theme.css';
 
+.font-perfect {
+  font-family:"Inter Tight", sans-serif;
+  font-weight:500;
+  letter-spacing:.35em;
+}
 html, body {
   overflow-x: hidden;
 }
@@ -265,3 +270,27 @@ body {
   100% { transform: translateX(200%); }
 }
 
+
+/* ---------- Fantasy Text Reveal ---------- */
+
+.fantasy-word {
+  position: relative;
+  display: inline-block;
+
+  opacity: 0.15;
+
+  filter: blur(10px);
+
+  transform:
+    translate3d(24px, 6px, 0)
+    scale(.96);
+
+  will-change:
+    transform,
+    filter,
+    opacity;
+
+  backface-visibility: hidden;
+
+  transform-style: preserve-3d;
+}

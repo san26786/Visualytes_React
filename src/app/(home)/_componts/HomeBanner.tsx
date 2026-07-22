@@ -281,7 +281,7 @@ export default function HomeBanner() {
   };
 
   return (
-    <section className="relative min-h-[650px] h-[100vh] w-full overflow-hidden bg-slate-950 text-white sm:h-screen lg:min-h-[800px] lg:h-[115vh]">
+    <section className="relative min-h-[650px] h-[100vh] w-full overflow-hidden  text-white sm:h-screen lg:min-h-[800px] lg:h-[115vh]">
       {/* Ambient glow orbs */}
       <div className="pointer-events-none absolute -left-32 top-20 z-[5] h-[400px] w-[400px] rounded-full bg-cyan-500/15 blur-[120px]" />
       <div className="pointer-events-none absolute -right-24 bottom-32 z-[5] h-[350px] w-[350px] rounded-full bg-fuchsia-500/15 blur-[100px]" />
@@ -341,8 +341,7 @@ export default function HomeBanner() {
             )}
 
             {/* Gradient Overlay */}
-            <div className="absolute inset-0 z-[1] bg-gradient-to-b from-slate-950/80 via-slate-950/60 to-slate-950/90" />
-            <div className="absolute inset-0 z-[1] bg-gradient-to-r from-cyan-500/10 via-transparent to-fuchsia-500/10" />
+            <div className="absolute inset-0 z-[1] bg-gradient-to-b from-slate-950/60 via-slate-950/60 to-slate-950/40" />
 
             {/* Texture Overlay */}
             <div
@@ -478,7 +477,7 @@ bg-gradient-to-b from-white via-white to-slate-300 bg-clip-text text-transparent
                 initial="sublineEnter"
                 animate="sublineCenter"
                 exit="exit"
-                custom={(currentSlide.timings?.sublineStart || 1.4) + 0.05}
+                custom={(currentSlide.timings?.sublineStart || 1.4) + 0.02}
                 className="
           text-lg
           sm:text-2xl
@@ -517,7 +516,7 @@ gap-y-4
                 // Applies micro-staggers sequentially using the true telemetry start parameters
                 animate="sublineCenter"
                 exit="exit"
-                custom={(currentSlide.timings?.sublineStart || 1.4) + (idx * 0.08)}
+                custom={(currentSlide.timings?.sublineStart || 1.4) + (idx * 0.04)}
               >
                 <span className={`
 ${item.color}
@@ -551,7 +550,7 @@ xl:text-[42px]
       exit="exit"
       custom={(currentSlide.timings?.sublineStart || 1.4) + 0.4 + index * 0.1}
       className={`relative inline-flex items-center justify-center
-        px-8 py-4 sm:px-10 sm:py-5
+        px-6 py-4 sm:px-10 sm:py-5
         rounded-full
         text-[10px] sm:text-xs
         font-bold
@@ -562,7 +561,7 @@ xl:text-[42px]
         hover:scale-105
         ${
           index === 0
-            ? "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 text-white border-2 border-transparent shadow-[0_8px_30px_rgba(168,85,247,0.4)] hover:shadow-[0_12px_40px_rgba(34,211,238,0.5)]"
+            ? "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 text-white border-transparent  hover:shadow-[0_12px_40px_rgba(34,211,238,0.5)]"
             : "bg-transparent text-white border-2 border-cyan-300/50 hover:bg-cyan-300/10 hover:border-cyan-300"
         }`}
     >

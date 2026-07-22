@@ -124,12 +124,8 @@ export default function PortfolioSlider({ items }: PortfolioSliderProps) {
               </div>
 
               <div className="absolute bottom-0 left-0 right-0 p-5 transition-transform duration-300 group-hover:-translate-y-2">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-cyan-300/70">
-                  {item.category}
-                </p>
-                <p className="mt-1 truncate text-sm font-medium text-white">
-                  {item.title}
-                </p>
+               
+             
               </div>
             </div>
           </SwiperSlide>

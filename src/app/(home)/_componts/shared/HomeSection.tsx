@@ -4,6 +4,8 @@ import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { sectionReveal } from "@/src/common/components/ui/brand/page-effects";
 import { BRAND_GRADIENT, BRAND_TEXT } from "@/src/common/components/ui/brand/theme";
+import AnimatedText from "@/src/common/animations/AnimatedText";
+
 
 type HomeSectionProps = {
   eyebrow?: string;
@@ -39,21 +41,30 @@ export default function HomeSection({
           <p className={`mb-4 ${BRAND_TEXT.sectionEyebrow}`}>{eyebrow}</p>
         )}
 
-        <h2 className={BRAND_TEXT.sectionTitle}>
-          {title}{" "}
-          {highlight && (
-            <span className={BRAND_GRADIENT.text}>{highlight}</span>
-          )}
-        </h2>
+<div className="flex flex-col items-center">
+  <AnimatedText
+    as="h2"
+    text={title}
+    className={BRAND_TEXT.sectionTitle}
+  />
+
+  {highlight && (
+    <AnimatedText
+      as="h2"
+      text={highlight}
+      className={`${BRAND_TEXT.sectionTitle} ${BRAND_GRADIENT.text}`}
+    />
+  )}
+</div>
 
         {subtitle && (
-          <p
-            className={`mx-auto mt-5 max-w-2xl ${BRAND_TEXT.sectionBody} ${
-              centered ? "" : "mx-0"
-            }`}
-          >
-            {subtitle}
-          </p>
+          <AnimatedText
+          as="p"
+          text={subtitle}
+          className={`mx-auto mt-5 max-w-2xl ${BRAND_TEXT.sectionBody} ${
+            centered ? "" : "mx-0"
+          }`}
+        />
         )}
 
         <div

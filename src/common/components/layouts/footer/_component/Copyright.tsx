@@ -1,39 +1,30 @@
-import React from 'react'
+"use client";
+
+import { motion } from "framer-motion";
 
 const Copyright = () => {
   return (
-    <section
-    className="text-[15px] text-center font-extrabold font-['Poppins'] tracking-[2.4px] leading-[12px]"
-    style={{
-      backgroundImage: "url(/assets/png/footer_bg.png)",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundRepeat: "no-repeat",
-      backgroundColor: "#191f28",
-    }}
-  >
-    <h3 className="hidden">Page Copyright</h3>
-  
-    <div className="p-9 bg-[var(--primaryPink)]">
-      <div className="row">
-        <div className="col-sm-12 text-center font-bold">
-          <h2
-            style={{
-              color: "#fff",
-              fontSize: "inherit",
-              margin: 0,
-              fontWeight: 300,
-              textTransform: "uppercase",
-              
-            }}
-          >
-            © COPYRIGHT 2026 ALL RIGHTS RESERVED BY VISUALYTES LIMITED
-          </h2>
-        </div>
-      </div>
-    </div>
-  </section>
- )
-}
+    <section className="relative bg-[#075783] border-t border-white/5">
+      {/* Decorative gradient line */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
 
-export default Copyright
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center"
+        >
+          <p className="text-sm font-medium tracking-widest uppercase text-slate-400">
+            <span className="bg-gradient-to-r from-cyan-300 via-pink-300 to-purple-300 bg-clip-text text-transparent">
+              © Copyright 2026
+            </span>{" "}
+            All Rights Reserved by Visualytes Limited
+          </p>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default Copyright;

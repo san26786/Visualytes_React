@@ -96,7 +96,7 @@ export default function TestimonialsSection() {
 
   return (
     <section className="relative overflow-hidden py-10">
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900/80 to-slate-950" />
+      <div className="" />
 
       <HomeSection
         eyebrow="Client Love"

@@ -6,7 +6,7 @@ import HomeBrandButton from "./shared/HomeBrandButton";
 const AppointmentTalk = () => {
   return (
     <section className="relative overflow-hidden py-16">
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-fuchsia-500/10 to-pink-500/10" />
+      <div className="pointer-events-none absolute inset-0 " />
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}

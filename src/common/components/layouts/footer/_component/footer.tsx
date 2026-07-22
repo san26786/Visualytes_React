@@ -1,230 +1,119 @@
-// import Image from "next/image";
-// // import {
-// //   Facebook,
-// //   Twitter,
-// //   Youtube,
-// //   Linkedin,
-// //   Globe,
-// // } from "lucide-react";
-
-// export default function Footer() {
-//   return (
-//     <footer
-//       className="relative w-full overflow-hidden text-[#7f7f7f] mt-[5px]"
-//       style={{
-//         backgroundImage: "url(/assets/png/footer_bg.png)",
-//         backgroundSize: "cover",
-//         backgroundPosition: "center",
-//         backgroundAttachment: "fixed",
-//       }}
-//     >
-//       {/* Top skewed sections */}
-//       <div
-//         className="absolute left-0 top-[-30px] h-[150px] w-1/2 z-[1]"
-//         style={{
-//           backgroundImage: "url(/assets/png/footer_bg.png)",
-//           backgroundSize: "cover",
-//           backgroundPosition: "center",
-//           backgroundAttachment: "fixed",
-//           transform: "skewY(3deg)",
-//           backgroundColor: "#191f28",
-//         }}
-//       />
-
-//       <div
-//         className="absolute right-0 top-[-30px] h-[150px] w-1/2 z-[1]"
-//         style={{
-//           backgroundImage: "url(/assets/png/footer_bg.png)",
-//           backgroundSize: "cover",
-//           backgroundPosition: "center",
-//           backgroundAttachment: "fixed",
-//           transform: "skewY(-3deg)",
-//           backgroundColor: "#191f28",
-//         }}
-//       />
-
-//       {/* Overlay */}
-//       <div className="absolute inset-0 bg-[#191f28]/90 z-[2]" />
-
-//       <div className="relative z-[3] max-w-[970px] mx-auto px-4 pt-[50px] pb-[65px] text-center">
-//         {/* Logo */}
-//         <div className="flex justify-center mb-5 -mt-8">
-//           <Image
-//             src="/assets/png/footer_logo2.png"
-//             alt="Visualytes"
-//             width={140}
-//             height={140}
-//             priority
-//           />
-//         </div>
-
-//         {/* Social Icons */}
-//         <div className="flex justify-center gap-7 mb-8">
-//           <a
-//             href="https://www.facebook.com/visualyteslimited"
-//             target="_blank"
-//             className="social-icon soc-facebook"
-//           />
-//           <a
-//             href="https://twitter.com/visualytes"
-//             target="_blank"
-//             className="social-icon soc-twitter"
-//           />
-//           <a
-//             href="https://www.google.com/search?q=Visualytes+Limited"
-//             target="_blank"
-//             className="social-icon soc-google"
-//           />
-//           <a
-//             href="https://www.youtube.com/channel/UCVV3R4Ye2162x8BrCuUY40Q"
-//             target="_blank"
-//             className="social-icon soc-youtube"
-//           />
-//           <a
-//             href="https://www.linkedin.com/company/visualytes-limited/about/"
-//             target="_blank"
-//             className="social-icon soc-linkedin"
-//           />
-//         </div>
-
-//         {/* Text */}
-//         <div className="text-[15px] font-light leading-[30px]">
-//           <p className="mb-1">
-//             Visualytes Limited is registered in England and Wales, Company
-//             number{" "}
-//             <a
-//               href="https://find-and-update.company-information.service.gov.uk/company/10287043"
-//               className="hover:text-white transition"
-//               target="_blank"
-//             >
-//               10287043
-//             </a>
-//           </p>
-
-//           <p>
-//             Registered office address is 71-75 Shelton Street, London, Greater
-//             London, United Kingdom, WC2H 9JQ
-//             <br />
-//             ICO Registration number: ZB049666
-//           </p>
-//         </div>
-//       </div>
-//     </footer>
-//   );
-// }
-
+"use client";
 
 import Image from "next/image";
+import { motion } from "framer-motion";
 import Copyright from "./Copyright";
 
 export default function Footer() {
+  const socialLinks = [
+    {
+      iconClass: "soc-facebook",
+      href: "https://www.facebook.com/visualyteslimited",
+      label: "Facebook",
+    },
+    {
+      iconClass: "soc-twitter",
+      href: "https://twitter.com/visualytes",
+      label: "Twitter",
+    },
+    {
+      iconClass: "soc-google",
+      href: "https://www.google.com/search?q=Visualytes+Limited",
+      label: "Google",
+    },
+    {
+      iconClass: "soc-youtube",
+      href: "https://www.youtube.com/channel/UCVV3R4Ye2162x8BrCuUY40Q",
+      label: "YouTube",
+    },
+    {
+      iconClass: "soc-linkedin",
+      href: "https://www.linkedin.com/company/visualytes-limited/about/",
+      label: "LinkedIn",
+    },
+  ];
+
   return (
-    <footer className="relative  overflow-visible">
-      {/* Left skew shape */}
-      <div
-        className="absolute left-0 -top-[55px] h-[120px] w-1/2 bg-[#191f28] z-[1]"
-        style={{
-          transform: "skewY(3deg)",
-          transformOrigin: "top left",
-        }}
-      />
+    <footer className="relative overflow-hidden bg-[#075783]">
+      {/* Decorative background blobs - consistent with other pages */}
+      <div className="pointer-events-none absolute top-0 left-0 w-[400px] h-[400px] rounded-full bg-cyan-500/10 blur-3xl -translate-x-1/2 -translate-y-1/2" />
+      <div className="pointer-events-none absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-pink-500/10 blur-3xl translate-x-1/2 translate-y-1/2" />
 
-      {/* Right skew shape */}
-      <div
-        className="absolute right-0 -top-[55px] h-[120px] w-1/2 bg-[#191f28] z-[1]"
-        style={{
-          transform: "skewY(-3deg)",
-          transformOrigin: "top right",
-        }}
-      />
+      {/* Main content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-6 pb-8">
+        {/* Divider with Visualytes branding */}
+     
 
-      {/* Main Footer */}
-      <div
-        className="relative z-[2] text-[#7f7f7f]"
-        style={{
-          backgroundImage: "url(/assets/png/footer_bg.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundColor: "#191f28",
-        }}
-      >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-[#191f28]/90" />
-
-        {/* Content */}
-        <div className="relative z-10 max-w-[970px] mx-auto pt-[40px] pb-[30px] text-center">
-          {/* Logo */}
-          <div className="flex justify-center -mt-[80px]">
+        {/* Logo section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-8 flex flex-col items-center"
+        >
+          <div className="mb-2">
             <Image
               src="/assets/png/footer_logo2.png"
               alt="Visualytes"
-              width={255}
-              height={174}
+              width={140}
+              height={95}
               priority
+              className="transition-transform duration-300 hover:scale-105"
             />
           </div>
 
           {/* Social Icons */}
-          <div className="flex justify-center gap-4 m-4">
-            <a
-              href="https://www.facebook.com/visualyteslimited"
-              target="_blank"
-              rel="noreferrer"
-              className="social-icon soc-facebook hover:text-white"
-            />
-            <a
-              href="https://twitter.com/visualytes"
-              target="_blank"
-              rel="noreferrer"
-              className="social-icon soc-twitter"
-            />
-            <a
-              href="https://www.google.com/search?q=Visualytes+Limited"
-              target="_blank"
-              rel="noreferrer"
-              className="social-icon soc-google"
-            />
-            <a
-              href="https://www.youtube.com/channel/UCVV3R4Ye2162x8BrCuUY40Q"
-              target="_blank"
-              rel="noreferrer"
-              className="social-icon soc-youtube"
-            />
-            <a
-              href="https://www.linkedin.com/company/visualytes-limited/about/"
-              target="_blank"
-              rel="noreferrer"
-              className="social-icon soc-linkedin"
-            />
-          </div>
-
-          {/* Footer Text */}
-          <div className="text-[15px] leading-[30px] ">
-            <p className="mb-1">
-              Visualytes Limited is registered in England and Wales, Company
-              number{" "}
-              <a
-                href="https://find-and-update.company-information.service.gov.uk/company/10287043"
+          <div className="flex justify-center gap-6 ">
+            {socialLinks.map((social, index) => (
+              <motion.a
+                key={social.label}
+                href={social.href}
                 target="_blank"
                 rel="noreferrer"
-                className="text-[#bdbdbd] hover:text-white transition-colors"
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08 }}
+                whileHover={{ scale: 1.1, y: -3 }}
+                className="group"
               >
-                10287043
-              </a>
-            </p>
-
-            <p>
-              Registered office address is 71-75 Shelton Street, London,
-              Greater London, United Kingdom, WC2H 9JQ
-              <br />
-              ICO Registration number: ZB049666
-            </p>
+                <i className={`social-icon ${social.iconClass}`} />
+              </motion.a>
+            ))}
           </div>
-        </div>
-      </div>
-      <Copyright/>
-    </footer>
+        </motion.div>
 
+        {/* Company info */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+          className="text-center"
+        >
+          <p className="text-slate-300 text-[15px] leading-[30px] font-light max-w-2xl mx-auto mb-2">
+            Visualytes Limited is registered in England and Wales, Company
+            number{" "}
+            <a
+              href="https://find-and-update.company-information.service.gov.uk/company/10287043"
+              className="text-cyan-300 hover:text-cyan-200 transition-colors"
+              target="_blank"
+              rel="noreferrer"
+            >
+              10287043
+            </a>
+          </p>
+          <p className="text-slate-400 text-[15px] leading-[30px] font-light max-w-2xl mx-auto">
+            Registered office address is 71-75 Shelton Street, London,
+            Greater London, United Kingdom, WC2H 9JQ
+            <br />
+            ICO Registration number: ZB049666
+          </p>
+        </motion.div>
+      </div>
+
+      {/* Copyright */}
+      <Copyright />
+    </footer>
   );
 }

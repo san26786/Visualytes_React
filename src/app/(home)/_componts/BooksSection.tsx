@@ -117,7 +117,6 @@ export default function BooksSection() {
               </div>
 
               <p className="mt-4 text-sm font-semibold uppercase tracking-wider text-cyan-300/80">
-                {item.label}
               </p>
 
               <Link

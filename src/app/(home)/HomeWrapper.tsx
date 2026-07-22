@@ -6,56 +6,45 @@ import AboveFooter from "@/src/common/components/layouts/AboveFooter";
 import { BrandPageBackdrop, sectionReveal } from "@/src/common/components/ui/brand/page-effects";
 import HomeBanner from "./_componts/HomeBanner";
 import LazySection from "./_componts/shared/LazySection";
-import SectionPlaceholder from "./_componts/shared/SectionPlaceholder";
 
 const DigitalMarketingIntro = dynamic(
-  () => import("./_componts/DigitalMarketingIntro"),
-  { loading: () => <SectionPlaceholder minHeight="480px" /> }
+  () => import("./_componts/DigitalMarketingIntro")
 );
 
 const ProcessSection = dynamic(
-  () => import("./_componts/ProcessSection"),
-  { loading: () => <SectionPlaceholder minHeight="520px" /> }
+  () => import("./_componts/ProcessSection")
 );
 
 const Portfolio = dynamic(
-  () => import("./_componts/Portfolio"),
-  { loading: () => <SectionPlaceholder minHeight="640px" /> }
+  () => import("./_componts/Portfolio")
 );
 
 const CaseStudy = dynamic(
-  () => import("./_componts/Casestudies"),
-  { loading: () => <SectionPlaceholder minHeight="560px" /> }
+  () => import("./_componts/Casestudies")
 );
 
 const VideoSection = dynamic(
-  () => import("./_componts/VideoSection"),
-  { loading: () => <SectionPlaceholder minHeight="480px" /> }
+  () => import("./_componts/VideoSection")
 );
 
 const BusinessCommunities = dynamic(
-  () => import("./_componts/BusinessCommunities"),
-  { loading: () => <SectionPlaceholder minHeight="320px" /> }
+  () => import("./_componts/BusinessCommunities")
 );
 
 const BooksSection = dynamic(
-  () => import("./_componts/BooksSection"),
-  { loading: () => <SectionPlaceholder minHeight="560px" /> }
+  () => import("./_componts/BooksSection")
 );
 
 const TestimonialsSection = dynamic(
-  () => import("./_componts/TestimonialsSection"),
-  { loading: () => <SectionPlaceholder minHeight="480px" /> }
+  () => import("./_componts/TestimonialsSection")
 );
 
 const AppointmentTalk = dynamic(
-  () => import("./_componts/AppointmentTalk"),
-  { loading: () => <SectionPlaceholder minHeight="320px" /> }
+  () => import("./_componts/AppointmentTalk")
 );
 
 const ClientSlider = dynamic(
-  () => import("./_componts/ClientSlider"),
-  { loading: () => <SectionPlaceholder minHeight="360px" /> }
+  () => import("./_componts/ClientSlider")
 );
 
 export default function HomeWrapper() {
@@ -64,69 +53,44 @@ export default function HomeWrapper() {
       <BrandPageBackdrop />
 
       <div className="relative z-10">
+
+        {/* Always loaded */}
         <HomeBanner />
 
-        <LazySection minHeight="480px" rootMargin="400px 0px">
+
+        {/* Single Lazy Load Wrapper */}
+        <LazySection 
+          minHeight="480px" 
+          rootMargin="400px 0px"
+        >
           <motion.div {...sectionReveal}>
+
             <DigitalMarketingIntro />
-          </motion.div>
-        </LazySection>
 
-        <LazySection minHeight="520px">
-          <motion.div {...sectionReveal}>
             <ProcessSection />
-          </motion.div>
-        </LazySection>
 
-        <LazySection minHeight="640px" id="portfolio">
-          <motion.div {...sectionReveal}>
             <Portfolio />
-          </motion.div>
-        </LazySection>
 
-        <LazySection minHeight="560px">
-          <motion.div {...sectionReveal}>
             <CaseStudy />
-          </motion.div>
-        </LazySection>
 
-        <LazySection minHeight="480px">
-          <motion.div {...sectionReveal}>
             <VideoSection />
-          </motion.div>
-        </LazySection>
 
-        <LazySection minHeight="320px">
-          <motion.div {...sectionReveal}>
             <BusinessCommunities />
-          </motion.div>
-        </LazySection>
 
-        <LazySection minHeight="560px">
-          <motion.div {...sectionReveal}>
             <BooksSection />
-          </motion.div>
-        </LazySection>
 
-        <LazySection minHeight="480px">
-          <motion.div {...sectionReveal}>
             <TestimonialsSection />
-          </motion.div>
-        </LazySection>
 
-        <LazySection minHeight="320px">
-          <motion.div {...sectionReveal}>
             <AppointmentTalk />
+
+            <ClientSlider />
+
           </motion.div>
         </LazySection>
 
-        <LazySection minHeight="360px">
-          <motion.div {...sectionReveal}>
-            <ClientSlider />
-          </motion.div>
-        </LazySection>
 
         <AboveFooter />
+
       </div>
     </main>
   );

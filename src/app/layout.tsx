@@ -5,6 +5,7 @@ import "./globals.css";
 import Mainheader from "../common/components/layouts/header/_component/Mainheader";
 import Footer from "../common/components/layouts/footer/_component/footer";
 import ScrollToTop from "../common/components/layouts/footer/_component/ScrollToTop";
+// import LenisProvider from "../common/animations/LenisProvider";
 
 
 
@@ -55,7 +56,8 @@ export default function RootLayout({
 <body className={poppins.className}>       
    <Mainheader />
 
-        <main className="">{children}         <ScrollToTop />
+        <main className="">        {children}
+        <ScrollToTop />
         </main>
 
         <Footer />

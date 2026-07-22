@@ -57,14 +57,14 @@ export default function ClientSlider() {
         <div className="relative">
           <button
             onClick={() => emblaApi?.scrollPrev()}
-            className="absolute -left-2 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-slate-900/90 text-white backdrop-blur-sm transition-all hover:scale-110 hover:border-cyan-300/50 hover:bg-cyan-500/20"
+            className="absolute -left-2 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/15  text-white backdrop-blur-sm transition-all hover:scale-110 hover:border-cyan-300/50 hover:bg-cyan-500/20"
           >
             <ChevronLeft size={20} />
           </button>
 
           <button
             onClick={() => emblaApi?.scrollNext()}
-            className="absolute -right-2 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-slate-900/90 text-white backdrop-blur-sm transition-all hover:scale-110 hover:border-fuchsia-300/50 hover:bg-fuchsia-500/20"
+            className="absolute -right-2 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 text-white backdrop-blur-sm transition-all hover:scale-110 hover:border-fuchsia-300/50 hover:bg-fuchsia-500/20"
           >
             <ChevronRight size={20} />
           </button>

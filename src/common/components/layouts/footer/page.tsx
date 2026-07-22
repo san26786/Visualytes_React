@@ -1,12 +1,15 @@
+"use client";
+
 import React from 'react'
+import Footer from './_component/footer'
 import ScrollToTop from './_component/ScrollToTop'
 
-
 const page = () => {
-  return (<>    <footer />
-    <ScrollToTop />
+  return (
+    <>
+      <Footer />
+      <ScrollToTop />
     </>
-
   )
 }
 
