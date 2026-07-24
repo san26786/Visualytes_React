@@ -68,9 +68,7 @@ export default function ProcessSection() {
               className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-10 relative"
               style={{ transform: "skewY(-3deg)" }}
             >
-              <h2 className="text-center text-white text-5xl md:text-6xl font-light mb-10">
-                Our Process
-              </h2>
+             
 
               {/* Mobile */}
               <motion.div
