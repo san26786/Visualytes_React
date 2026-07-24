@@ -22,12 +22,12 @@ const SLIDES = [
       text: "Get Started",
       href: "#get-started",
       target: "_self",
-    },{
+    }, {
       text: "Get your seo score",
       href: "#get-started",
       target: "_self",
     }
-  ],
+    ],
   },
   // {
   //   id: "slide-2", // Matches the exact parameters from your rs-slide payload
@@ -63,7 +63,7 @@ const SLIDES = [
       text: "Get Started",
       href: "#get-started",
       target: "_self",
-    },{
+    }, {
       text: "Get folio",
       href: "#portfolio ",
       target: "_self",
@@ -76,7 +76,7 @@ const SLIDES = [
       mainTitleDelay: 1.0, // st:1000
       sublineStart: 1.48, // st:1480
     },
-    
+
   },
   {
     id: "slide-3",
@@ -289,24 +289,24 @@ export default function HomeBanner() {
       <div className="absolute inset-0 z-0 h-full w-full">
         {/* Center Banner Image */}
         <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-  <Image
-    src="/assets/jpg/banner/centerHome.png"
-    alt="Center Banner"
-    width={2200}
-    height={2200}
-    priority
-    className="
-      w-[85vw]
-      sm:w-[75vw]
-      md:w-[65vw]
-      lg:w-[50vw]
-      xl:w-[42vw]
-      2xl:w-[36vw]
-      h-auto
-      object-contain
-    "
-  />
-</div>
+          <Image
+            src="/assets/jpg/banner/centerHome.png"
+            alt="Center Banner"
+            width={2200}
+            height={2200}
+            priority
+            className="
+              w-[85vw]
+              sm:w-[75vw]
+              md:w-[65vw]
+              lg:w-[50vw]
+              xl:w-[42vw]
+              2xl:w-[36vw]
+              h-auto
+              object-contain
+            "
+          />
+        </div>
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={currentSlide.id}
@@ -362,19 +362,19 @@ export default function HomeBanner() {
         onClick={handlePrev}
         aria-label="Previous Slide"
         className="
-    absolute top-1/2 -translate-y-1/2
-    left-[-40px] hover:left-0
-    z-30
-    w-[80px] h-[80px]
-    rounded-r-full
-    border border-white/10 bg-white/5 backdrop-blur-sm
-    hover:bg-gradient-to-r hover:from-cyan-500 hover:to-fuchsia-500
-    hover:shadow-[0_0_30px_rgba(34,211,238,0.4)]
-    transition-all duration-300
-    flex items-center justify-end
-    pr-[14px] hover:pr-[40px]
-    text-white hover:scale-105
-  "
+          absolute top-1/2 -translate-y-1/2
+          left-[-40px] hover:left-0
+          z-30
+          w-[80px] h-[80px]
+          rounded-r-full
+          border border-white/10 bg-white/5 backdrop-blur-sm
+          hover:bg-gradient-to-r hover:from-cyan-500 hover:to-fuchsia-500
+          hover:shadow-[0_0_30px_rgba(34,211,238,0.4)]
+          transition-all duration-300
+          flex items-center justify-end
+          pr-[14px] hover:pr-[40px]
+          text-white hover:scale-105
+        "
       >
         <ChevronLeft size={22} />
       </button>
@@ -382,41 +382,41 @@ export default function HomeBanner() {
         onClick={handleNext}
         aria-label="Next Slide"
         className="
-    absolute top-1/2 -translate-y-1/2
-    right-[-40px] hover:right-0
-    z-30
-    w-[80px] h-[80px]
-    rounded-l-full
-    border border-white/10 bg-white/5 backdrop-blur-sm
-    hover:bg-gradient-to-l hover:from-fuchsia-500 hover:to-pink-500
-    hover:shadow-[0_0_30px_rgba(244,114,182,0.4)]
-    transition-all duration-300
-    flex items-center justify-start
-    pl-[14px] hover:pl-[40px]
-    text-white hover:scale-105
-  "
+        absolute top-1/2 -translate-y-1/2
+        right-[-40px] hover:right-0
+        z-30
+        w-[80px] h-[80px]
+        rounded-l-full
+        border border-white/10 bg-white/5 backdrop-blur-sm
+        hover:bg-gradient-to-l hover:from-fuchsia-500 hover:to-pink-500
+        hover:shadow-[0_0_30px_rgba(244,114,182,0.4)]
+        transition-all duration-300
+        flex items-center justify-start
+        pl-[14px] hover:pl-[40px]
+        text-white hover:scale-105
+      "
       >
         <ChevronRight size={22} />
       </button>
 
       <div className="
-relative
-z-20
-container
-mx-auto
-h-full
-flex
-flex-col
-justify-center
-items-center
-text-center
-px-5
-md:px-6
-pt-32
-sm:pt-36
-md:pt-20
-lg:pt-10
-">
+        relative
+        z-20
+        container
+        mx-auto
+        h-full
+        flex
+        flex-col
+        justify-center
+        items-center
+        text-center
+        px-5
+        md:px-6
+        pt-32
+        sm:pt-36
+        md:pt-20
+        lg:pt-10
+        ">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide.id}
@@ -436,16 +436,16 @@ lg:pt-10
               exit="exit"
               custom={currentSlide.timings?.topTextDelay || 0}
               className="pt-6
-md:pt-0
-text-xs
-sm:text-sm
-md:text-base
-font-bold
-tracking-[6px]
-md:tracking-[10px]
-uppercase
-text-cyan-300/90
-mb-6"
+                md:pt-0
+                text-xs
+                sm:text-sm
+                md:text-base
+                font-bold
+                tracking-[6px]
+                md:tracking-[10px]
+                uppercase
+                text-cyan-300/90
+                mb-6"
             >
               {currentSlide.topText}
             </motion.span>
@@ -458,14 +458,14 @@ mb-6"
               exit="exit"
               custom={currentSlide.timings?.mainTitleDelay || 0.2}
               className="text-[38px]
-sm:text-[55px]
-md:text-[72px]
-lg:text-[90px]
-xl:text-[110px]
-leading-[1]
-md:leading-[0.95]
-font-extrabold uppercase tracking-wide leading-none mb-5 md:mb-6 drop-shadow-md select-none font-sans
-bg-gradient-to-b from-white via-white to-slate-300 bg-clip-text text-transparent"
+                sm:text-[55px]
+                md:text-[72px]
+                lg:text-[90px]
+                xl:text-[110px]
+                leading-[1]
+                md:leading-[0.95]
+                font-extrabold uppercase tracking-wide leading-none mb-5 md:mb-6 drop-shadow-md select-none font-sans
+                bg-gradient-to-b from-white via-white to-slate-300 bg-clip-text text-transparent"
             >
               {currentSlide.mainTitle}
             </motion.h1>
@@ -497,16 +497,16 @@ bg-gradient-to-b from-white via-white to-slate-300 bg-clip-text text-transparent
             {/* Subline Segment Group containing colored string text blocks */}
             <div
               className="
-  flex
-  flex-wrap
-  justify-center
-  items-center
-gap-x-3
-gap-y-4
-  text-center
-  mb-10
-  px-4
-"
+                flex
+                flex-wrap
+                justify-center
+                items-center
+              gap-x-3
+              gap-y-4
+                text-center
+                mb-10
+                px-4
+              "
             >        {currentSlide.sublines.map((item, idx) => (
               <motion.div
                 key={idx}
@@ -519,14 +519,14 @@ gap-y-4
                 custom={(currentSlide.timings?.sublineStart || 1.4) + (idx * 0.04)}
               >
                 <span className={`
-${item.color}
-font-medium
-text-sm
-sm:text-lg
-md:text-2xl
-lg:text-[34px]
-xl:text-[42px]
-`}>
+                          ${item.color}
+                          font-medium
+                          text-sm
+                          sm:text-lg
+                          md:text-2xl
+                          lg:text-[34px]
+                          xl:text-[42px]
+                          `}>
                   {item.text}
                 </span>
 
@@ -539,36 +539,35 @@ xl:text-[42px]
 
             {/* CTA Interaction Layer */}
             <div className="flex flex-wrap justify-center gap-4">
-  {currentSlide.button?.map((btn, index) => (
-    <motion.a
-      key={index}
-      href={btn.href}
-      target={btn.target}
-      variants={premiumTextVariants}
-      initial="sublineEnter"
-      animate="sublineCenter"
-      exit="exit"
-      custom={(currentSlide.timings?.sublineStart || 1.4) + 0.4 + index * 0.1}
-      className={`relative inline-flex items-center justify-center
-        px-6 py-4 sm:px-10 sm:py-5
-        rounded-full
-        text-[10px] sm:text-xs
-        font-bold
-        uppercase
-        tracking-[3px]
-        transition-all
-        duration-300
-        hover:scale-105
-        ${
-          index === 0
-            ? "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 text-white border-transparent  hover:shadow-[0_12px_40px_rgba(34,211,238,0.5)]"
-            : "bg-transparent text-white border-2 border-cyan-300/50 hover:bg-cyan-300/10 hover:border-cyan-300"
-        }`}
-    >
-      {btn.text}
-    </motion.a>
-  ))}
-</div>
+              {currentSlide.button?.map((btn, index) => (
+                <motion.a
+                  key={index}
+                  href={btn.href}
+                  target={btn.target}
+                  variants={premiumTextVariants}
+                  initial="sublineEnter"
+                  animate="sublineCenter"
+                  exit="exit"
+                  custom={(currentSlide.timings?.sublineStart || 1.4) + 0.4 + index * 0.1}
+                  className={`relative inline-flex items-center justify-center
+                  px-6 py-4 sm:px-10 sm:py-5
+                  rounded-full
+                  text-[10px] sm:text-xs
+                  font-bold
+                  uppercase
+                  tracking-[3px]
+                  transition-all
+                  duration-300
+                  hover:scale-105
+                  ${index === 0
+                      ? "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 text-white border-transparent  hover:shadow-[0_12px_40px_rgba(34,211,238,0.5)]"
+                      : "bg-transparent text-white border-2 border-cyan-300/50 hover:bg-cyan-300/10 hover:border-cyan-300"
+                    }`}
+                >
+                  {btn.text}
+                </motion.a>
+              ))}
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>

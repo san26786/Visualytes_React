@@ -35,7 +35,7 @@ const navItems = [
     submenu: [
       {
         label: "Web Design",
-        href: "/archives/services/web-designing",
+        href: "/archives/services/web-design",
         icon: <Layout size={20} />,
         description: "Creative, conversion-focused websites"
       },
@@ -47,13 +47,13 @@ const navItems = [
       },
       {
         label: "Digital Marketing",
-        href: "/archives/services/digital-marketing",
+        href: "/archives/services/digital",
         icon: <TrendingUp size={20} />,
         description: "Data-driven growth strategies"
       },
       {
         label: "Mobile Apps",
-        href: "/archives/services/app-development",
+        href: "/archives/services/mobile-app",
         icon: <Cpu size={20} />,
         description: "Native & cross-platform apps"
       },
@@ -300,34 +300,72 @@ export default function Header() {
                         onMouseLeave={() => setHoveredNavItem(null)}
                       >
                         <Link
-                          href={item.href}
-                          className={cn(
-                            "relative flex items-center gap-1.5 px-4 py-2.5 rounded-full text-xs font-semibold uppercase tracking-[0.25em] transition-all duration-300",
-                            isActive
-                              ? "text-cyan-300"
-                              : "text-slate-300 hover:text-white hover:bg-white/5"
-                          )}
-                        >
-                          {item.label}
-                          {item.submenu && (
-                            <motion.span
-                              animate={{ rotate: isHovered ? 180 : 0 }}
-                              transition={{ duration: 0.3 }}
-                            >
-                              <ChevronRight size={14} />
-                            </motion.span>
-                          )}
+  href={item.href}
+  className={cn(
+    `
+    group/nav relative flex items-center gap-2
+    px-4 py-2.5 rounded-full
+    overflow-hidden
+    text-xs font-semibold uppercase
+    tracking-[0.25em]
+    transition-all duration-300
+    `,
+    isActive
+      ? "text-cyan-300"
+      : "text-slate-300 hover:text-white"
+  )}
+>
 
-                          {/* Active Underline */}
-                          {isActive && (
-                            <motion.div
-                              layoutId="nav-underline"
-                              className="absolute bottom-0 left-4 right-4 h-0.5 bg-gradient-to-r from-cyan-400 to-pink-500"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                            />
-                          )}
-                        </Link>
+  {/* Liquid color slide */}
+  <span
+    className="
+      absolute inset-0
+      -translate-x-full
+      bg-gradient-to-r
+      from-cyan-400
+      via-pink-500
+      to-cyan-400
+      opacity-30
+      blur-sm
+      transition-transform
+      duration-700
+      ease-out
+      group-hover/nav:translate-x-0
+    "
+  />
+
+
+  {/* Glass layer */}
+  <span
+    className="
+      absolute inset-0
+      rounded-full
+      border border-white/10
+      opacity-0
+      transition-all
+      duration-500
+      group-hover/nav:opacity-100
+    "
+  />
+
+
+  {/* Label */}
+  <span className="relative z-10">
+    {item.label}
+  </span>
+
+
+  {item.submenu && (
+    <motion.span
+      className="relative z-10"
+      animate={{ rotate: isHovered ? 90 : 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <ChevronRight size={14} />
+    </motion.span>
+  )}
+
+</Link>
 
                         {/* Mega Menu */}
                         {item.submenu && (
@@ -343,7 +381,7 @@ export default function Header() {
                                 <div className="bg-slate-950/95 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-[0_30px_80px_rgba(0,0,0,0.5)] overflow-hidden">
                                   <div className="grid grid-cols-12 gap-0">
                                     {/* Left Menu Items */}
-                                    <div className="col-span-7 p-6 border-r border-white/5">
+                                    <div className="col-span-7 p-6 border-r border-gray/8">
                                       <div className="grid grid-cols-2 gap-4">
                                         {item.submenu.map((subItem, ) => (
                                           <Link

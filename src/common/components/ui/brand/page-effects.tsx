@@ -40,7 +40,7 @@ export const sharedParticles: ParticleConfig[] = [
   { x: "28%", y: "82%", size: 4, color: "#22d3ee", delay: 1, duration: 11 },
   { x: "48%", y: "8%", size: 9, color: "#a78bfa", delay: 3, duration: 7 },
   { x: "74%", y: "88%", size: 5, color: "#f472b6", delay: 1.8, duration: 8 },
-  { x: "4%", y: "88%", size: 7, color: "#34d399", delay: 0.7, duration: 12 },
+  { x: "4%", y: "88%", size: 7, color: "#e4ee52ff", delay: 0.7, duration: 12 },
 ];
 
 export const sectionReveal = {
