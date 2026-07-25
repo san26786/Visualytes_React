@@ -1,51 +1,72 @@
-"use client";
+import type { Metadata } from "next";
+import AboutBrandSection from "./_componets/AboutBrandSection";
 
-import { motion } from "framer-motion";
-import Map from "./_componets/Map";
-import HelpCards from "./_componets/ HelpCards";
-import HexagonCrads from "./_componets/HexagonCrads";
-import AboutIntro from "./_componets/AboutIntro";
-import History from "./_componets/History";
-import Milestone from "./_componets/Milestone";
-import Details from "./_componets/Details";
-import {
-  BrandPageBackdrop,
-  sectionReveal,
-} from "@/src/common/components/ui/brand/page-effects";
 
-export default function AboutBrandSection() {
-  return (
-    <main className="relative overflow-hidden bg-slate-950">
-      <BrandPageBackdrop />
+export const metadata: Metadata = {
+  title:
+    "About Visualytes: Our Story, Who We Are, What We Do, Why We Do It",
 
-      {/* sections with scroll-entrance */}
-      <div className="relative z-10">
-        <AboutIntro />
+  description:
+    "Visualytes is a global design company committed to creating positive impact. We work with organizations on complex challenges around the world.",
 
-        <motion.div {...sectionReveal}>
-          <Details />
-        </motion.div>
+  keywords: [
+    "About Visualytes",
+    "Software development company",
+    "Web design company",
+    "Digital solutions",
+    "Mobile app development",
+    "Global design company",
+  ],
 
-        <motion.div {...sectionReveal}>
-          <History />
-        </motion.div>
+  alternates: {
+    canonical: "https://www.visualytes.com/about",
+  },
 
-        <motion.div {...sectionReveal}>
-          <Milestone />
-        </motion.div>
+  openGraph: {
+    title:
+      "About Visualytes: Our Story, Who We Are, What We Do, Why We Do It",
 
-        <motion.div {...sectionReveal}>
-          <HexagonCrads />
-        </motion.div>
+    description:
+      "Visualytes is a global design company committed to creating positive impact. We work with organizations on complex challenges around the world.",
 
-        <motion.div {...sectionReveal}>
-          <HelpCards />
-        </motion.div>
+    url: "https://www.visualytes.com/about",
 
-        <motion.div {...sectionReveal}>
-          <Map />
-        </motion.div>
-      </div>
-    </main>
-  );
+    siteName: "Visualytes",
+
+    type: "website",
+
+    images: [
+      {
+        url: "/assets/png/about-og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "About Visualytes",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+
+    title:
+      "About Visualytes: Our Story, Who We Are, What We Do, Why We Do It",
+
+    description:
+      "Visualytes is a global design company committed to creating positive impact.",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
+
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+};
+
+
+export default function Page() {
+  return <AboutBrandSection />;
 }

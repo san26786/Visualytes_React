@@ -60,6 +60,7 @@
   
   .flipFront {
     position: relative;
+    overflow: hidden;
   }
   
   /* Entrance */

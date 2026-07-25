@@ -34,20 +34,20 @@ const navItems = [
     href: "/our-services",
     submenu: [
       {
-        label: "Web Design",
+        label: "Web Development",
         href: "/archives/services/web-design",
         icon: <Layout size={20} />,
         description: "Creative, conversion-focused websites"
       },
       {
-        label: "Web Development",
-        href: "/archives/services/bespoke-software-branding",
+        label: "Bespoke Software Development",
+        href: "/archives/services/bespoke",
         icon: <Code2 size={20} />,
         description: "Robust, scalable digital solutions"
       },
       {
         label: "Digital Marketing",
-        href: "/archives/services/digital",
+        href: "/archives/services/digital-marketing",
         icon: <TrendingUp size={20} />,
         description: "Data-driven growth strategies"
       },
