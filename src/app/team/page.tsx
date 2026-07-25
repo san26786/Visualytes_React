@@ -1,21 +1,33 @@
-"use client";
-
-
-import BrandSubPageShell from "@/src/common/components/ui/brand/BrandSubPageShell";
-import Founder from "./_componets/Founder";
-import Directors from "./_componets/Directors";
-import TeamGrid from "./_componets/TeamGrid";
-
-export default function TeamPage() {
+import TeamClient from "./TeamClient";
+export const metadata = {
+  title: "Team | Website Design, SEO & Software Development Experts",
+  description:
+    "Meet the Visualytes team led by Founder Nagendra Mishra. We deliver high-quality website design, SEO, and software development solutions for businesses.",
+  keywords: [
+    "Visualytes team",
+    "website design company",
+    "SEO company",
+    "software development company",
+    "web development experts",
+    "Nagendra Mishra",
+  ],
+  openGraph: {
+    title: "Team | Website Design, SEO & Software Development Experts",
+    description:
+      "Meet the Visualytes team led by Founder Nagendra Mishra. We deliver high-quality website design, SEO, and software development solutions for businesses.",
+    url: "https://www.visualytes.com/team",
+    siteName: "Visualytes",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Team | Website Design, SEO & Software Development Experts",
+    description:
+      "Meet the Visualytes team led by Founder Nagendra Mishra. We deliver high-quality website design, SEO, and software development solutions for businesses.",
+  },
+};
+export default function OurStoryPage() {
   return (
-    <BrandSubPageShell
-      title="Our Team"
-      eyebrow="The People Behind Visualytes"
-      subtitle="Meet the talented professionals who bring creativity, expertise and dedication to every project."
-    >
-      <Founder />
-      <Directors />
-      <TeamGrid />
-    </BrandSubPageShell>
+    <TeamClient />
   );
 }

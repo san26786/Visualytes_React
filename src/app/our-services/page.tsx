@@ -1,23 +1,61 @@
-"use client";
+import type { Metadata } from "next";
+import ServicesClient from "./_componets/ServicesClient";
 
-import React from 'react';
-import ServiceWrapper from './_componets/ServicesWrapper';
-import ServicesPage from './_componets/Services';
-import { motion } from "framer-motion";
-import { BrandPageBackdrop, sectionReveal } from "@/src/common/components/ui/brand/page-effects";
 
-const Page = () => {
-  return (
-    <main className="relative overflow-hidden bg-slate-950">
-      <BrandPageBackdrop />
-      <div className="relative z-10">
-        <ServiceWrapper />
-        <motion.div {...sectionReveal}>
-          <ServicesPage />
-        </motion.div>
-      </div>
-    </main>
-  );
+export const metadata: Metadata = {
+  title: "Mobile App, Website Development Services | Visualytes",
+  description:
+    "Visualytes provides website development, mobile app development, digital marketing, corporate branding, bespoke software, hosting, QA and maintenance services.",
+
+  keywords: [
+    "Website Development Services",
+    "Mobile App Development",
+    "Digital Marketing",
+    "Software Development",
+    "Corporate Branding",
+    "Visualytes",
+  ],
+
+  alternates: {
+    canonical: "https://www.visualytes.com/our-services",
+  },
+
+  openGraph: {
+    title: "Mobile App, Website Development Services | Visualytes",
+    description:
+      "Explore Visualytes digital solutions including web development, mobile apps, branding and software services.",
+    url: "https://www.visualytes.com/our-services",
+    siteName: "Visualytes",
+    type: "website",
+    images: [
+      {
+        url: "/assets/png/services/Website-designing-600x600.png",
+        width: 1200,
+        height: 630,
+        alt: "Visualytes Services",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Visualytes Services",
+    description:
+      "Website, mobile app and software development services.",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
+
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
-export default Page;
+
+export default function Page() {
+  return <ServicesClient/>;
+}

@@ -1,31 +1,34 @@
-import BrandSubPageShell from "@/src/common/components/ui/brand/BrandSubPageShell";
-import { testimonials } from "./_componets/data";
-import TestimonialCard from "./_componets/TestimonialCard";
 
+import TestimonialClient from "./_componets/TestimonialClient";
+export const metadata = {
+  title: "Testimonials | Web Design & App Development Company Reviews",
+  description:
+    "Read client testimonials about Visualytes' web design, app development, and software projects completed with quality and expertise.",
+  keywords: [
+    "Visualytes testimonials",
+    "web design reviews",
+    "app development company reviews",
+    "software development testimonials",
+    "client reviews",
+    "web development company",
+  ],
+  openGraph: {
+    title: "Testimonials | Web Design & App Development Company Reviews",
+    description:
+      "Read client testimonials about Visualytes' web design, app development, and software projects completed with quality and expertise.",
+    url: "https://www.visualytes.com/testimonials",
+    siteName: "Visualytes",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Testimonials | Web Design & App Development Company Reviews",
+    description:
+      "Read client testimonials about Visualytes' web design, app development, and software projects completed with quality and expertise.",
+  },
+};
 export default function TestimonialsPage() {
   return (
-    <BrandSubPageShell
-      title="Testimonials"
-      eyebrow="Client Voices"
-      subtitle="Real stories from businesses who trusted Visualytes to transform their digital presence."
-    >
-      <section className="px-4 pb-24 pt-4">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
-            {testimonials.map((item, index) => (
-              <TestimonialCard
-                key={item.id}
-                image={item.image}
-                name={item.name}
-                designation={item.designation}
-                company={item.company}
-                content={item.review}
-                index={index}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-    </BrandSubPageShell>
+   <TestimonialClient/>
   );
 }

@@ -20,7 +20,7 @@ import { BrandPageBackdrop } from "@/src/common/components/ui/brand/page-effects
 import HomeSection from "@/src/app/(home)/_componts/shared/HomeSection";
 import HomeBrandButton from "@/src/app/(home)/_componts/shared/HomeBrandButton";
 import ProcessSection from "@/src/app/(home)/_componts/ProcessSection";
-import Portfolio from "@/src/app/(home)/_componts/Portfolio";
+import Portfolio from "@/src/app/portfolio/_components/Portfolio";
 import TestimonialsSection from "@/src/app/(home)/_componts/TestimonialsSection";
 import AppointmentTalk from "@/src/app/(home)/_componts/AppointmentTalk";
 import ClientSlider from "@/src/app/(home)/_componts/ClientSlider";

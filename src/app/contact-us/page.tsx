@@ -1,41 +1,70 @@
-"use client";
+import type { Metadata } from "next";
+import ContactClient from "./_componets/ContactClient";
 
-import { motion } from "framer-motion";
-import ContactForm from "./_componets/ContactForm";
-import LiveSupport from "./_componets/LiveSupport";
-import OfficeLocation from "./_componets/OfficeLocation";
-import OfficeNames from "./_componets/OfficeNames";
-import PageHeader from "./_componets/PageHeader";
-import {
-  BrandPageBackdrop,
-  sectionReveal,
-} from "@/src/common/components/ui/brand/page-effects";
+
+export const metadata: Metadata = {
+  title: "Get in Touch with Mobile App Development Services",
+
+  description:
+    "Do you need any help from us regarding any of our services? Our Dedicated support team is available for you. Call Us Now: 023 8097 0305",
+
+  keywords: [
+    "mobile app development services",
+    "contact Visualytes",
+    "software development company",
+    "web development services",
+    "digital solutions",
+  ],
+
+  alternates: {
+    canonical: "https://www.visualytes.com/contact-us",
+  },
+
+  openGraph: {
+    title:
+      "Get in Touch with Mobile App Development Services",
+
+    description:
+      "Do you need any help from us regarding any of our services? Our Dedicated support team is available for you.",
+
+    url: "https://www.visualytes.com/contact-us",
+
+    siteName: "Visualytes",
+
+    type: "website",
+
+    images: [
+      {
+        url: "/assets/png/contact-og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Contact Visualytes",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+
+    title:
+      "Get in Touch with Mobile App Development Services",
+
+    description:
+      "Contact Visualytes for mobile app development and digital services.",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
+
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+};
+
 
 export default function Page() {
-  return (
-    <main className="relative overflow-hidden bg-slate-950">
-      <BrandPageBackdrop />
-
-      {/* ── page sections with scroll entrance ── */}
-      <div className="relative z-10">
-        <PageHeader />
-
-        <motion.div {...sectionReveal}>
-          <LiveSupport />
-        </motion.div>
-
-        <motion.div {...sectionReveal}>
-          <ContactForm />
-        </motion.div>
-
-        <motion.div {...sectionReveal}>
-          <OfficeLocation />
-        </motion.div>
-
-        <motion.div {...sectionReveal}>
-          <OfficeNames />
-        </motion.div>
-      </div>
-    </main>
-  );
+  return <ContactClient />;
 }
