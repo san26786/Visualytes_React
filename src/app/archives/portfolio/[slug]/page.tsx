@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
-import PortfolioShowcase from "@/src/app/(home)/_componts/portfolio/PortfolioShowcase";
+import PortfolioShowcase from "../../../portfolio/_components/PortfolioShowcase";
 import BrandArchiveShell from "@/src/common/components/ui/brand/BrandArchiveShell";
 import {
   portfolio,
   allOnlyPortfolio,
   slugMap,
-} from "@/src/app/(home)/_componts/portfolio/data/portfoliodata";
+} from "../../../portfolio/_components/data/portfoliodata";
 
 interface Props {
   params: Promise<{ slug: string }>;

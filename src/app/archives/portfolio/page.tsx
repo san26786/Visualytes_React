@@ -40,12 +40,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import PortfolioGrid from "@/src/app/(home)/_componts/portfolio/PortfolioGrid";
+import PortfolioGrid from "../../portfolio/_components/PortfolioGrid";
 import {
   categories,
   portfolio,
   allOnlyPortfolio,
-} from "@/src/app/(home)/_componts/portfolio/data/portfoliodata";
+} from "../../portfolio/_components/data/portfoliodata";
 import PageBanner from "@/src/common/components/layouts/PageBanner";
 
 export default function Page() {
