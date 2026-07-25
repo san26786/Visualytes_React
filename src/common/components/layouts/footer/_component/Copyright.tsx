@@ -15,7 +15,7 @@ const Copyright = () => {
           viewport={{ once: true }}
           className="text-center"
         >
-          <p className="text-sm font-medium tracking-widest uppercase text-slate-400">
+          <p className="text-sm font-medium tracking-widest uppercase text-white">
             <span className="bg-gradient-to-r from-cyan-300 via-pink-300 to-purple-300 bg-clip-text text-transparent">
               © Copyright 2026
             </span>{" "}
