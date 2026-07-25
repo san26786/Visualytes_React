@@ -16,7 +16,7 @@ const ProcessSection = dynamic(
 );
 
 const Portfolio = dynamic(
-  () => import("./_componts/Portfolio")
+  () => import("../portfolio/_components/Portfolio")
 );
 
 const CaseStudy = dynamic(
