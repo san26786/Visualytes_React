@@ -15,7 +15,7 @@ import { BRAND_HOVER,  } from "@/src/common/components/ui/brand/theme";
 
 export default function BlogCard({
   title,
-  slug,
+  blogKey,
   formattedDate,
   author,
   images,
@@ -26,14 +26,15 @@ export default function BlogCard({
   return (
     <motion.article
       whileHover={{ y: -8 }}
-      className={`group overflow-hidden rounded-3xl border border-white/15 bg-slate-900/80 shadow-[0_22px_60px_rgba(2,6,23,0.55)] backdrop-blur-xl transition-all duration-300 ${BRAND_HOVER.card}`}
+      className={`group overflow-hidden border border-white/15 bg-slate-900/80 shadow-[0_22px_60px_rgba(2,6,23,0.55)] backdrop-blur-xl transition-all duration-300 ${BRAND_HOVER.card}`}
     >
       <div className="relative h-[260px] overflow-hidden">
-        <Link href={`/blog/${slug}`}>
+        <Link href={`/blog/${blogKey}`}>
           <Image
             src={images.main}
             alt={images.alt || title}
-            fill
+            width={800}
+            height={800}
             className={`absolute object-cover transition-all duration-500 ${BRAND_HOVER.image}`}
           />
         </Link>
@@ -57,7 +58,7 @@ export default function BlogCard({
         </div>
 
         <h3 className="mb-4 text-2xl font-bold text-white">
-          <Link href={`/blog/${slug}`} className="hover:text-cyan-300 transition-colors">
+          <Link href={`/blog/${blogKey}`} className="hover:text-cyan-300 transition-colors">
             {title}
           </Link>
         </h3>

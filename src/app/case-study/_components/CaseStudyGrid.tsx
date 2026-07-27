@@ -14,7 +14,7 @@ const caseStudies = [
     title: "Studio Creatives",
     category: "Web Design & Development",
     image: "/assets/png/image_2024_01_24T07_52_55_180Z.png",
-    href: "https://www.visualytes.com/projects/studio-creatives-2/",
+    href: "/portfolio",
     accent: "from-cyan-400/20 to-cyan-300/5",
     tag: "text-cyan-300",
   },
@@ -22,7 +22,7 @@ const caseStudies = [
     title: "Studio Creatives",
     category: "Full-Page Experience",
     image: "/assets/webp/scfullpagess.png.bv.webp",
-    href: "https://www.visualytes.com/projects/studio-creatives-2/",
+    href: "/portfolio",
     accent: "from-fuchsia-400/20 to-pink-300/5",
     tag: "text-fuchsia-300",
   },
@@ -30,7 +30,7 @@ const caseStudies = [
     title: "Thorney Park Golf Club",
     category: "Brand & Web Platform",
     image: "/assets/webp/tparksshome.png.bv.webp",
-    href: "https://www.visualytes.com/projects/thorney-park-golf-club/",
+    href: "/portfolio",
     accent: "from-violet-400/20 to-indigo-300/5",
     tag: "text-violet-300",
   },
@@ -127,3 +127,4 @@ export default function CaseStudyGrid() {
     </section>
   );
 }
+

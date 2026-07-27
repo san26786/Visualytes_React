@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   ],
 
   alternates: {
-    canonical: "https://www.visualytes.com/portfolio",
+    canonical: "/portfolio",
   },
 
   openGraph: {
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     description:
       "View our collection of portfolio website designs, Corporate Branding, SEO Services and find inspiration as you design your website.",
 
-    url: "https://www.visualytes.com/portfolio",
+    url: "/portfolio",
 
     siteName: "Visualytes",
 

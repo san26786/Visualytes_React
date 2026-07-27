@@ -17,14 +17,14 @@ export const metadata: Metadata = {
   ],
 
   alternates: {
-    canonical: "https://www.visualytes.com/our-services",
+    canonical: "/our-services",
   },
 
   openGraph: {
     title: "Mobile App, Website Development Services | Visualytes",
     description:
       "Explore Visualytes digital solutions including web development, mobile apps, branding and software services.",
-    url: "https://www.visualytes.com/our-services",
+    url: "/our-services",
     siteName: "Visualytes",
     type: "website",
     images: [

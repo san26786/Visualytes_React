@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   ],
 
   alternates: {
-    canonical: "https://www.visualytes.com/about",
+    canonical: "/about",
   },
 
   openGraph: {
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description:
       "Visualytes is a global design company committed to creating positive impact. We work with organizations on complex challenges around the world.",
 
-    url: "https://www.visualytes.com/about",
+    url: "/about",
 
     siteName: "Visualytes",
 

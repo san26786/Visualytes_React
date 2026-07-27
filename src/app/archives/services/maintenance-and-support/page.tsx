@@ -17,7 +17,6 @@ export const metadata = {
     title: "Application Maintenance & Support Services | Visualytes",
     description:
       "Visualytes provides expert application maintenance and support services to help businesses continuously develop, improve, and expand their digital solutions.",
-    url: "https://www.visualytes.com/services/application-maintenance-support",
     siteName: "Visualytes",
     type: "website",
   },
@@ -58,3 +57,4 @@ export default function Page() {
     </BrandArchiveShell>
   );
 }
+

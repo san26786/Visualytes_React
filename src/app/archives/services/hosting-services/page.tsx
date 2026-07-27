@@ -17,7 +17,6 @@ export const metadata = {
     title: "Managed Web Hosting Services in Basingstoke | Visualytes",
     description:
       "Get reliable web hosting services in Basingstoke and London for small to medium businesses, including 99.9% uptime and dedicated support.",
-    url: "https://www.visualytes.com/services/web-hosting",
     siteName: "Visualytes",
     type: "website",
   },
@@ -68,3 +67,4 @@ export default function Page() {
     </BrandArchiveShell>
   );
 }
+

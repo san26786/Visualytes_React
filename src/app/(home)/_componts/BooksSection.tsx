@@ -19,14 +19,14 @@ const items = [
     image: "/assets/png/corportae-profile.png",
     alt: "Corporate Profile",
     label: "Corporate Profile",
-    href: "https://www.visualytes.com/#downloadcorporateprofie",
+    href: "/#downloadcorporateprofie",
     cta: "Download Profile",
   },
   {
     image: null,
     alt: "Certificates",
     label: "Our Certificates",
-    href: "https://www.visualytes.com/#Enquiry",
+    href: "/#Enquiry",
     cta: "Our Certificate",
     isSlider: true,
   },
@@ -34,7 +34,7 @@ const items = [
     image: "/assets/png/broucehr-profile.png",
     alt: "Brochure",
     label: "Company Brochure",
-    href: "https://www.visualytes.com/#downloadbroucher",
+    href: "/#downloadbroucher",
     cta: "Download Brochure",
   },
 ];
@@ -133,3 +133,4 @@ export default function BooksSection() {
     </section>
   );
 }
+

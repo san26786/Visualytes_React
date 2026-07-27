@@ -17,7 +17,7 @@ export const metadata = {
     title: "Our Story | Visualytes - IT Solutions & Digital Innovation",
     description:
       "Learn how Visualytes evolved from a UK startup into a global IT partner delivering software, web applications, and digital marketing solutions.",
-    url: "https://www.visualytes.com/about/our-story",
+    url: "/about/our-story",
     siteName: "Visualytes",
     type: "website",
     images: [
@@ -43,3 +43,4 @@ export default function OurStoryPage() {
     <StoryClient />
   );
 }
+

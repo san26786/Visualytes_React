@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins ,Roboto} from "next/font/google";
 import "./globals.css";
-
+import { Toaster } from "react-hot-toast";
 import Mainheader from "../common/components/layouts/header/_component/Mainheader";
 import Footer from "../common/components/layouts/footer/_component/footer";
 import ScrollToTop from "../common/components/layouts/footer/_component/ScrollToTop";
@@ -57,6 +57,33 @@ export default function RootLayout({
    <Mainheader />
 
         <main className="">        {children}
+        <Toaster
+  position="top-right"
+  toastOptions={{
+    duration: 4000,
+    style: {
+      background: "#ffffff",
+      color: "#111827",
+      border: "1px solid #e5e7eb",
+      borderRadius: "12px",
+      padding: "14px 18px",
+      minWidth: "430px",
+      whiteSpace: "nowrap", // keep text on one line
+    },
+    success: {
+      iconTheme: {
+        primary: "#22c55e",
+        secondary: "#fff",
+      },
+    },
+    error: {
+      iconTheme: {
+        primary: "#ef4444",
+        secondary: "#fff",
+      },
+    },
+  }}
+/>
         <ScrollToTop />
         </main>
 

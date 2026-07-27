@@ -17,7 +17,6 @@ export const metadata = {
     title: "Mobile App Development Company London, UK | Visualytes",
     description:
       "Hire Visualytes, a leading Mobile App Development Company in London, UK. Our experienced mobile app developers deliver innovative app solutions.",
-    url: "https://www.visualytes.com/services/mobile-app-development",
     siteName: "Visualytes",
     type: "website",
   },
@@ -35,3 +34,4 @@ const Page = () => {
 };
 
 export default Page;
+

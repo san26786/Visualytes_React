@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Mail, Upload, ArrowUpRight } from "lucide-react";
+import { Mail, Upload, ArrowUpRight, Check } from "lucide-react";
 import { useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import BrandSubPageShell from "@/src/common/components/ui/brand/BrandSubPageShell";
@@ -11,8 +11,7 @@ import {
   BRAND_SURFACE,
   BRAND_TEXT,
 } from "@/src/common/components/ui/brand/theme";
-
-
+import toast from "react-hot-toast";
 const jobs = [
   {
     icon: "/assets/png/info_icon_1.png",
@@ -70,7 +69,6 @@ export default function CareersClient() {
     message: "",
   });
   const [loading, setLoading] = useState(false);
-  const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -88,14 +86,13 @@ export default function CareersClient() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFeedback(null);
 
     if (!captchaToken) {
-      setFeedback({ type: "error", message: "Please verify reCAPTCHA." });
-      return;
+      toast.error("Please verify reCAPTCHA.");
+            return;
     }
     if (!resume) {
-      setFeedback({ type: "error", message: "Please upload your resume." });
+      toast.error("Please upload your resume.");
       return;
     }
 
@@ -112,14 +109,42 @@ export default function CareersClient() {
       const res = await fetch("/api/careers", { method: "POST", body: formData });
       const data = await res.json();
 
-      setFeedback({
-        type: data.success ? "success" : "error",
-        message: data.message,
-      });
-
-      if (data.success) resetForm();
+      if (data.success) {
+        toast.custom(
+          (t) => (
+            <div className="relative min-w-[430px] overflow-hidden rounded-2xl border border-emerald-100 bg-white px-5 py-4 shadow-2xl">
+              <div className="flex items-center gap-4">
+                {/* Better Success Icon */}
+                <div className="shrink-0">
+                <Check className="h-7 w-7 text-emerald-600" strokeWidth={3} />
+</div>
+      
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-900 whitespace-nowrap">
+                    Application Submitted
+                  </h4>
+      
+                  <p className="mt-0.5 whitespace-nowrap text-sm text-gray-600">
+                    Thank you! We'll review your application shortly.
+                  </p>
+                </div>
+              </div>
+      
+              {/* Progress Bar */}
+              <div className="absolute bottom-0 left-0 h-1 w-full bg-gray-200">
+                <div className="h-full bg-emerald-500 animate-[toast-progress_4s_linear_forwards]" />
+              </div>
+            </div>
+          ),
+          { duration: 4000 }
+        );
+      
+        resetForm();
+      } else {
+        toast.error(data.message || "Failed to submit application.");
+      }
     } catch {
-      setFeedback({ type: "error", message: "Something went wrong. Please try again." });
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -176,17 +201,7 @@ export default function CareersClient() {
               </p>
             </div>
 
-            {feedback && (
-              <div
-                className={`mb-6 rounded-2xl border px-5 py-4 text-sm ${
-                  feedback.type === "success"
-                    ? "border-emerald-300/30 bg-emerald-300/10 text-emerald-200"
-                    : "border-red-300/30 bg-red-300/10 text-red-200"
-                }`}
-              >
-                {feedback.message}
-              </div>
-            )}
+           
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid gap-5 lg:grid-cols-2">

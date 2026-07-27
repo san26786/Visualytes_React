@@ -17,7 +17,6 @@ export const metadata = {
     title: "Branding Agencies London | Corporate Branding London",
     description:
       "Visualytes is a leading branding agency in London offering corporate branding and company branding services, creating adaptive and impactful brands across the UK.",
-    url: "https://www.visualytes.com/services/branding",
     siteName: "Visualytes",
     type: "website",
   },
@@ -59,3 +58,4 @@ export default function Page() {
     </BrandArchiveShell>
   );
 }
+

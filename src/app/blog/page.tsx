@@ -18,18 +18,12 @@ export const metadata: Metadata = {
     "Visualytes blog",
   ],
 
-  alternates: {
-    canonical: "https://www.visualytes.com/blog",
-  },
-
   openGraph: {
     title:
       "Blog Archives - Website Design, SEO, Software Development Company",
 
     description:
       "Explore insights about website design, SEO, software development and digital innovation.",
-
-    url: "https://www.visualytes.com/blog",
 
     siteName: "Visualytes",
 

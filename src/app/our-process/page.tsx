@@ -16,7 +16,7 @@ export const metadata = {
     title: "Our Process | Visualytes Web Design & Custom Development",
     description:
       "Explore Visualytes' transparent project process, combining customer-focused service with expert web design and custom development solutions.",
-    url: "https://www.visualytes.com/our-process",
+    url: "/our-process",
     siteName: "Visualytes",
     type: "website",
   },
@@ -32,3 +32,4 @@ export default function OurProcessPage() {
    <ProcessClient/>
   );
 }
+

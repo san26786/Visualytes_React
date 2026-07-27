@@ -15,7 +15,7 @@ export const metadata = {
     title: "Team | Website Design, SEO & Software Development Experts",
     description:
       "Meet the Visualytes team led by Founder Nagendra Mishra. We deliver high-quality website design, SEO, and software development solutions for businesses.",
-    url: "https://www.visualytes.com/team",
+    url: "/team",
     siteName: "Visualytes",
     type: "website",
   },
@@ -31,3 +31,4 @@ export default function OurStoryPage() {
     <TeamClient />
   );
 }
+

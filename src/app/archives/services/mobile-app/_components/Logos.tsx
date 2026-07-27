@@ -7,37 +7,37 @@ export default function Logos() {
   const clientLogos = [
     {
       name: "Disney",
-      image: "https://services.visualytes.com/wp-content/uploads/2021/05/waltdisney-1.png",
+      image: "/assets/legacy/waltdisney-1.png",
     },
     {
       name: "NCC",
       image:
-        "https://services.visualytes.com/wp-content/uploads/elementor/thumbs/ncc-p5znruak1us6b0syw92tdosydqjwgezavkwaz7zw1s-ri0x92xpadypr5edt81y3akw9k13vvxfeyt8ilvmdc.png",
+        "/assets/legacy/ncc-p5znruak1us6b0syw92tdosydqjwgezavkwaz7zw1s-ri0x92xpadypr5edt81y3akw9k13vvxfeyt8ilvmdc.png",
     },
     {
       name: "Safesize",
       image:
-        "https://services.visualytes.com/wp-content/uploads/elementor/thumbs/safesize-p5zns8e4wdbh568hlx67x38vaimenvj9xiol6dezgg-ri0x9120wpw53xh4478oyb1z2sadghpyqpi9k1yeps.png",
+        "/assets/legacy/safesize-p5zns8e4wdbh568hlx67x38vaimenvj9xiol6dezgg-ri0x9120wpw53xh4478oyb1z2sadghpyqpi9k1yeps.png",
     },
     {
       name: "GiphyCam",
       image:
-        "https://services.visualytes.com/wp-content/uploads/elementor/thumbs/giphycam-p5znss4qvw2hwzftenpdvg9jrlx45ipn08ds96lpts-ri0x9046pvuusbih9ou2dtaihef08sm8ekus2rzsw0.png",
+        "/assets/legacy/giphycam-p5znss4qvw2hwzftenpdvg9jrlx45ipn08ds96lpts-ri0x9046pvuusbih9ou2dtaihef08sm8ekus2rzsw0.png",
     },
     {
       name: "Knorr Bremse",
       image:
-        "https://services.visualytes.com/wp-content/uploads/elementor/thumbs/knorr-bremse-p5znt766j610ng8p09arrtz3liqp9lzm1gd7ztyk0o-ri0x8y8iy567pszxm3461b9rmdjzic11dh3h6g1q6w.png",
+        "/assets/legacy/knorr-bremse-p5znt766j610ng8p09arrtz3liqp9lzm1gd7ztyk0o-ri0x8y8iy567pszxm3461b9rmdjzic11dh3h6g1q6w.png",
     },
     {
       name: "Medivation",
       image:
-        "https://services.visualytes.com/wp-content/uploads/elementor/thumbs/medivation1-p5zntyfhffoeffqdjnzlhnlahy4mrwdk61qmumv01s-ri0x8wctyjpphvnxvn7k3u8o3uxje07b228u5o5dkw.png",
+        "/assets/legacy/medivation1-p5zntyfhffoeffqdjnzlhnlahy4mrwdk61qmumv01s-ri0x8wctyjpphvnxvn7k3u8o3uxje07b228u5o5dkw.png",
     },
     {
       name: "LiveChat",
       image:
-        "https://services.visualytes.com/wp-content/uploads/elementor/thumbs/livechat-p5znueeqnma9wt35ycw961k4lhxver4zw8tw0c7b40-ri0x8uh5kvn4unqo6meayupqx36sylzudsxv7485xc.png",
+        "/assets/legacy/livechat-p5znueeqnma9wt35ycw961k4lhxver4zw8tw0c7b40-ri0x8uh5kvn4unqo6meayupqx36sylzudsxv7485xc.png",
     },
   ];
 

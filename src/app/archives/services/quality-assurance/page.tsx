@@ -17,7 +17,6 @@ export const metadata = {
     title: "Software Testing, Quality Assurance Services | Visualytes",
     description:
       "Visualytes provides managed software testing and Quality Assurance services to ensure consistent software quality and reliable customer experiences.",
-    url: "https://www.visualytes.com/services/software-testing",
     siteName: "Visualytes",
     type: "website",
   },
@@ -68,3 +67,4 @@ export default function Page() {
     </BrandArchiveShell>
   );
 }
+

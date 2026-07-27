@@ -16,7 +16,7 @@ export const metadata = {
     title: "Packages | Visualytes Limited",
     description:
       "Explore Visualytes packages designed to deliver professional web development, software solutions, digital marketing, and technology services for businesses.",
-    url: "https://www.visualytes.com/packages",
+    url: "/packages",
     siteName: "Visualytes",
     type: "website",
   },

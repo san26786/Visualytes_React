@@ -16,7 +16,7 @@ export const metadata = {
     title: "Testimonials | Web Design & App Development Company Reviews",
     description:
       "Read client testimonials about Visualytes' web design, app development, and software projects completed with quality and expertise.",
-    url: "https://www.visualytes.com/testimonials",
+    url: "/testimonials",
     siteName: "Visualytes",
     type: "website",
   },
@@ -32,3 +32,4 @@ export default function TestimonialsPage() {
    <TestimonialClient/>
   );
 }
+

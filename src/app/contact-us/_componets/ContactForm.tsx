@@ -1,9 +1,10 @@
 "use client";
 
-import { Mail, Phone, Tag, User, MessageSquare } from "lucide-react";
+import { Mail, Phone, Tag, User, MessageSquare, Check } from "lucide-react";
 import { useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { motion, type BezierDefinition } from "framer-motion";
+import toast from "react-hot-toast";
 
 const EASE: BezierDefinition = [0.22, 1, 0.36, 1];
 
@@ -48,7 +49,7 @@ export default function ContactForm() {
     e.preventDefault();
 
     if (!captchaToken) {
-      alert("Please verify that you are not a robot.");
+      toast.error("Please verify that you are not a robot.");
       return;
     }
 
@@ -69,8 +70,29 @@ export default function ContactForm() {
       const data = await res.json();
 
       if (data.success) {
-        alert("Message sent successfully!");
+        toast.custom(
+          (t) => (
+            <div className="relative min-w-[420px] overflow-hidden rounded-xl border border-gray-200 bg-white px-5 py-4 shadow-xl">
+              <div className="flex items-center gap-3">
+              <Check className="h-7 w-7 text-emerald-600" strokeWidth={3} />
 
+      
+                <p className="whitespace-nowrap text-sm font-medium text-gray-900">
+                  Thank you! Your message has been sent successfully.
+                </p>
+              </div>
+      
+              {/* Progress Bar */}
+              <div className="absolute bottom-0 left-0 h-1 w-full bg-gray-200">
+                <div className="h-full bg-green-500 animate-[toast-progress_4s_linear_forwards]" />
+              </div>
+            </div>
+          ),
+          {
+            duration: 4000,
+          }
+        );
+      
         setForm({
           name: "",
           email: "",
@@ -78,15 +100,15 @@ export default function ContactForm() {
           topic: "",
           message: "",
         });
-
+      
         setCaptchaToken(null);
         recaptchaRef.current?.reset();
       } else {
-        alert(data.message);
+        toast.error(data.message || "Failed to send message.");
       }
     } catch (err) {
       console.error(err);
-      alert("Something went wrong.");
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -194,6 +216,7 @@ export default function ContactForm() {
                   value={form.phone}
                   onChange={handleChange}
                   className={`${inputClass} pl-11`}
+                  required
                 />
               </div>
 
@@ -211,6 +234,7 @@ export default function ContactForm() {
                   value={form.topic}
                   onChange={handleChange}
                   className={`${inputClass} pl-11`}
+                  required
                 />
               </div>
 

@@ -18,7 +18,6 @@ export const metadata = {
     title: "Visualytes Careers & Job Opportunities | Visualytes",
     description:
       "Visualytes careers open the door for professional growth and development, giving you access to innovative tools, experiences, and opportunities.",
-    url: "https://www.visualytes.com/careers",
     siteName: "Visualytes",
     type: "website",
   },
@@ -36,3 +35,4 @@ export default function CareersPage() {
   <CareersClient/>
   );
 }
+

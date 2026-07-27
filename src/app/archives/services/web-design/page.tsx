@@ -17,7 +17,6 @@ export const metadata = {
     title: "Software Development | Web Development Company London, UK",
     description:
       "Visualytes is a leading Web Development Company in London, UK, offering professional web design, software development, and digital solutions.",
-    url: "https://www.visualytes.com/services/software-development",
     siteName: "Visualytes",
     type: "website",
   },
@@ -36,3 +35,4 @@ const Page = () => {
 };
 
 export default Page;
+

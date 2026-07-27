@@ -9,13 +9,13 @@ import { ExternalLink } from "lucide-react";
 
 const caseStudies = [
   {
-    href: "https://www.visualytes.com/projects/studio-creatives-2/",
+    href: "/portfolio",
     image: "/assets/webp/scfullpagess.png.bv.webp",
     title: "Studio Creatives",
     tag: "Web Design",
   },
   {
-    href: "https://www.visualytes.com/projects/thorney-park-golf-club/",
+    href: "/portfolio",
     image: "/assets/webp/tparksshome.png.bv.webp",
     title: "Thorney Park Golf Club",
     tag: "Branding & Web",
@@ -98,3 +98,4 @@ export default function CaseStudy() {
     </section>
   );
 }
+

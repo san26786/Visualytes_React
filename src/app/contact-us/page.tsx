@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   ],
 
   alternates: {
-    canonical: "https://www.visualytes.com/contact-us",
+    canonical: "/contact-us",
   },
 
   openGraph: {
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     description:
       "Do you need any help from us regarding any of our services? Our Dedicated support team is available for you.",
 
-    url: "https://www.visualytes.com/contact-us",
+    url: "/contact-us",
 
     siteName: "Visualytes",
 

@@ -17,7 +17,7 @@ export const metadata = {
     title: "Our Clients & Customers | Visualytes Limited",
     description:
       "Discover why businesses worldwide trust Visualytes to enhance their digital solutions and optimize marketing strategies.",
-    url: "https://www.visualytes.com/clients",
+    url: "/clients",
     siteName: "Visualytes",
     type: "website",
   },
@@ -35,3 +35,4 @@ export default function ClientsPage() {
    <ClientWrappers/>
   );
 }
+

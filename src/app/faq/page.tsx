@@ -17,7 +17,7 @@ export const metadata = {
     title: "Mark Up Your FAQs | Website Design & Software Development",
     description:
       "A Frequently Asked Question (FAQ) page contains a list of questions and answers about website design, software development, and services.",
-    url: "https://www.visualytes.com/faqs",
+    url: "/faqs",
     siteName: "Visualytes",
     type: "website",
   },
@@ -39,3 +39,4 @@ export default function FAQPage() {
     </BrandSubPageShell>
   );
 }
+

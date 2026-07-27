@@ -1,5 +1,6 @@
 export interface BlogPost {
     id: string;
+    blogKey: string;
     title: string;
     slug: string;
     date: string;
@@ -29,6 +30,7 @@ export interface BlogPost {
   export const blogs: BlogPost[] = [
     {
       "id": "post-11630",
+      "blogKey": "blog1",
       "title": "How Partnering with a Web Development Company Can Elevate Your Online Presence",
       "slug": "how-partnering-with-a-web-development-company-can-elevate-your-online-presence",
       "date": "2024-11-23T09:09:22+00:00",
@@ -58,6 +60,7 @@ export interface BlogPost {
     },
     {
       "id": "post-11620",
+      "blogKey": "blog2",
       "title": "SEO Company in London Shares the Importance of SEO Slugs for Better Rankings",
       "slug": "seo-company-in-london-shares-the-importance-of-seo-slugs-for-better-rankings",
       "date": "2024-11-19T11:29:30+00:00",
@@ -87,6 +90,7 @@ export interface BlogPost {
     },
     {
       "id": "post-11604",
+      "blogKey": "blog3",
       "title": "How Google’s RankBrain Algorithm Impacts Social Media Marketing agency’s strategies",
       "slug": "how-googles-rankbrain-algorithm-impacts-social-media-marketing-agencys-strategies",
       "date": "2024-11-13T13:16:03+00:00",
@@ -116,6 +120,7 @@ export interface BlogPost {
     
         {
           "id": "post-11585",
+          "blogKey": "blog4",
           "title": "How a Web Development Company Creates Impactful Meta Descriptions for Better SEO",
           "slug": "how-a-web-development-company-creates-impactful-meta-descriptions-for-better-seo",
           "date": "2024-11-13T10:30:45+00:00",
@@ -144,6 +149,7 @@ export interface BlogPost {
         },
         {
           "id": "post-8914",
+          "blogKey": "blog5",
           "title": "Maintenance & Support",
           "slug": "maintenance-support",
           "date": "2020-09-10T14:57:16+00:00",
@@ -172,6 +178,7 @@ export interface BlogPost {
         },
         {
           "id": "post-8912",
+          "blogKey": "blog6",
           "title": "Website Hosting Services",
           "slug": "website-hosting-services",
           "date": "2020-09-10T14:51:10+00:00",
@@ -199,6 +206,7 @@ export interface BlogPost {
         },
             {
               "id": "post-8910",
+              "blogKey": "blog7",
               "title": "VR And Mobile Games",
               "slug": "vr-and-mobile-games",
               "date": "2020-09-10T14:44:40+00:00",
@@ -226,6 +234,7 @@ export interface BlogPost {
             },
             {
               "id": "post-8824",
+              "blogKey": "blog8",
               "title": "Augmented Reality",
               "slug": "augmented-reality",
               "date": "2020-08-29T12:40:30+00:00",
@@ -253,6 +262,7 @@ export interface BlogPost {
             },
             {
               "id": "post-8821",
+              "blogKey": "blog9",
               "title": "Mobile App Develpment",
               "slug": "mobile-app-develpment",
               "date": "2020-08-29T12:24:31+00:00",
@@ -280,6 +290,7 @@ export interface BlogPost {
             },
             {
               "id": "post-8578",
+              "blogKey": "blog10",
               "title": "Corporate Branding",
               "slug": "corporate-branding",
               "date": "2020-08-12T12:24:09+00:00",
@@ -308,6 +319,7 @@ export interface BlogPost {
             
                 {
                   "id": "post-8579",
+                  "blogKey": "blog11",
                   "title": "Social Media Marketing",
                   "slug": "social-media-marketing",
                   "date": "2020-08-12T12:10:05+00:00",
@@ -336,6 +348,7 @@ export interface BlogPost {
                 },
                 {
                   "id": "post-8542",
+                  "blogKey": "blog12",
                   "title": "Search Engine Marketing",
                   "slug": "search-engine-marketing",
                   "date": "2020-08-08T08:24:50+00:00",
@@ -363,6 +376,7 @@ export interface BlogPost {
                 },
                 {
                   "id": "post-8534",
+                  "blogKey": "blog13",
                   "title": "Bespoke Software",
                   "slug": "bespoke-software",
                   "date": "2020-08-08T07:56:54+00:00",
@@ -390,6 +404,7 @@ export interface BlogPost {
                 },
                 {
                   "id": "post-8529",
+                  "blogKey": "blog14",
                   "title": "E-commerce Website",
                   "slug": "e-commerce-website",
                   "date": "2020-08-07T08:39:42+00:00",
@@ -415,7 +430,40 @@ export interface BlogPost {
                     "comments": 0
                   },
                   "postUrl": "https://www.visualytes.com/archives/8529"
+                },
+                {
+                  "id": "post-6704",
+                  "blogKey": "blog15",
+                  "title": "Website Designing: 5 Reasons Why Your Business Needs it",
+                  "slug": "website-designing-5-reasons-why-your-business-needs-it",
+                  "date": "2019-06-12T10:00:00+00:00",
+                  "formattedDate": "June 12, 2019",
+                  "author": {
+                    "name": "Visualytess",
+                    "profileUrl": "https://www.visualytes.com/archives/author/visualytes",
+                    "avatarUrl": "https://secure.gravatar.com/avatar/48ba830c4ebadbe732f7e38b9ddb8551c809b260b73aed2ba55bf49e82d574bb?s=96&d=mm&r=g"
+                  },
+                  "images": {
+                    "main": "https://www.visualytes.com/wp-content/uploads/2020/08/corporate-branding-1170x780.png",
+                    "alt": "Website Designing for Business",
+                    "srcSet": null
+                  },
+                  "categories": [
+                    { "name": "Blog", "url": "https://www.visualytes.com/archives/category/blog" },
+                    { "name": "Web design", "url": "https://www.visualytes.com/archives/category/blog/web-design-blog" }
+                  ],
+                  "description": "Are you still struggling to get on new customers with traditional offline marketing techniques? Do you feel online marketing would take more time and money? If you feel you are not tech-savvy and a business website is not your thing; think about it a little more.",
+                  "metrics": {
+                    "views": 4100,
+                    "likes": 0,
+                    "comments": 0
+                  },
+                  "postUrl": "https://www.visualytes.com/archives/6704"
                 }
               ]
-          
-      
+
+export function getBlogBySlugOrKey(slugOrKey: string): BlogPost | undefined {
+  return blogs.find(
+    (post) => post.slug === slugOrKey || post.blogKey === slugOrKey
+  );
+}

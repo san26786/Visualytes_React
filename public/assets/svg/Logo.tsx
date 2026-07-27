@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function Logo() {
   return (
     <Link
-      href="https://www.visualytes.com/"
+      href="/"
       className="logo logo_image_only"
     >
       <Image

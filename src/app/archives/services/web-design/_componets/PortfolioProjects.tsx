@@ -10,35 +10,35 @@ export default function PortfolioProjects() {
 
   const categories = ["All", "Brochure", "Charity", "Corporate", "Directory", "Ecommerce", "Portfolio", "Promotional"];
    const portfolioProjects = [
-    { title: "Harry Redknapp", categories: ["Promotional"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/vis-j-600x600.jpg" },
-    { title: "Excel Surveyors And Valuers", categories: ["Corporate"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/property-value-600x600.png" },
-    { title: "Numeric Accounting Limited", categories: ["Corporate"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/numeric-accounting-600x600.png" },
-    { title: "GEOFF HURST GEOFF HURST", categories: ["Promotional"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/sir-geoff-hurst-600x600.png" },
-    { title: "The Boardroom", categories: ["Corporate"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/i-go-to-be-challenged-600x600.png" },
-        { title: "Marsham Court Hotel", categories: ["Corporate"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/marshamcourthotel-768x768.png" },
+    { title: "Harry Redknapp", categories: ["Promotional"], image: "/assets/legacy/vis-j-600x600.jpg" },
+    { title: "Excel Surveyors And Valuers", categories: ["Corporate"], image: "/assets/legacy/property-value-600x600.png" },
+    { title: "Numeric Accounting Limited", categories: ["Corporate"], image: "/assets/legacy/numeric-accounting-600x600.png" },
+    { title: "GEOFF HURST GEOFF HURST", categories: ["Promotional"], image: "/assets/legacy/sir-geoff-hurst-600x600.png" },
+    { title: "The Boardroom", categories: ["Corporate"], image: "/assets/legacy/i-go-to-be-challenged-600x600.png" },
+        { title: "Marsham Court Hotel", categories: ["Corporate"], image: "/assets/legacy/marshamcourthotel-768x768.png" },
 
-    { title: "Ibleo", categories: ["Corporate"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/homemade-authentic-sicilian-food-768x768.png" },
+    { title: "Ibleo", categories: ["Corporate"], image: "/assets/legacy/homemade-authentic-sicilian-food-768x768.png" },
 
-        { title: "Studio Creatives", categories: ["Corporate"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/studio-creatives-768x768.png" },
-                { title: "Unity 101 Community Radio", categories: ["Corporate"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/unity-768x768.png" },
-                  { title: "Lois Ambitho Foundation", categories: ["Charity"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/together-we-can-768x768.png" },
+        { title: "Studio Creatives", categories: ["Corporate"], image: "/assets/legacy/studio-creatives-768x768.png" },
+                { title: "Unity 101 Community Radio", categories: ["Corporate"], image: "/assets/legacy/unity-768x768.png" },
+                  { title: "Lois Ambitho Foundation", categories: ["Charity"], image: "/assets/legacy/together-we-can-768x768.png" },
 
-                        { title: "Venus", categories: ["Corporate"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/venus-768x768.png" },
-    { title: "Compassion UK", categories: ["Charity"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/compassion-600x600.png" },
-    { title: "DPO Assist", categories: ["Brochure", "Corporate"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/DPO-600x600.png" },
-    { title: "Signing It Online", categories: ["Brochure"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/signitonline-768x768.png" },
-        { title: "Home Alisara Excel Spa", categories: ["Brochure"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/welcome-to-alisara-excel-spa-768x768.png" },
-            { title: "Home Carewell Beauty Clinic", categories: ["Brochure"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/carewell-beauty-clinic-768x768.png" },
+                        { title: "Venus", categories: ["Corporate"], image: "/assets/legacy/venus-768x768.png" },
+    { title: "Compassion UK", categories: ["Charity"], image: "/assets/legacy/compassion-600x600.png" },
+    { title: "DPO Assist", categories: ["Brochure", "Corporate"], image: "/assets/legacy/DPO-600x600.png" },
+    { title: "Signing It Online", categories: ["Brochure"], image: "/assets/legacy/signitonline-768x768.png" },
+        { title: "Home Alisara Excel Spa", categories: ["Brochure"], image: "/assets/legacy/welcome-to-alisara-excel-spa-768x768.png" },
+            { title: "Home Carewell Beauty Clinic", categories: ["Brochure"], image: "/assets/legacy/carewell-beauty-clinic-768x768.png" },
 
-    { title: "Find Us On Web", categories: ["Corporate", "Directory"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/trade-show-2019-20-600x600.png" },
-    { title: "Simply Invoice", categories: ["Brochure"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/managing-your-invoice-online-600x600.png" },
-    { title: "Geecon Global", categories: ["Corporate"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/geecon-600x600.png" },
-    { title: "Grafix Sign", categories: ["Brochure", "Corporate"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/grafix-sign-600x600.png" },
-   { title: " Tara Hamilton Howard", categories: ["Portfolio"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/tarahamilton-768x768.png" },
-      { title: " Lilliesonline", categories: ["Ecommerce"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/lillies-768x768.png" },
-            { title: " OSeasons", categories: ["Ecommerce"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/oseasons-768x768.png" },
+    { title: "Find Us On Web", categories: ["Corporate", "Directory"], image: "/assets/legacy/trade-show-2019-20-600x600.png" },
+    { title: "Simply Invoice", categories: ["Brochure"], image: "/assets/legacy/managing-your-invoice-online-600x600.png" },
+    { title: "Geecon Global", categories: ["Corporate"], image: "/assets/legacy/geecon-600x600.png" },
+    { title: "Grafix Sign", categories: ["Brochure", "Corporate"], image: "/assets/legacy/grafix-sign-600x600.png" },
+   { title: " Tara Hamilton Howard", categories: ["Portfolio"], image: "/assets/legacy/tarahamilton-768x768.png" },
+      { title: " Lilliesonline", categories: ["Ecommerce"], image: "/assets/legacy/lillies-768x768.png" },
+            { title: " OSeasons", categories: ["Ecommerce"], image: "/assets/legacy/oseasons-768x768.png" },
 
-      { title: " LAMODA", categories: ["Ecommerce"], image: "https://services.visualytes.com/wp-content/uploads/2020/02/lamoda1-768x768.png" },
+      { title: " LAMODA", categories: ["Ecommerce"], image: "/assets/legacy/lamoda1-768x768.png" },
 
 
   ];
