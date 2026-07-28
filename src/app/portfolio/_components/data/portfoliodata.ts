@@ -12,7 +12,7 @@ export const categories = [
     "MOBILE APPS": "/archives/portfolio/mobile-apps",
     "ECOMMERCE WEBSITE": "/archives/portfolio/ecommerce-website-shortcode",
     "CORPORATE BRANDING": "/archives/portfolio/corporate-branding-shortcode",
-    ALL: "/archives/portfolio",
+    ALL: "/portfolio",
   };
   export const slugMap: Record<string, string> = {
     "web-design-shortcode": "WEB DESIGN",

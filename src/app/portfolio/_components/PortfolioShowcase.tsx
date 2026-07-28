@@ -101,7 +101,7 @@ export default function PortfolioShowcase({ items, category }: Props) {
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <Link
-              href="/archives/portfolio"
+              href="/portfolio"
               className="rounded-full border border-white/15 bg-slate-900/80 px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-slate-300 transition-all duration-300 hover:border-cyan-300/40 hover:text-cyan-300"
             >
               All Work
@@ -109,7 +109,7 @@ export default function PortfolioShowcase({ items, category }: Props) {
             {filterCategories.map((cat) => (
               <Link
                 key={cat}
-                href={categoryRoutes[cat] ?? "/archives/portfolio"}
+                href={categoryRoutes[cat] ?? "/portfolio"}
                 className={`rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${
                   cat === category
                     ? "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 text-white shadow-lg shadow-fuchsia-500/30"

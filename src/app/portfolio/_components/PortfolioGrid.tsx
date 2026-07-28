@@ -56,7 +56,7 @@ export default function PortfolioGrid({
                     <Link
                       href={
                         categoryRoutes[item.category] ??
-                        "/archives/portfolio"
+                        "/portfolio"
                       }
                     >
                       <p className="text-[11px] uppercase tracking-[3px] text-cyan-300 transition-colors duration-300">

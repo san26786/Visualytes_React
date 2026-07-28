@@ -60,7 +60,7 @@ export default function PortfolioItems({ items }: Props) {
                   <Link
                     href={
                       categoryRoutes[item.category] ??
-                      "/archives/portfolio"
+                      "/portfolio"
                     }
                   >
                     <p className="text-[11px] uppercase tracking-[3px] text-[#ff497c] hover:text-black">

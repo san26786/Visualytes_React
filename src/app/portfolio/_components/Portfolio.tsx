@@ -93,7 +93,7 @@ export default function Portfolio() {
         )}
 
         <div className="mt-10 flex justify-center">
-          <HomeBrandButton href="/archives/portfolio" variant="outline">
+          <HomeBrandButton href="/portfolio" variant="outline">
             View Full Portfolio
           </HomeBrandButton>
         </div>

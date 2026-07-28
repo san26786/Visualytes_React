@@ -30,10 +30,10 @@ export default async function Page({ params }: Props) {
     <BrandArchiveShell
       title={titleMain}
       titleAccent={titleAccent}
-      eyebrow="Portfolio"
+      eyebrow=""
       subtitle="A curated gallery of our finest work — where creativity meets craft."
       breadcrumbs={[
-        { label: "Portfolio", href: "/archives/portfolio" },
+        { label: "Portfolio", href: "/portfolio" },
         { label: category },
       ]}
     >

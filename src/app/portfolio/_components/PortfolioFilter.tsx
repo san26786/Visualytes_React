@@ -19,7 +19,7 @@ export default function PortfolioFilter({
       {categories.map((item) => (
         <Link
           key={item}
-          href={categoryRoutes[item] ?? "/archives/portfolio"}
+          href={categoryRoutes[item] ?? "/portfolio"}
           onClick={() => setActive?.(item)}
           className={`relative uppercase tracking-[3px] text-[13px] font-bold transition-all duration-300 ${
             active === item
