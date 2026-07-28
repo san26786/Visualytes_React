@@ -1,174 +1,37 @@
-// import { NextResponse } from "next/server";
-// import nodemailer from "nodemailer";
-
-// export async function POST(req: Request) {
-//   try {
-//     const { name, email, phone, topic, message } = await req.json();
-
-//     const transporter = nodemailer.createTransport({
-//       service: "gmail",
-//       auth: {
-//         user: process.env.EMAIL_USER,
-//         pass: process.env.EMAIL_PASSWORD,
-//       },
-//     });
-
-//     await transporter.sendMail({
-//       from: `"Visualyte Contact Form" <${process.env.EMAIL_USER}>`,
-//       to: process.env.EMAIL_USER,
-//       replyTo: email,
-//       subject: `New Contact Form - ${topic}`,
-//       html: `
-//         <div style="font-family:Arial,sans-serif">
-//           <h2>New Contact Form Submission</h2>
-
-//           <table cellpadding="8" cellspacing="0" border="1" style="border-collapse:collapse;">
-//             <tr>
-//               <td><strong>Name</strong></td>
-//               <td>${name}</td>
-//             </tr>
-
-//             <tr>
-//               <td><strong>Email</strong></td>
-//               <td>${email}</td>
-//             </tr>
-
-//             <tr>
-//               <td><strong>Phone</strong></td>
-//               <td>${phone}</td>
-//             </tr>
-
-//             <tr>
-//               <td><strong>Topic</strong></td>
-//               <td>${topic}</td>
-//             </tr>
-
-//             <tr>
-//               <td><strong>Message</strong></td>
-//               <td>${message.replace(/\n/g, "<br/>")}</td>
-//             </tr>
-//           </table>
-//         </div>
-//       `,
-//     });
-
-//     return NextResponse.json({
-//       success: true,
-//       message: "Message sent successfully",
-//     });
-//   } catch (error) {
-//     console.error(error);
-
-//     return NextResponse.json(
-//       {
-//         success: false,
-//         message: "Failed to send message",
-//       },
-//       { status: 500 }
-//     );
-//   }
-// }
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 
-export async function POST(req: Request) {
+import { email, escapeHtml, optionalText, requiredText, textToHtml, ValidationError } from "@/src/lib/server/forms";
+import { mailRecipient, mailTransport, verifyCaptcha } from "@/src/lib/server/services";
+
+export const runtime = "nodejs";
+
+export async function POST(request: Request) {
   try {
-    const {
-      name,
-      email,
-      phone,
-      topic,
-      message,
-      captchaToken,
-    } = await req.json();
+    const body: unknown = await request.json();
+    if (!body || typeof body !== "object") throw new ValidationError("Invalid request body.");
 
-    // Verify Google reCAPTCHA
-    const verify = await fetch(
-      "https://www.google.com/recaptcha/api/siteverify",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          secret: process.env.RECAPTCHA_SECRET_KEY!,
-          response: captchaToken,
-        }),
-      }
-    );
+    const { name, email: senderEmail, phone, topic, message, captchaToken } = body as Record<string, unknown>;
+    const contactName = requiredText(name, "Name", { max: 120 });
+    const address = email(senderEmail);
+    const contactPhone = optionalText(phone, "Phone number", 40);
+    const contactTopic = requiredText(topic, "Topic", { max: 160 });
+    const contactMessage = requiredText(message, "Message", { max: 5_000 });
 
-    const captchaResult = await verify.json();
-
-    if (!captchaResult.success) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Robot verification failed.",
-        },
-        { status: 400 }
-      );
-    }
-
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
-      },
+    await verifyCaptcha(captchaToken);
+    await mailTransport().sendMail({
+      from: `"Visualyte Contact Form" <${mailRecipient()}>`,
+      to: mailRecipient(),
+      replyTo: address,
+      subject: `New Contact Form — ${contactTopic}`,
+      html: `<div style="font-family:Arial,sans-serif"><h2>New Contact Form Submission</h2><table cellpadding="8" cellspacing="0" border="1" style="border-collapse:collapse"><tr><td><strong>Name</strong></td><td>${escapeHtml(contactName)}</td></tr><tr><td><strong>Email</strong></td><td>${escapeHtml(address)}</td></tr><tr><td><strong>Phone</strong></td><td>${escapeHtml(contactPhone)}</td></tr><tr><td><strong>Topic</strong></td><td>${escapeHtml(contactTopic)}</td></tr><tr><td><strong>Message</strong></td><td>${textToHtml(contactMessage)}</td></tr></table></div>`,
     });
 
-    await transporter.sendMail({
-      from: `"Visualyte Contact Form" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_USER,
-      replyTo: email,
-      subject: `New Contact Form - ${topic}`,
-      html: `
-        <div style="font-family:Arial,sans-serif">
-          <h2>New Contact Form Submission</h2>
-
-          <table cellpadding="8" cellspacing="0" border="1" style="border-collapse:collapse;">
-            <tr>
-              <td><strong>Name</strong></td>
-              <td>${name}</td>
-            </tr>
-
-            <tr>
-              <td><strong>Email</strong></td>
-              <td>${email}</td>
-            </tr>
-
-            <tr>
-              <td><strong>Phone</strong></td>
-              <td>${phone}</td>
-            </tr>
-
-            <tr>
-              <td><strong>Topic</strong></td>
-              <td>${topic}</td>
-            </tr>
-
-            <tr>
-              <td><strong>Message</strong></td>
-              <td>${message.replace(/\n/g, "<br/>")}</td>
-            </tr>
-          </table>
-        </div>
-      `,
-    });
-
-    return NextResponse.json({
-      success: true,
-      message: "Message sent successfully",
-    });
+    return NextResponse.json({ success: true, message: "Message sent successfully." });
   } catch (error) {
-    console.error(error);
-
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Failed to send message",
-      },
-      { status: 500 }
-    );
+    if (error instanceof ValidationError) {
+      return NextResponse.json({ success: false, message: error.message }, { status: 400 });
+    }
+    console.error("Contact form submission failed", error);
+    return NextResponse.json({ success: false, message: "Unable to send your message right now." }, { status: 500 });
   }
 }

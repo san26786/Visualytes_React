@@ -1,119 +1,50 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 
-export async function POST(req: Request) {
+import { email, escapeHtml, isFile, requiredText, textToHtml, ValidationError } from "@/src/lib/server/forms";
+import { mailRecipient, mailTransport, verifyCaptcha } from "@/src/lib/server/services";
+
+const MAX_RESUME_BYTES = 5 * 1024 * 1024;
+const ALLOWED_RESUME_TYPES = new Set([
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+]);
+
+export const runtime = "nodejs";
+
+export async function POST(request: Request) {
   try {
-    const formData = await req.formData();
+    const formData = await request.formData();
+    const name = requiredText(formData.get("name"), "Name", { max: 120 });
+    const senderEmail = email(formData.get("email"));
+    const designation = requiredText(formData.get("designation"), "Preferred role", { max: 160 });
+    const message = requiredText(formData.get("message"), "Message", { max: 5_000 });
+    const resume = formData.get("resume");
 
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-    const designation = formData.get("designation") as string;
-    const message = formData.get("message") as string;
-    const captchaToken = formData.get("captchaToken") as string;
+    if (!isFile(resume) || resume.size === 0) throw new ValidationError("A resume is required.");
+    if (resume.size > MAX_RESUME_BYTES) throw new ValidationError("Resume must be 5 MB or smaller.");
+    if (!ALLOWED_RESUME_TYPES.has(resume.type)) throw new ValidationError("Resume must be a PDF, DOC, or DOCX file.");
 
-    const resume = formData.get("resume") as File;
+    await verifyCaptcha(formData.get("captchaToken"));
+    await mailTransport().sendMail({
+      from: `"Visualyte Careers" <${mailRecipient()}>`,
+      to: mailRecipient(),
+      replyTo: senderEmail,
+      subject: `New Career Application — ${designation}`,
+      html: `<div style="font-family:Arial,sans-serif"><h2>New Career Application</h2><table cellpadding="10" cellspacing="0" border="1" style="border-collapse:collapse"><tr><td><b>Name</b></td><td>${escapeHtml(name)}</td></tr><tr><td><b>Email</b></td><td>${escapeHtml(senderEmail)}</td></tr><tr><td><b>Preferred role</b></td><td>${escapeHtml(designation)}</td></tr><tr><td><b>Message</b></td><td>${textToHtml(message)}</td></tr></table></div>`,
+      attachments: [{
+        filename: resume.name.replace(/[^a-zA-Z0-9._-]/g, "_"),
+        content: Buffer.from(await resume.arrayBuffer()),
+        contentType: resume.type,
+      }],
+    });
 
-    // Verify reCAPTCHA
-    const verify = await fetch(
-      "https://www.google.com/recaptcha/api/siteverify",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type":
-            "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          secret: process.env.RECAPTCHA_SECRET_KEY!,
-          response: captchaToken,
-        }),
-      }
-    );
-
-    const captchaResult = await verify.json();
-
-    if (!captchaResult.success) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Robot verification failed.",
-        },
-        { status: 400 }
-      );
+    return NextResponse.json({ success: true, message: "Application submitted successfully." });
+  } catch (error) {
+    if (error instanceof ValidationError) {
+      return NextResponse.json({ success: false, message: error.message }, { status: 400 });
     }
-
-    // Convert uploaded file to Buffer
-    const bytes = await resume.arrayBuffer();
-
-    const buffer = Buffer.from(bytes);
-
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
-
-    await transporter.sendMail({
-      from: `"Career Form" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_USER,
-      replyTo: email,
-      subject: `New Career Application - ${designation}`,
-
-      html: `
-      <div style="font-family:Arial,sans-serif">
-
-      <h2>New Career Application</h2>
-
-      <table cellpadding="10" cellspacing="0" border="1" style="border-collapse:collapse">
-
-      <tr>
-      <td><b>Name</b></td>
-      <td>${name}</td>
-      </tr>
-
-      <tr>
-      <td><b>Email</b></td>
-      <td>${email}</td>
-      </tr>
-
-      <tr>
-      <td><b>Designation</b></td>
-      <td>${designation}</td>
-      </tr>
-
-      <tr>
-      <td><b>Message</b></td>
-      <td>${message.replace(/\n/g, "<br/>")}</td>
-      </tr>
-
-      </table>
-
-      </div>
-      `,
-
-      attachments: [
-        {
-          filename: resume.name,
-          content: buffer,
-          contentType: resume.type,
-        },
-      ],
-    });
-
-    return NextResponse.json({
-      success: true,
-      message: "Application submitted successfully.",
-    });
-  } catch (err) {
-    console.error(err);
-
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Something went wrong.",
-      },
-      { status: 500 }
-    );
+    console.error("Career application failed", error);
+    return NextResponse.json({ success: false, message: "Unable to submit your application right now." }, { status: 500 });
   }
 }
