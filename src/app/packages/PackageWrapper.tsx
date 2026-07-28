@@ -11,10 +11,6 @@ export default function PackageWrapper() {
 
   const handleCheckout = async (offer: Offer) => {
     try {
-      const price = Number(
-        offer.price.replace("£", "")
-      );
-
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: {
@@ -22,11 +18,14 @@ export default function PackageWrapper() {
         },
         body: JSON.stringify({
           name: offer.name,
-          price,
         }),
       });
 
       const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Unable to start checkout.");
+      }
 
       if (data.url) {
         window.location.assign(data.url);
