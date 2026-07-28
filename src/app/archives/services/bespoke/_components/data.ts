@@ -42,7 +42,7 @@ export const caseStudies = [
     description:
       "Visualytes Helps Accelerate Website Development for Graphic Designing Company from scratch",
     image: "/assets/webp/scfullpagess.png.bv.webp",
-    href: "https://www.visualytes.com/projects/studio-creatives-2/",
+    href: "/portfolio",
   },
   {
     title: "Thorney Park Golf Club",
@@ -50,7 +50,7 @@ export const caseStudies = [
     description:
       "Visualytes develop a Website Redesign for Golf Club and End to End Digital Marketing for Golf Club",
     image: "/assets/webp/portfolio/Thorney-Park.png",
-    href: "https://www.visualytes.com/projects/thorney-park-golf-club/",
+    href: "/portfolio",
   },
   {
     title: "Factory Fresh",
@@ -58,7 +58,7 @@ export const caseStudies = [
     description:
       "Factory Fresh provides you with a convenience of getting groceries delivered from your local ethnic stores to your doorstep in 2 hours.",
     image: "/assets/png/image_factory_fresh.png",
-    href: "https://www.visualytes.com/projects/factory-fresh/",
+    href: "/portfolio",
   },
   {
     title: "Ponji",
@@ -66,8 +66,8 @@ export const caseStudies = [
     description:
       "Gold & Diamond jewellery collection. 6200+ Stylish Designs From Rs. 3,300. Shop! Celebrate your Special Moments with Diamond Jewellery.",
     image:
-      "https://services.visualytes.com/wp-content/uploads/2020/02/lillies-768x768.png",
-    href: "https://www.visualytes.com/projects/ponji/",
+      "/assets/legacy/lillies-768x768.png",
+    href: "/portfolio",
   },
   {
     title: "Myvipcard",
@@ -75,7 +75,7 @@ export const caseStudies = [
     description:
       "My VIP Card is a multi-award winning discount scheme and employee benefit that helps you to #shoplocal.",
     image: "/assets/png/image_myvipcards.png",
-    href: "https://www.visualytes.com/projects/my-vip-card/",
+    href: "/portfolio",
   },
   {
     title: "Lamoda",
@@ -83,8 +83,8 @@ export const caseStudies = [
     description:
       "LAMODA is a Designer Footwear brand leading the way to the latest trends. Streetwear styles, Platforms and Chunky shoes, we're inspired by somebody special.",
     image:
-      "https://services.visualytes.com/wp-content/uploads/2020/02/lamoda1-768x768.png",
-    href: "https://www.visualytes.com/projects/lamoda/",
+      "/assets/legacy/lamoda1-768x768.png",
+    href: "/portfolio",
   },
   {
     title: "Super Card Dating",
@@ -92,7 +92,7 @@ export const caseStudies = [
     description:
       "Visualytes Takes the Heavy Lifting Out of Commercial Hire Management at WowNow Hire",
     image: "/assets/jpng/clients/Supercarlogo.jpg",
-    href: "https://www.visualytes.com/projects/wownow-hire/",
+    href: "/portfolio",
   },
 ];
 
@@ -170,3 +170,4 @@ export const latestBlogSlugs = [
   "website-hosting-services",
   "social-media-marketing",
 ];
+

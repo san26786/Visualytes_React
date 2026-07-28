@@ -69,6 +69,7 @@ export default function CareersClient() {
     message: "",
   });
   const [loading, setLoading] = useState(false);
+  const maxResumeBytes = 5 * 1024 * 1024;
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -95,6 +96,10 @@ export default function CareersClient() {
       toast.error("Please upload your resume.");
       return;
     }
+    if (resume.size > maxResumeBytes) {
+      toast.error("Your resume must be 5 MB or smaller.");
+      return;
+    }
 
     try {
       setLoading(true);
@@ -111,7 +116,7 @@ export default function CareersClient() {
 
       if (data.success) {
         toast.custom(
-          (t) => (
+          () => (
             <div className="relative min-w-[430px] overflow-hidden rounded-2xl border border-emerald-100 bg-white px-5 py-4 shadow-2xl">
               <div className="flex items-center gap-4">
                 {/* Better Success Icon */}
@@ -125,7 +130,7 @@ export default function CareersClient() {
                   </h4>
       
                   <p className="mt-0.5 whitespace-nowrap text-sm text-gray-600">
-                    Thank you! We'll review your application shortly.
+                    Thank you! We&apos;ll review your application shortly.
                   </p>
                 </div>
               </div>

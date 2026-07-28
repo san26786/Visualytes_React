@@ -18,7 +18,7 @@ export const metadata = {
     title: "Company News & Media | Visualytes Business Updates",
     description:
       "Stay updated with Visualytes company news, business insights, media updates, financial information, strategy, and public relations announcements.",
-    url: "https://www.visualytes.com/news",
+    url: "/news",
     siteName: "Visualytes",
     type: "website",
   },
@@ -34,3 +34,4 @@ export default function MediaPage() {
     <MediaprClient/>
   );
 }
+

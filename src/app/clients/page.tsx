@@ -1,5 +1,4 @@
 
-import { getClients } from "./_components/getClients";
 import ClientWrappers from "./_components/ClientWrappers";
 export const metadata = {
   title: "Our Clients & Customers | Visualytes Limited",
