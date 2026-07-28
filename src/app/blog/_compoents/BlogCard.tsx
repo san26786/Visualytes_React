@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { BlogPost } from "../_data/data";
+import { BlogPost, getLocalBlogImage } from "../_data/data";
 import {
   FaEye,
   FaHeart,
@@ -31,7 +31,7 @@ export default function BlogCard({
       <div className="relative h-[260px] overflow-hidden">
         <Link href={`/blog/${blogKey}`}>
           <Image
-            src={images.main}
+            src={getLocalBlogImage(blogKey)}
             alt={images.alt || title}
             width={800}
             height={800}
@@ -44,11 +44,10 @@ export default function BlogCard({
       <div className="p-8">
         <div className="mb-5 flex flex-wrap gap-2">
           {categories.map((cat, index) => {
-            const catSlug = cat.url.split("/").filter(Boolean).pop();
             return (
               <Link
                 key={index}
-                href={`/archives/category/blog/${catSlug}`}
+                href={`/archives/category/blog/${cat.slug}`}
                 className="inline-flex items-center rounded-full bg-cyan-500/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-cyan-300 hover:bg-cyan-500/20 transition-colors"
               >
                 {cat.name}
@@ -71,13 +70,8 @@ export default function BlogCard({
       <div className="border-t border-white/10 bg-slate-950/50 px-8 py-5">
         <div className="flex items-center justify-between gap-4 mb-4">
           <div className="flex items-center gap-3">
-            <div className="relative h-10 w-10 rounded-full overflow-hidden border border-white/15">
-              <Image
-                src={author.avatarUrl}
-                alt={author.name}
-                fill
-                className="object-cover"
-              />
+            <div className="flex h-10 w-10 items-center justify-center rounded-full border border-cyan-300/25 bg-cyan-300/10 text-xs font-bold text-cyan-200">
+              {author.name.charAt(0)}
             </div>
             <span className="text-xs font-semibold uppercase tracking-widest text-slate-300">
               {author.name}

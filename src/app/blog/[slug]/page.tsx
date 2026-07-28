@@ -1,27 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import BlogArticleClient from "../_compoents/BlogArticleClient";
-import { blogs, getBlogBySlugOrKey } from "../_data/data";
-
-type WordPressPost = {
-  content?: { rendered?: string };
-};
-
-async function getArticleHtml(postId: string, fallback: string) {
-  try {
-    const response = await fetch(
-      `https://www.visualytes.com/wp-json/wp/v2/posts/${postId}`,
-      { next: { revalidate: 3600 } }
-    );
-
-    if (!response.ok) return `<p>${fallback}</p>`;
-
-    const article = (await response.json()) as WordPressPost;
-    return article.content?.rendered || `<p>${fallback}</p>`;
-  } catch {
-    return `<p>${fallback}</p>`;
-  }
-}
+import { blogs, getBlogBySlugOrKey, getLocalBlogImage } from "../_data/data";
+import { blogContentById } from "../_data/content";
 
 export function generateStaticParams() {
   return blogs.map((post) => ({ slug: post.blogKey }));
@@ -38,14 +19,12 @@ export async function generateMetadata({
   return {
     title: `${post.title} | Visualytes`,
     description: post.description,
-    alternates: { canonical: `https://www.visualytes.com/blog/${post.blogKey}` },
     openGraph: {
       type: "article",
       title: post.title,
       description: post.description,
-      url: `https://www.visualytes.com/blog/${post.blogKey}`,
       publishedTime: post.date,
-      images: [{ url: post.images.main, alt: post.images.alt || post.title }],
+      images: [{ url: getLocalBlogImage(post.blogKey), alt: post.images.alt || post.title }],
     },
   };
 }
@@ -58,8 +37,7 @@ export default async function BlogPostPage({
 
   if (!post) notFound();
 
-  const postId = post.id.replace("post-", "");
-  const contentHtml = await getArticleHtml(postId, post.description);
+  const contentHtml = blogContentById[post.id] || `<p>${post.description}</p>`;
 
   return <BlogArticleClient post={post} contentHtml={contentHtml} />;
 }

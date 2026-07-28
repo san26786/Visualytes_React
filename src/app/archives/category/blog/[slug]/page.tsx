@@ -20,15 +20,11 @@ const categorySlugLabels: Record<string, string> = {
   "e-commerce": "E-commerce",
 };
 
-function getCategorySlug(url: string) {
-  return url.split("/").filter(Boolean).pop() ?? "";
-}
-
 const allCategories = Array.from(
   new Map(
     blogs
       .flatMap((post) => post.categories)
-      .map((cat) => [getCategorySlug(cat.url), cat])
+      .map((cat) => [cat.slug, cat])
   ).values()
 );
 
@@ -42,7 +38,7 @@ export default function CategoryPage({
 
   const filteredBlogs = useMemo(() => {
     return blogs.filter((post) =>
-      post.categories.some((cat) => getCategorySlug(cat.url) === slug)
+      post.categories.some((cat) => cat.slug === slug)
     );
   }, [slug]);
 
@@ -57,7 +53,7 @@ export default function CategoryPage({
   const categoryName =
     categorySlugLabels[slug] ??
     filteredBlogs[0]?.categories.find(
-      (cat) => getCategorySlug(cat.url) === slug
+      (cat) => cat.slug === slug
     )?.name ??
     "Blog";
 
@@ -69,7 +65,7 @@ export default function CategoryPage({
     <BrandArchiveShell
       title={titleMain}
       titleAccent={titleAccent}
-      eyebrow="Blog"
+      eyebrow=""
       subtitle="Discover insights, tips, and stories about design, development, and digital innovation."
       breadcrumbs={[
         { label: "Blog", href: "/blog" },
@@ -96,7 +92,7 @@ export default function CategoryPage({
               All
             </Link>
             {allCategories.map((cat) => {
-              const catSlug = getCategorySlug(cat.url);
+              const catSlug = cat.slug;
               return (
                 <Link
                   key={catSlug}
