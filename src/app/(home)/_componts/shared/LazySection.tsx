@@ -10,6 +10,8 @@ type LazySectionProps = {
   rootMargin?: string;
   className?: string;
   id?: string;
+  /** Accessible label for the deferred region while it is being prepared. */
+  label?: string;
 };
 
 export default function LazySection({
@@ -18,6 +20,7 @@ export default function LazySection({
   rootMargin = "300px 0px",
   className,
   id,
+  label,
 }: LazySectionProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -47,6 +50,7 @@ export default function LazySection({
       className={className}
       style={visible ? undefined : { minHeight }}
       aria-busy={!visible}
+      aria-label={label}
     >
       {visible ? children : null}
     </div>

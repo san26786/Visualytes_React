@@ -1,9 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
 import AboveFooter from "@/src/common/components/layouts/AboveFooter";
-import { BrandPageBackdrop, sectionReveal } from "@/src/common/components/ui/brand/page-effects";
+import { BrandPageBackdrop } from "@/src/common/components/ui/brand/page-effects";
 import HomeBanner from "./_componts/HomeBanner";
 import LazySection from "./_componts/shared/LazySection";
 
@@ -58,34 +57,49 @@ export default function HomeWrapper() {
         <HomeBanner />
 
 
-        {/* Single Lazy Load Wrapper */}
-        <LazySection 
-          minHeight="480px" 
-          rootMargin="400px 0px"
-        >
-          <motion.div {...sectionReveal}>
+        {/*
+          Each section owns its loading boundary. This prevents a single
+          below-the-fold intersection from mounting every heavy section and
+          downloading all of their client-side code at once.
+        */}
+        <LazySection minHeight="760px" rootMargin="500px 0px">
+          <DigitalMarketingIntro />
+        </LazySection>
 
-            <DigitalMarketingIntro />
+        <LazySection minHeight="900px" rootMargin="400px 0px">
+          <ProcessSection />
+        </LazySection>
 
-            <ProcessSection />
+        <LazySection minHeight="760px" rootMargin="350px 0px">
+          <Portfolio />
+        </LazySection>
 
-            <Portfolio />
+        <LazySection minHeight="700px" rootMargin="350px 0px">
+          <CaseStudy />
+        </LazySection>
 
-            <CaseStudy />
+        <LazySection minHeight="620px" rootMargin="300px 0px">
+          <VideoSection />
+        </LazySection>
 
-            <VideoSection />
+        <LazySection minHeight="720px" rootMargin="300px 0px">
+          <BusinessCommunities />
+        </LazySection>
 
-            <BusinessCommunities />
+        <LazySection minHeight="680px" rootMargin="300px 0px">
+          <BooksSection />
+        </LazySection>
 
-            <BooksSection />
+        <LazySection minHeight="640px" rootMargin="250px 0px">
+          <TestimonialsSection />
+        </LazySection>
 
-            <TestimonialsSection />
+        <LazySection minHeight="520px" rootMargin="250px 0px">
+          <AppointmentTalk />
+        </LazySection>
 
-            <AppointmentTalk />
-
-            <ClientSlider />
-
-          </motion.div>
+        <LazySection minHeight="400px" rootMargin="200px 0px">
+          <ClientSlider />
         </LazySection>
 
 
