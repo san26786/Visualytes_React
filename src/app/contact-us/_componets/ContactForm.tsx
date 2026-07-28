@@ -71,7 +71,7 @@ export default function ContactForm() {
 
       if (data.success) {
         toast.custom(
-          (t) => (
+          () => (
             <div className="relative min-w-[420px] overflow-hidden rounded-xl border border-gray-200 bg-white px-5 py-4 shadow-xl">
               <div className="flex items-center gap-3">
               <Check className="h-7 w-7 text-emerald-600" strokeWidth={3} />

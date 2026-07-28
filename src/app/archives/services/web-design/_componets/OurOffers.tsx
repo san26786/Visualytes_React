@@ -12,8 +12,6 @@ export default function OurOffers() {
 
   const handleCheckout = async (offer: Offer) => {
     try {
-      const price = Number(offer.price);
-
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: {
@@ -21,11 +19,14 @@ export default function OurOffers() {
         },
         body: JSON.stringify({
           name: offer.name,
-          price,
         }),
       });
 
       const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Unable to start checkout.");
+      }
 
       if (data.url) {
         router.push(data.url);
