@@ -229,7 +229,7 @@ export default function Header() {
     "fixed left-0 z-50 w-full transition-all duration-500",
     scrolled
       ? "top-0 py-0"
-      : "top-0 py-6"
+      : "top-0 py-2"
   )}
 >
   <div
@@ -237,7 +237,7 @@ export default function Header() {
       "transition-all duration-500",
       scrolled
         ? "w-full"
-        : "mx-auto max-w-[2000px] px-6"
+        : "max-w-screen-2xl mx-auto px-6"
     )}
   >
           {/* Glassmorphism Container */}
@@ -303,11 +303,11 @@ export default function Header() {
   href={item.href}
   className={cn(
     `
-    group/nav relative flex items-center gap-2
-    px-4 py-2.5 rounded-full
+    group/nav relative flex items-center gap-1
+    px-3 py-2.5 rounded-full
     overflow-hidden
     text-xs font-semibold uppercase
-    tracking-[0.25em]
+tracking-wide
     transition-all duration-300
     `,
     isActive
@@ -376,8 +376,7 @@ export default function Header() {
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                 exit={{ opacity: 0, y: 10, scale: 0.98 }}
                                 transition={{ duration: 0.3, ease: "easeOut" }}
-                              className="absolute left-1/2 top-full mt-4 -translate-x-1/2 w-[1200px] z-50"
-                              >
+                             className="absolute left-1/2 top-full mt-4 -z-50 -translate-x-1/2 w-[min(1200px,calc(100vw-3rem))]" >
                                 <div className="bg-slate-950/95 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-[0_30px_80px_rgba(0,0,0,0.5)] overflow-hidden">
                                   <div className="grid grid-cols-12 gap-0">
                                     {/* Left Menu Items */}
@@ -550,7 +549,7 @@ export default function Header() {
               </nav>
 
               {/* Right Section: Phone + CTA */}
-              <div className="hidden lg:flex items-center gap-6">
+              <div className="hidden lg:flex items-center gap-2">
                 <a
                   href="tel:02380970305"
                   className="flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors"
@@ -563,7 +562,7 @@ export default function Header() {
                 <MagneticButton>
                   <Link
                     href="/seo-questionnaire"
-                    className="relative inline-flex items-center gap-2 px-7 py-3 rounded-full overflow-hidden bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-white text-xs font-bold uppercase tracking-[0.2em] shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 transition-all duration-300 mr-9"
+                    className="relative inline-flex items-center  px-7 py-3 rounded-full overflow-hidden bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-white text-xs font-bold uppercase tracking-[0.2em] shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 transition-all duration-300 mr-8"
                   >
                     <span className="relative z-10 flex items-center gap-2 ">
                       Client Login
@@ -650,7 +649,7 @@ export default function Header() {
                                   initial={{ opacity: 0, height: 0 }}
                                   animate={{ opacity: 1, height: "auto" }}
                                   exit={{ opacity: 0, height: 0 }}
-                                  className="overflow-hidden pl-4"
+                                  className="overflow-hidden "
                                 >
                                   <ul className="space-y-2 pb-4">
                                     {item.submenu.map((subItem) => (
