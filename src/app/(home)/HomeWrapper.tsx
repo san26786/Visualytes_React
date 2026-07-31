@@ -4,8 +4,8 @@ import dynamic from "next/dynamic";
 import AboveFooter from "@/src/common/components/layouts/AboveFooter";
 import { BrandPageBackdrop } from "@/src/common/components/ui/brand/page-effects";
 import HomeBanner from "./_componts/HomeBanner";
-import LazySection from "./_componts/shared/LazySection";
-import { motion } from "framer-motion";
+// import LazySection from "./_componts/shared/LazySection";
+// import { motion } from "framer-motion";
 
 const DigitalMarketingIntro = dynamic(
   () => import("./_componts/DigitalMarketingIntro")

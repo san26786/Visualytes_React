@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useState } from "react";
-import BusinessContact, {
-  BusinessContactData,
-} from "../BusinessContact";
+// import BusinessContact, {
+//   BusinessContactData,
+// } from "../BusinessContact";
 import Image from "next/image";
 import BusinessInfo from "../BusinessInfo";
 
