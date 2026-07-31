@@ -39,11 +39,10 @@ export default function Directors() {
                   src={item.image}
                   alt={item.role}
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="280px"
+                  className="object-contain transition-transform duration-500 group-hover:scale-105"
+                  sizes="300px"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent" />
-                <div className="absolute inset-0 ring-1 ring-inset ring-white/15" />
+            
               </div>
               <p className="mt-6 text-sm font-bold uppercase tracking-[0.2em] text-slate-200">
                 {item.role}

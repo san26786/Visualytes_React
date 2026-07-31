@@ -32,20 +32,66 @@ export default function TeamGrid() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: (index % 4) * 0.08 }}
-              className={`group overflow-hidden ${BRAND_SURFACE.mutedGlassCard} transition-all duration-300 hover:-translate-y-2 hover:border-cyan-300/30`}
+              className={`
+                group relative overflow-hidden
+                ${BRAND_SURFACE.mutedGlassCard}
+                border border-white/10
+                transition-all duration-500 ease-out
+                hover:-translate-y-3
+                hover:border-cyan-300/40
+                hover:shadow-[0_20px_60px_rgba(34,211,238,0.15)]
+              `}
             >
               <div className="relative aspect-square overflow-hidden">
                 <Image
                   src={item.image}
                   alt={item.role}
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="
+                    object-cover
+                    transition-all duration-700 ease-out
+                    group-hover:scale-110
+                  "
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent" />
-                <div className="absolute inset-0 ring-1 ring-inset ring-white/10" />
+
+                {/* Premium hover glass effect */}
+                <div
+                  className="
+                    absolute inset-0
+                    bg-gradient-to-br
+                    from-cyan-400/0
+                    via-fuchsia-400/0
+                    to-purple-500/0
+                    opacity-0
+                    transition-all duration-700
+                    group-hover:opacity-20
+                  "
+                />
+
+                <div
+                  className="
+                    absolute inset-0
+                    ring-1 ring-inset ring-white/10
+                    transition-all duration-500
+                    group-hover:ring-cyan-300/40
+                  "
+                />
               </div>
-              <p className="px-4 py-5 text-center text-xs font-bold uppercase tracking-[0.18em] text-slate-200">
+
+              <p
+                className="
+                  px-4 py-5
+                  text-center
+                  text-xs
+                  font-bold
+                  uppercase
+                  tracking-[0.18em]
+                  text-slate-200
+                  transition-all duration-500
+                  group-hover:text-cyan-200
+                "
+              >
                 {item.role}
               </p>
             </motion.article>

@@ -16,34 +16,22 @@ export const founder = {
   export const team = [
     {
       image: "/assets/jpg/sales-ot-400x400.jpg",
-      role: "COMPANY ROLE : ACCOUNT MANAGER",
+      role: "COMPANY ROLE : A/C MANAGER",
     },
-    {
-      image: "/assets/jpg/sales-ot-400x400.jpg",
-      role: "COMPANY ROLE : ACCOUNT MANAGER",
-    },
+   
     {
       image: "/assets/jpg/team-developers-400x400.jpg",
       role: "COMPANY ROLE : DEVELOPER",
     },
-    {
-      image: "/assets/jpg/team-developers-400x400.jpg",
-      role: "COMPANY ROLE : DEVELOPER",
-    },
+    
     {
       image: "/assets/jpg/team-testers-400x400.jpg",
       role: "COMPANY ROLE : TESTER",
     },
-    {
-      image: "/assets/jpg/team-testers-400x400.jpg",
-      role: "COMPANY ROLE : TESTER",
-    },
+    
     {
       image: "/assets/jpg/team-marketors-400x400.jpg",
       role: "COMPANY ROLE : MARKETERS",
     },
-    {
-      image: "/assets/jpg/team-marketors-400x400.jpg",
-      role: "COMPANY ROLE : MARKETERS",
-    },
+    
   ];

@@ -7,11 +7,11 @@ export default function MediaprClient() {
   return (
     <BrandSubPageShell
       title="Media & PR"
-      eyebrow="In The News"
+      eyebrow=""
       subtitle="Stories and features highlighting Visualytes' community impact and digital innovation."
     >
       <section className="px-4 pb-24 pt-4">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-7xl">
           <div className="mb-16 text-center">
             <h2 className={BRAND_TEXT.sectionTitle}>
               Visualytes{" "}

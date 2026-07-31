@@ -6,6 +6,8 @@ import { useState } from "react";
 import BusinessContact, {
   BusinessContactData,
 } from "../BusinessContact";
+import Image from "next/image";
+import BusinessInfo from "../BusinessInfo";
 
 export default function LoginCard() {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,21 +17,8 @@ export default function LoginCard() {
   const [error, setError] = useState("");
 
   const [step, setStep] = useState(1);
-  const [formData, setFormData] =
-  useState<BusinessContactData>({
-    businessName: "",
-    fullName: "",
-    mobilePhone: "",
-    businessPhone: "",
-    websiteUrl: "",
-    email: "",
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    postalCode: "",
-    country: "",
-  });
+
+
   
   const steps = [
     "Business Contact Details",
@@ -56,7 +45,24 @@ export default function LoginCard() {
       setError("Invalid email or password");
     }
   };
-
+  const [formData, setFormData] = useState<Record<string,string>>({
+    businessName: "",
+    contactPerson: "",
+    mobileNumber: "",
+    businessPhone: "",
+    websiteUrl: "",
+    businessEmail: "",
+    addressLine1: "",
+    addressLine2: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    country: "United Kingdom",
+    businessSector: "",
+    description: "",
+    businessCategories: "",
+    servicesProducts: "",
+  });
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 px-6 py-10">
      <div
@@ -91,6 +97,10 @@ export default function LoginCard() {
                 SEO Questionnaire
               </p>
             </div>
+            {/* <BusinessInfo 
+            formData={formData} 
+            setFormData={setFormData}/> */}
+
           </div>
 
           {step === 1 && (
@@ -184,14 +194,14 @@ export default function LoginCard() {
               >
                 Continue →
               </button>
+
             </>
           )}
 
           {step === 2 && (
-            <BusinessContact
-              data={formData}
-              setData={setFormData}
-            />
+            <BusinessInfo 
+            formData={formData} 
+            setFormData={setFormData}/>
           )}
 
           <div className="mt-8 rounded-2xl bg-slate-50 p-4">
@@ -254,8 +264,33 @@ export default function LoginCard() {
 
         {/* RIGHT */}
 
-        <div className="mb-10 overflow-x-auto">
-        <div className="flex min-w-max items-center">
+     
+          {/* RIGHT IMAGE */}
+{step === 1 && (
+  <div className="relative hidden lg:block overflow-hidden">
+    <Image
+      src="/assets/jpng/3Dlogin.jpeg"
+      alt="SEO Questionnaire Login"
+      fill
+      className="object-cover"
+      priority
+    />
+
+    {/* Overlay */}
+    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
+
+    <div className="absolute bottom-10 left-10 right-10 text-white">
+      <h2 className="text-3xl font-bold">
+        Grow Your Business With Better SEO
+      </h2>
+
+      <p className="mt-3 text-sm text-white/80">
+        Complete your SEO questionnaire and let our experts create
+        a customized growth strategy for your business.
+      </p>
+    </div>
+  </div>
+)}
 {/* {step === 2 && (
   <BusinessContact
     data={formData}
@@ -316,8 +351,7 @@ export default function LoginCard() {
     previous={() => setStep(7)}
   />
 )} */}
-      </div>
-      </div> 
+  
       </div>
     </div>
   );

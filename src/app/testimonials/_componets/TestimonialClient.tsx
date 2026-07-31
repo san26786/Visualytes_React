@@ -11,7 +11,7 @@ export default function TestimonialClient() {
     >
       <section className="px-4 pb-24 pt-4">
         <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:gap-8">
             {testimonials.map((item, index) => (
               <TestimonialCard
                 key={item.id}

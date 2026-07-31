@@ -13,6 +13,7 @@ export default function Logo() {
         width={250}
         height={76}
         priority
+        className="ml-4"
       />
     </Link>
   );

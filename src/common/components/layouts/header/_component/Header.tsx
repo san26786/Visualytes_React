@@ -563,9 +563,9 @@ export default function Header() {
                 <MagneticButton>
                   <Link
                     href="/seo-questionnaire"
-                    className="relative inline-flex items-center gap-2 px-7 py-3 rounded-full overflow-hidden bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-white text-xs font-bold uppercase tracking-[0.2em] shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 transition-all duration-300"
+                    className="relative inline-flex items-center gap-2 px-7 py-3 rounded-full overflow-hidden bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-white text-xs font-bold uppercase tracking-[0.2em] shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 transition-all duration-300 mr-9"
                   >
-                    <span className="relative z-10 flex items-center gap-2">
+                    <span className="relative z-10 flex items-center gap-2 ">
                       Client Login
                       <ArrowUpRight size={14} />
                     </span>
@@ -610,7 +610,7 @@ export default function Header() {
               <div className="flex flex-col h-full">
                 {/* Close Button */}
                 <div className="flex items-center justify-between p-6 border-b border-white/5 hover:mt-9">
-                  <div className="scale-75 origin-left">
+                  <div className="scale-75 ">
                     <Logo />
                   </div>
                   <button

@@ -2,6 +2,8 @@
 
 import VerticalLineBig from "@/src/common/icons/VerticalLineBIg";
 import Image from "next/image";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 const steps = [
   {
@@ -31,6 +33,12 @@ const steps = [
 ];
 
 export default function ProcessSection() {
+  const sectionRef = useRef(null);
+
+const isInView = useInView(sectionRef, {
+  once: false,
+  margin: "-150px",
+});
   return (
     <div
   className="relative overflow-hidden "
@@ -42,8 +50,23 @@ export default function ProcessSection() {
   
       <VerticalLineBig variant="black" className="mx-auto justify-center h-[134px] w-[4px]" />
 
-      <section
-        className="relative overflow-hidden"
+      <motion.section
+  ref={sectionRef}
+  initial={{ opacity: 0, scale: 0.92, filter: "blur(20px)" }}
+  animate={
+    isInView
+      ? {
+          opacity: 1,
+          scale: 1,
+          filter: "blur(0px)",
+        }
+      : {}
+  }
+  transition={{
+    duration: 1.2,
+    ease: [0.16, 1, 0.3, 1],
+  }}
+  className="relative overflow-hidden"
         style={{
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -60,9 +83,30 @@ export default function ProcessSection() {
   "
   style={{ transform: "skewY(-3deg)" }}
 >
-<h2 className="text-center text-white text-5xl md:text-6xl font-light mb-10">
-              Our Process
-          </h2>
+<motion.h2
+  initial={{
+    opacity: 0,
+    y: 80,
+    scale: 0.8,
+  }}
+  animate={
+    isInView
+      ? {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+        }
+      : {}
+  }
+  transition={{
+    duration: 0.9,
+    delay: 0.2,
+    type: "spring",
+  }}
+  className="text-center text-white text-5xl md:text-6xl font-light mb-10"
+>
+
+</motion.h2>
           <div className="lg:hidden space-y-12 pb-10">
     {steps.map((step, index) => (
       <div
@@ -113,155 +157,247 @@ export default function ProcessSection() {
     ))}
   </div>
   <div className="hidden lg:block">
-          <div className="space-y-8">
-            {steps.map((step, index) => {
-              const leftSide = index % 2 === 0;
+  <div className="space-y-8">
+  {steps.map((step, index) => {
+    const leftSide = index % 2 === 0;
 
-              return (
-                <div
-                  key={step.title}
-                  className="relative grid grid-cols-[minmax(0,1fr)_260px_minmax(0,1fr)] gap-10 items-center min-h-[320px]"
+    return (
+      <motion.div
+        key={step.title}
+        initial={{
+          opacity: 0,
+          y: 120,
+          scale: 0.85,
+          filter: "blur(15px)",
+        }}
+        whileInView={{
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          filter: "blur(0px)",
+        }}
+        viewport={{
+          once: false,
+          amount: 0.25,
+        }}
+        transition={{
+          duration: 1,
+          delay: index * 0.15,
+          type: "spring",
+          stiffness: 80,
+          damping: 15,
+        }}
+        className="relative grid grid-cols-[minmax(0,1fr)_260px_minmax(0,1fr)] gap-10 items-center min-h-[320px]"
+      >
+        {leftSide ? (
+          <>
+            {/* LEFT TITLE BLOCK */}
+            <div className="flex justify-end">
+              {index === 0 ? (
+                <motion.div
+                  initial={{ x: -80, opacity: 0 }}
+                  whileInView={{ x: 0, opacity: 1 }}
+                  viewport={{ once: false }}
+                  transition={{ duration: 0.8 }}
+                  className="relative w-full max-w-[420px] h-[220px]"
                 >
-                  {leftSide ? (
-                    <>
-                      {/* LEFT TITLE BLOCK */}
-                      <div className="flex justify-end">
-                        {index === 0 ? (
-                          <div className="relative w-full max-w-[420px] h-[220px]">
-                            <span
-                              className="absolute left-[0px] top-[-20px] text-[220px] font-bold leading-none"
-                              style={{ color: step.color }}
-                            >
-                              01
-                            </span>
+                  <span
+                    className="absolute left-[0px] top-[-20px] text-[220px] font-bold leading-none"
+                    style={{ color: step.color }}
+                  >
+                    01
+                  </span>
 
-                            <h3 className="absolute right-[5px] top-1/2 -translate-y-1/2 text-white text-[58px] leading-none z-10">
-                              {" "}
-                              {step.title}
-                            </h3>
-                          </div>
-                        ) : (
-                          <div className="relative w-[470px] h-[220px]">
-                            <span
-                              className="absolute right-[160px] top-[-26px] text-[220px] font-bold leading-none"
-                              style={{ color: step.color }}
-                            >
-                              03
-                            </span>
+                  <h3 className="absolute right-[5px] top-1/2 -translate-y-1/2 text-white text-[58px] leading-none z-10">
+                    {step.title}
+                  </h3>
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial={{ x: -80, opacity: 0 }}
+                  whileInView={{ x: 0, opacity: 1 }}
+                  viewport={{ once: false }}
+                  transition={{ duration: 0.8 }}
+                  className="relative w-[470px] h-[220px]"
+                >
+                  <span
+                    className="absolute right-[160px] top-[-26px] text-[220px] font-bold leading-none"
+                    style={{ color: step.color }}
+                  >
+                    03
+                  </span>
 
-                            <h3 className="absolute left-[60px] top-1/3 -translate-y-1/2 text-white text-[58px] leading-none z-10">
-                              {step.title}
-                            </h3>
-                          </div>
-                        )}
-                      </div>
+                  <h3 className="absolute left-[60px] top-1/3 -translate-y-1/2 text-white text-[58px] leading-none z-10">
+                    {step.title}
+                  </h3>
+                </motion.div>
+              )}
+            </div>
 
-                      {/* IMAGE */}
-                      <div className="relative flex justify-center z-20">
-                      <div className="relative w-[220px] h-[220px] rounded-full overflow-hidden border-[8px] border-[#4e5562]">
-                        <Image
-                          src={step.image}
-                          alt={step.title}
-                          fill
-                          sizes="220px"
-                          className="object-cover"
-                        />
-                      </div>
 
-                        {index !== steps.length - 1 && (
-                         <Image
-                         src="/assets/png/right_arrow.png"
-                         alt=""
-                         width={40}
-                         height={40}
-                         style={{ height: "auto" }}
-                         className="absolute top-[185px] left-2/2 -translate-x-1/2 hidden lg:block"
-                       />
-                        )}
-                      </div>
+            {/* IMAGE */}
+            <motion.div
+              initial={{
+                scale: 0,
+                rotate: -180,
+              }}
+              whileInView={{
+                scale: 1,
+                rotate: 0,
+              }}
+              viewport={{
+                once: false,
+                amount: 0.5,
+              }}
+              transition={{
+                duration: 0.9,
+                type: "spring",
+                bounce: 0.5,
+              }}
+              className="relative flex justify-center z-20"
+            >
+              <div className="relative w-[220px] h-[220px] rounded-full overflow-hidden border-[8px] border-[#4e5562]">
+                <Image
+                  src={step.image}
+                  alt={step.title}
+                  fill
+                  sizes="220px"
+                  className="object-cover"
+                />
+              </div>
 
-                      {/* RIGHT TEXT */}
-                      <div>
-                        <p className="text-[#c2c7d0] text-[17px] leading-[34px] max-w-[380px]">
-                          {step.text}
-                        </p>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      {/* LEFT TEXT */}
-                      <div className="flex justify-end">
-                        <p className="text-[#c2c7d0] text-[17px] leading-[34px] max-w-[380px] text-right">
-                          {step.text}
-                        </p>
-                      </div>
+              {index !== steps.length - 1 && (
+                <Image
+                  src="/assets/png/right_arrow.png"
+                  alt=""
+                  width={40}
+                  height={40}
+                  style={{ height: "auto" }}
+                  className="absolute top-[185px] left-2/2 -translate-x-1/2 hidden lg:block"
+                />
+              )}
+            </motion.div>
 
-                      {/* IMAGE */}
-                      <div className="relative flex justify-center z-20">
-                        <div className="relative w-[220px] h-[220px] rounded-full overflow-hidden border-[8px] border-[#4e5562]">
-                        <Image
-                          src={step.image}
-                          alt={step.title}
-                          fill
-                          sizes="220px"
-                          className="object-cover"
-                        />
-                        </div>
 
-                        {index !== steps.length - 1 && (
-                          <Image
-                          src="/assets/png/left_arrow.png"
-                          alt=""
-                          width={40}
-                          height={40}
-                          style={{ height: "auto" }}
-                          className="absolute top-[185px] right-2/3 -translate-x-3/2 hidden lg:block"
-                        />
-                        )}
-                      </div>
+            {/* RIGHT TEXT */}
+            <motion.div
+              initial={{ x: 80, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.8 }}
+            >
+              <p className="text-[#c2c7d0] text-[17px] leading-[34px] max-w-[380px]">
+                {step.text}
+              </p>
+            </motion.div>
+          </>
+        ) : (
+          <>
+            {/* LEFT TEXT */}
+            <motion.div
+              initial={{ x: -80, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.8 }}
+              className="flex justify-end"
+            >
+              <p className="text-[#c2c7d0] text-[17px] leading-[34px] max-w-[380px] text-right">
+                {step.text}
+              </p>
+            </motion.div>
 
-                      {/* RIGHT TITLE BLOCK */}
-                      <div>
-                        {index === 1 ? (
-                          <div className="relative w-[420px] h-[220px]">
-                            <h3 className="absolute left-[5px] top-1/2 -translate-y-1/2 text-white text-[72px] leading-none z-10">
-                              {step.title}
-                            </h3>
 
-                            <span
-                              className="absolute right-[3px] top-0 text-[220px] font-bold leading-none"
-                              style={{ color: step.color }}
-                            >
-                              02
-                            </span>
-                          </div>
-                        ) : (
-                          <div className="relative w-[420px] h-[220px]">
-                            <h3 className="absolute left-[10px] top-1/2 -translate-y-1/2 text-white text-[72px] leading-none z-10">
-                              {step.title}
-                            </h3>
+            {/* IMAGE */}
+            <motion.div
+              initial={{
+                scale: 0,
+                rotate: 180,
+              }}
+              whileInView={{
+                scale: 1,
+                rotate: 0,
+              }}
+              viewport={{
+                once: false,
+                amount: 0.5,
+              }}
+              transition={{
+                duration: 0.9,
+                type: "spring",
+                bounce: 0.5,
+              }}
+              className="relative flex justify-center z-20"
+            >
+              <div className="relative w-[220px] h-[220px] rounded-full overflow-hidden border-[8px] border-[#4e5562]">
+                <Image
+                  src={step.image}
+                  alt={step.title}
+                  fill
+                  sizes="220px"
+                  className="object-cover"
+                />
+              </div>
 
-                            <span
-                              className="absolute right-[20px] top-0 text-[220px] font-bold leading-none"
-                              style={{ color: step.color }}
-                            >
-                              04
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    </>
-                  )}
+              {index !== steps.length - 1 && (
+                <Image
+                  src="/assets/png/left_arrow.png"
+                  alt=""
+                  width={40}
+                  height={40}
+                  style={{ height: "auto" }}
+                  className="absolute top-[185px] right-2/3 -translate-x-3/2 hidden lg:block"
+                />
+              )}
+            </motion.div>
+
+
+            {/* RIGHT TITLE BLOCK */}
+            <motion.div
+              initial={{ x: 80, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.8 }}
+            >
+              {index === 1 ? (
+                <div className="relative w-[420px] h-[220px]">
+                  <h3 className="absolute left-[5px] top-1/2 -translate-y-1/2 text-white text-[72px] leading-none z-10">
+                    {step.title}
+                  </h3>
+
+                  <span
+                    className="absolute right-[3px] top-0 text-[220px] font-bold leading-none"
+                    style={{ color: step.color }}
+                  >
+                    02
+                  </span>
                 </div>
-              );
-            })}
-          </div>
+              ) : (
+                <div className="relative w-[420px] h-[220px]">
+                  <h3 className="absolute left-[10px] top-1/2 -translate-y-1/2 text-white text-[72px] leading-none z-10">
+                    {step.title}
+                  </h3>
+
+                  <span
+                    className="absolute right-[20px] top-0 text-[220px] font-bold leading-none"
+                    style={{ color: step.color }}
+                  >
+                    04
+                  </span>
+                </div>
+              )}
+            </motion.div>
+          </>
+        )}
+      </motion.div>
+    );
+  })}
+</div>
 </div>
           <div className="flex justify-center mt-10 mb-10">
             <div className="w-[4px] h-24 bg-white" />
           </div>
         </div>
-      </section>
+        </motion.section>
     </div>
   );
 }

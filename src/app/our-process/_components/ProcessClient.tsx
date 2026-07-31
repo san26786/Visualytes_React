@@ -7,7 +7,7 @@ export default function ProcessClient() {
   return (
     <BrandSubPageShell
       title="Our Process"
-      eyebrow="How We Work"
+      eyebrow=""
       subtitle="From strategy to launch and beyond — a proven four-step process that delivers results."
     >
       <ProcessSection />

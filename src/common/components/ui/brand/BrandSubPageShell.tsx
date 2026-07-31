@@ -23,7 +23,7 @@ export default function BrandSubPageShell({
     <main className="relative overflow-hidden bg-slate-950">
       <BrandPageBackdrop />
 
-      <div className="relative z-10">
+      <div className="relative z-10 mb-18">
         <section className="relative mt-[130px] overflow-hidden px-4 pb-12 pt-16 text-center">
           <div className="pointer-events-none absolute -left-32 top-0 h-[420px] w-[420px] rounded-full bg-cyan-500/15 blur-[120px]" />
           <div className="pointer-events-none absolute -right-24 bottom-0 h-[360px] w-[360px] rounded-full bg-fuchsia-500/15 blur-[100px]" />

@@ -5,13 +5,14 @@ import AboveFooter from "@/src/common/components/layouts/AboveFooter";
 import { BrandPageBackdrop } from "@/src/common/components/ui/brand/page-effects";
 import HomeBanner from "./_componts/HomeBanner";
 import LazySection from "./_componts/shared/LazySection";
+import { motion } from "framer-motion";
 
 const DigitalMarketingIntro = dynamic(
   () => import("./_componts/DigitalMarketingIntro")
 );
 
 const ProcessSection = dynamic(
-  () => import("./_componts/ProcessSection")
+  () => import("../our-process/_components/ProcessSection")
 );
 
 const Portfolio = dynamic(
@@ -48,6 +49,7 @@ const ClientSlider = dynamic(
 
 export default function HomeWrapper() {
   return (
+    <>
     <main className="relative overflow-hidden bg-slate-950">
       <BrandPageBackdrop />
 
@@ -62,50 +64,34 @@ export default function HomeWrapper() {
           below-the-fold intersection from mounting every heavy section and
           downloading all of their client-side code at once.
         */}
-        <LazySection minHeight="760px" rootMargin="500px 0px">
           <DigitalMarketingIntro />
-        </LazySection>
+          <h2 className="text-center text-white text-5xl md:text-6xl font-light mb-10">
+            Our Process
+          </h2>
 
-        <LazySection minHeight="900px" rootMargin="400px 0px">
           <ProcessSection />
-        </LazySection>
 
-        <LazySection minHeight="760px" rootMargin="350px 0px">
           <Portfolio />
-        </LazySection>
 
-        <LazySection minHeight="700px" rootMargin="350px 0px">
           <CaseStudy />
-        </LazySection>
 
-        <LazySection minHeight="620px" rootMargin="300px 0px">
           <VideoSection />
-        </LazySection>
 
-        <LazySection minHeight="720px" rootMargin="300px 0px">
           <BusinessCommunities />
-        </LazySection>
 
-        <LazySection minHeight="680px" rootMargin="300px 0px">
           <BooksSection />
-        </LazySection>
 
-        <LazySection minHeight="640px" rootMargin="250px 0px">
           <TestimonialsSection />
-        </LazySection>
 
-        <LazySection minHeight="520px" rootMargin="250px 0px">
           <AppointmentTalk />
-        </LazySection>
 
-        <LazySection minHeight="400px" rootMargin="200px 0px">
           <ClientSlider />
-        </LazySection>
 
 
         <AboveFooter />
 
       </div>
     </main>
+    </>
   );
 }
