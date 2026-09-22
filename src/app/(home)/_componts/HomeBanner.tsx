@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Variants } from "framer-motion";
 import Image from "next/image";
+import EnquiryModal from "./EnquiryModal";
 const SLIDES = [
   {
     id: "slide-1",
@@ -206,6 +207,7 @@ const premiumTextVariants: Variants = {
 export default function HomeBanner() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0); // -1 for left, 1 for right
+  const [enquiryOpen, setEnquiryOpen] = useState(false);
 
   // const slideDuration = 6000; // 6-second interval rotation
 
@@ -539,17 +541,9 @@ export default function HomeBanner() {
 
             {/* CTA Interaction Layer */}
             <div className="flex flex-wrap justify-center gap-4">
-              {currentSlide.button?.map((btn, index) => (
-                <motion.a
-                  key={index}
-                  href={btn.href}
-                  target={btn.target}
-                  variants={premiumTextVariants}
-                  initial="sublineEnter"
-                  animate="sublineCenter"
-                  exit="exit"
-                  custom={(currentSlide.timings?.sublineStart || 1.4) + 0.4 + index * 0.1}
-                  className={`relative inline-flex items-center justify-center
+              {currentSlide.button?.map((btn, index) => {
+                const isGetStarted = btn.text === "Get Started";
+                const sharedClassName = `relative inline-flex items-center justify-center
                   px-6 py-4 sm:px-10 sm:py-5
                   rounded-full
                   text-[10px] sm:text-xs
@@ -562,11 +556,42 @@ export default function HomeBanner() {
                   ${index === 0
                       ? "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 text-white border-transparent  hover:shadow-[0_12px_40px_rgba(34,211,238,0.5)]"
                       : "bg-transparent text-white border-2 border-cyan-300/50 hover:bg-cyan-300/10 hover:border-cyan-300"
-                    }`}
-                >
-                  {btn.text}
-                </motion.a>
-              ))}
+                    }`;
+
+                if (isGetStarted) {
+                  return (
+                    <motion.button
+                      key={index}
+                      type="button"
+                      onClick={() => setEnquiryOpen(true)}
+                      variants={premiumTextVariants}
+                      initial="sublineEnter"
+                      animate="sublineCenter"
+                      exit="exit"
+                      custom={(currentSlide.timings?.sublineStart || 1.4) + 0.4 + index * 0.1}
+                      className={sharedClassName}
+                    >
+                      {btn.text}
+                    </motion.button>
+                  );
+                }
+
+                return (
+                  <motion.a
+                    key={index}
+                    href={btn.href}
+                    target={btn.target}
+                    variants={premiumTextVariants}
+                    initial="sublineEnter"
+                    animate="sublineCenter"
+                    exit="exit"
+                    custom={(currentSlide.timings?.sublineStart || 1.4) + 0.4 + index * 0.1}
+                    className={sharedClassName}
+                  >
+                    {btn.text}
+                  </motion.a>
+                );
+              })}
             </div>
           </motion.div>
         </AnimatePresence>
@@ -587,6 +612,8 @@ export default function HomeBanner() {
 
       {/* Bottom fade into page */}
       <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[15] h-32 bg-gradient-to-t from-slate-950 to-transparent" />
+
+      <EnquiryModal open={enquiryOpen} onClose={() => setEnquiryOpen(false)} />
     </section>
   );
 }

@@ -59,7 +59,7 @@ export default function EstimateProjectClient({ form }: { form: PublicForm }) {
         </h1>
 
         <div className="mb-10 flex items-center justify-center gap-5">
-          <div className="relative h-20 w-20 overflow-hidden rounded-full border border-yellow-400">
+          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full border border-yellow-400">
             <Image src="/assets/png/nagendra-sir.png" alt="CEO" fill className="object-cover" />
           </div>
 

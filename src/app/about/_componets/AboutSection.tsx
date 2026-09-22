@@ -31,7 +31,7 @@ export default function AboutSection({
       <div className="container mx-auto px-3 max-w-6xl">
 
         <div
-          className={`grid lg:grid-cols-2 gap-16 items-start${
+          className={`grid grid-cols-1 lg:grid-cols-2 gap-16 items-start${
             reverse ? "lg:[&>*:first-child]:order-2" : ""
           }`}
         >
@@ -60,13 +60,13 @@ export default function AboutSection({
           {/* Right */}
           {/* Right */}
 <ScrollReveal direction="left" delay={0.21}>
-  <div className="flex justify-end">
-    <div className="relative w-[540px] h-[360px]">
+  <div className="flex justify-center lg:justify-end">
+    <div className="relative aspect-[3/2] w-full max-w-[540px] lg:min-w-[420px]">
       <Image
         src={image}
         alt={title}
         fill
-        sizes="540px"
+        sizes="(max-width: 1024px) 100vw, 540px"
         className="object-contain"
       />
     </div>

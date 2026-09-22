@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="relative  overflow-visible">
       {/* Left skew shape */}
       <div
-        className="absolute left-0 -top-[55px] h-[120px] w-1/2 bg-[#075783] z-[1]"
+        className="absolute left-0 -top-[20px] h-[70px] w-1/2 bg-[#075783] z-[1] sm:-top-[55px] sm:h-[120px]"
         style={{
           transform: "skewY(3deg)",
           transformOrigin: "top left",
@@ -16,7 +16,7 @@ export default function Footer() {
 
       {/* Right skew shape */}
       <div
-        className="absolute right-0 -top-[55px] h-[120px] w-1/2 bg-[#075783] z-[1]"
+        className="absolute right-0 -top-[20px] h-[70px] w-1/2 bg-[#075783] z-[1] sm:-top-[55px] sm:h-[120px]"
         style={{
           transform: "skewY(-3deg)",
           transformOrigin: "top right",
@@ -38,15 +38,16 @@ export default function Footer() {
         <div className="absolute inset-0 bg-[#075783]" />
 
         {/* Content */}
-        <div className="relative z-10 max-w-[970px] mx-auto pt-[40px] pb-[30px] text-center">
+        <div className="relative z-10 max-w-[970px] mx-auto px-6 pt-[40px] pb-[30px] text-center">
           {/* Logo */}
-          <div className="flex justify-center -mt-[80px]">
+          <div className="flex justify-center -mt-[30px] sm:-mt-[80px]">
             <Image
               src="/assets/png/footer_logo2.png"
               alt="Visualytes"
               width={255}
               height={174}
               priority
+              className="h-auto w-[160px] sm:w-[255px]"
             />
           </div>
 
@@ -62,8 +63,13 @@ export default function Footer() {
               href="https://twitter.com/visualytes"
               target="_blank"
               rel="noreferrer"
-              className="social-icon soc-twitter"
-            />
+              aria-label="X (Twitter)"
+              className="social-icon text-white hover:text-slate-300"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true" className="inline-block align-middle">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+            </a>
             <a
               href="https://www.google.com/search?q=Visualytes+Limited"
               target="_blank"

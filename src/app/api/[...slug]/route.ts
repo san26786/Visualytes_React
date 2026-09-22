@@ -8,6 +8,7 @@ import { POST as careersPOST } from "@/src/server/api/careers/handlers";
 import { POST as checkoutPOST } from "@/src/server/api/checkout/handlers";
 import { POST as checkoutConfirmPOST } from "@/src/server/api/checkout/confirm/handlers";
 import { POST as contactPOST } from "@/src/server/api/contact/handlers";
+import { POST as enquiryPOST } from "@/src/server/api/enquiry/handlers";
 import { POST as estimateProjectPOST } from "@/src/server/api/estimate-project/handlers";
 import { GET as faqsGET } from "@/src/server/api/faqs/handlers";
 import { POST as importPOST } from "@/src/server/api/import/handlers";
@@ -31,6 +32,7 @@ const routes: RouteEntry[] = [
   { method: "POST", segments: ["checkout"], handler: checkoutPOST },
   { method: "POST", segments: ["checkout", "confirm"], handler: checkoutConfirmPOST },
   { method: "POST", segments: ["contact"], handler: contactPOST },
+  { method: "POST", segments: ["enquiry"], handler: enquiryPOST },
   { method: "POST", segments: ["estimate-project"], handler: estimateProjectPOST },
   { method: "GET", segments: ["faqs"], handler: faqsGET },
   { method: "POST", segments: ["import"], handler: importPOST },

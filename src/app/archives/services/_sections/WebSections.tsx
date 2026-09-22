@@ -342,7 +342,7 @@ export function OffersSection({ data, offers }: { data: OffersData; offers?: Off
 
 function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: string }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-100px 0px -100px 0px" });
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -368,7 +368,7 @@ function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: str
   return (
     <span
       ref={ref}
-      className="text-5xl font-bold bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent"
+      className="text-3xl sm:text-5xl font-bold bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent"
     >
       {count}
       {suffix}
@@ -410,10 +410,10 @@ export function WhyUsStats({ data }: { data: WhyUsData }) {
             {data.stats.map((stat, index) => (
               <div
                 key={index}
-                className="text-center p-8 rounded-3xl border border-white/10 bg-slate-900/60 backdrop-blur-xl"
+                className="text-center p-3 sm:p-8 rounded-3xl border border-white/10 bg-slate-900/60 backdrop-blur-xl"
               >
                 <AnimatedCounter target={stat.number} />
-                <p className="text-slate-400 font-medium mt-2">{stat.label}</p>
+                <p className="text-slate-400 font-medium mt-2 text-xs sm:text-base">{stat.label}</p>
               </div>
             ))}
           </motion.div>
@@ -575,7 +575,7 @@ export function ClientLogos({ data }: { data: ClientLogosData }) {
               key={index}
               {...sectionReveal}
               transition={{ delay: index * 0.05 }}
-              className="group flex flex-col items-center justify-center p-8   backdrop-blur-xl hover:border-yellow-400/40 transition-all h-40 w-60 mx-auto text-center mx-19 "
+              className="group flex flex-col items-center justify-center p-8 backdrop-blur-xl hover:border-yellow-400/40 transition-all h-40 w-full text-center"
             >
               {client.logo && (
                 <Image
@@ -627,7 +627,7 @@ export function Certifications({ data }: { data: CertificationsData }) {
           </h2>
         </motion.div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7 mx-auto text-center items-center">
+        <div className="flex flex-wrap justify-center gap-6 mx-auto text-center items-center">
           {data.items.map((cert, index) => (
             <motion.div
               key={index}

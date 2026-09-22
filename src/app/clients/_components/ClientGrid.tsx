@@ -62,13 +62,19 @@ export default function ClientGrid({
                 }}
                 className={`group flex h-[110px] items-center justify-center p-4 sm:h-[140px] md:h-[160px] lg:h-[170px] ${BRAND_SURFACE.mutedGlassCard} ${BRAND_MOTION.softTransition} hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-[0_20px_50px_rgba(34,211,238,0.1)]`}
               >
-                <Image
-                  src={client.image}
-                  alt={client.name}
-                  width={250}
-                  height={150}
-                  className="h-auto max-h-full w-auto max-w-full object-contain brightness-90 transition-all duration-300 group-hover:brightness-110"
-                />
+                {client.image ? (
+                  <Image
+                    src={client.image}
+                    alt={client.name}
+                    width={250}
+                    height={150}
+                    className="h-auto max-h-full w-auto max-w-full object-contain brightness-90 transition-all duration-300 group-hover:brightness-110"
+                  />
+                ) : (
+                  <span className="text-center text-sm font-medium text-slate-400">
+                    {client.name}
+                  </span>
+                )}
               </motion.div>
             ))}
           </div>

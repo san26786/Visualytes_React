@@ -303,7 +303,7 @@ export default function Header() {
                     return (
                       <li
                         key={item.label}
-                        className="relative group"
+                        className="group"
                         onMouseEnter={() => item.submenu && setHoveredNavItem(item.label)}
                         onMouseLeave={() => setHoveredNavItem(null)}
                       >
@@ -399,7 +399,7 @@ exit={{
     opacity:0,
     y:6
 }}                                transition={{ duration: 0.3, ease: "easeOut" }}
-                             className="absolute left-0 top-full mt-4 -z-50 -translate-x-1/2 w-[min(1200px,calc(100vw-3rem))]" >
+                             className="absolute left-1/2 top-full mt-4 -z-50 -translate-x-1/2 w-[min(1200px,calc(100vw-3rem))]" >
                                 <div className="bg-slate-950/95 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-[0_30px_80px_rgba(0,0,0,0.5)] overflow-hidden">
                                   <div className="grid grid-cols-12 gap-0">
                                     {/* Left Menu Items */}

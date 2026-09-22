@@ -34,7 +34,7 @@ export function AboutVideo({ data }: { data: AboutVideoData }) {
 
             {data.videoPath && (
               <video
-                className="relative h-[700px] w-full rounded-2xl border border-slate-800 object-cover shadow-2xl"
+                className="relative aspect-video w-full rounded-2xl border border-slate-800 object-cover shadow-2xl lg:aspect-auto lg:h-[700px]"
                 src={data.videoPath}
                 autoPlay
                 loop
@@ -79,7 +79,7 @@ export function ServiceImageGrid({ data }: { data: ServiceImageGridData }) {
               transition={{ delay: index * 0.1 }}
               className="bg-slate-900/50 border border-slate-800 rounded-2xl overflow-hidden hover:border-cyan-500/50 transition-all duration-300 group"
             >
-              <div className="relative h-80 w-60 overflow-hidden mx-auto">
+              <div className="relative aspect-[3/4] w-full max-w-[280px] overflow-hidden mx-auto">
                 {service.image && (
                   <Image
                     src={service.image}

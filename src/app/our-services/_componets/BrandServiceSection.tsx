@@ -57,7 +57,7 @@ export default function BrandServiceSection({
   );
 
   return (
-    <section className="py-12 lg:py-20">
+    <section className="pt-12 pb-24 lg:py-20">
       <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
         <div
           className={`grid items-start gap-12 lg:grid-cols-2 lg:gap-16 ${
@@ -115,7 +115,7 @@ export default function BrandServiceSection({
               <div
                 className={`relative overflow-hidden p-6 ${BRAND_SURFACE.glassCard} ${BRAND_HOVER.card}`}
               >
-                <div className="relative aspect-[4/3] w-full min-w-[580px] max-w-[540px]">
+                <div className="relative aspect-[4/3] w-full max-w-[540px] lg:min-w-[420px]">
                   <Image
                     src={image}
                     alt={title}
