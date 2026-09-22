@@ -40,4 +40,4 @@ npm run check
 | `RECAPTCHA_SECRET_KEY` | Server-side reCAPTCHA verification key |
 | `STRIPE_SECRET_KEY` | Stripe secret key used only by checkout |
 | `NEXT_PUBLIC_URL` | Canonical application URL for Stripe redirects |
-| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | Browser-side reCAPTCHA site key |
+| `RECAPTCHA_SITE_KEY` | Browser-side reCAPTCHA site key |

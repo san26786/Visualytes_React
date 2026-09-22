@@ -279,7 +279,7 @@ export default function CareersClient() {
               <div className="flex flex-col items-center justify-between gap-6 pt-4 lg:flex-row">
                 <ReCAPTCHA
                   ref={recaptchaRef}
-                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+                  sitekey={process.env.RECAPTCHA_SITE_KEY || ""}
                   onChange={(token) => setCaptchaToken(token || "")}
                 />
                 <button
