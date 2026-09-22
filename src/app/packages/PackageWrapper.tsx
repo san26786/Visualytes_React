@@ -4,10 +4,10 @@
 import { BrandPageBackdrop, sectionReveal } from "@/src/common/components/ui/brand/page-effects";
 import { BRAND_HOVER } from "@/src/common/components/ui/brand/theme";
 import { motion } from "framer-motion";
-import { offers, type Offer } from "./data/offer";
+import type { Offer } from "./data/offer";
 import Link from "next/link";
 
-export default function PackageWrapper() {
+export default function PackageWrapper({ offers }: { offers: Offer[] }) {
 
   const handleCheckout = async (offer: Offer) => {
     try {
@@ -17,6 +17,7 @@ export default function PackageWrapper() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          id: offer.id,
           name: offer.name,
         }),
       });

@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 
-import { email, escapeHtml, optionalText, requiredText, textToHtml, ValidationError } from "@/src/lib/server/forms";
+import { CONTACT_FORM_KEY } from "@/src/lib/forms/defaults";
+import { customFields, displayValue, getForm, validateSubmission } from "@/src/lib/forms/server";
+import { escapeHtml, textToHtml, ValidationError } from "@/src/lib/server/forms";
 import { mailRecipient, mailTransport, verifyCaptcha } from "@/src/lib/server/services";
+import { prisma } from "@/src/lib/prisma";
 
 export const runtime = "nodejs";
 
@@ -10,20 +13,32 @@ export async function POST(request: Request) {
     const body: unknown = await request.json();
     if (!body || typeof body !== "object") throw new ValidationError("Invalid request body.");
 
-    const { name, email: senderEmail, phone, topic, message, captchaToken } = body as Record<string, unknown>;
-    const contactName = requiredText(name, "Name", { max: 120 });
-    const address = email(senderEmail);
-    const contactPhone = optionalText(phone, "Phone number", 40);
-    const contactTopic = requiredText(topic, "Topic", { max: 160 });
-    const contactMessage = requiredText(message, "Message", { max: 5_000 });
+    const payload = body as Record<string, unknown>;
+    const form = await getForm(CONTACT_FORM_KEY);
+    if (!form || !form.isActive) {
+      return NextResponse.json({ success: false, message: "This form is currently unavailable." }, { status: 403 });
+    }
 
-    await verifyCaptcha(captchaToken);
+    const values = validateSubmission(form.fields, payload);
+    const contactName = displayValue(values.name);
+    const address = displayValue(values.email);
+    const contactPhone = displayValue(values.phone);
+    const contactTopic = displayValue(values.topic);
+    const contactMessage = displayValue(values.message);
+
+    await verifyCaptcha(payload.captchaToken);
+    await prisma.formSubmission.create({ data: { formKey: CONTACT_FORM_KEY, name: contactName || null, email: address, data: values } });
+
+    const extraRows = customFields(CONTACT_FORM_KEY, form.fields)
+      .map((field) => `<tr><td><strong>${escapeHtml(field.label)}</strong></td><td>${textToHtml(displayValue(values[field.name]))}</td></tr>`)
+      .join("");
+
     await mailTransport().sendMail({
       from: `"Visualyte Contact Form" <${mailRecipient()}>`,
       to: mailRecipient(),
       replyTo: address,
-      subject: `New Contact Form — ${contactTopic}`,
-      html: `<div style="font-family:Arial,sans-serif"><h2>New Contact Form Submission</h2><table cellpadding="8" cellspacing="0" border="1" style="border-collapse:collapse"><tr><td><strong>Name</strong></td><td>${escapeHtml(contactName)}</td></tr><tr><td><strong>Email</strong></td><td>${escapeHtml(address)}</td></tr><tr><td><strong>Phone</strong></td><td>${escapeHtml(contactPhone)}</td></tr><tr><td><strong>Topic</strong></td><td>${escapeHtml(contactTopic)}</td></tr><tr><td><strong>Message</strong></td><td>${textToHtml(contactMessage)}</td></tr></table></div>`,
+      subject: `New Contact Form — ${contactTopic || "General Enquiry"}`,
+      html: `<div style="font-family:Arial,sans-serif"><h2>New Contact Form Submission</h2><table cellpadding="8" cellspacing="0" border="1" style="border-collapse:collapse"><tr><td><strong>Name</strong></td><td>${escapeHtml(contactName)}</td></tr><tr><td><strong>Email</strong></td><td>${escapeHtml(address)}</td></tr><tr><td><strong>Phone</strong></td><td>${escapeHtml(contactPhone)}</td></tr><tr><td><strong>Topic</strong></td><td>${escapeHtml(contactTopic)}</td></tr><tr><td><strong>Message</strong></td><td>${textToHtml(contactMessage)}</td></tr>${extraRows}</table></div>`,
     });
 
     return NextResponse.json({ success: true, message: "Message sent successfully." });

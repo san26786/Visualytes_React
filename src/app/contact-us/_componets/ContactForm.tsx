@@ -1,10 +1,11 @@
 "use client";
 
-import { Mail, Phone, Tag, User, MessageSquare, Check } from "lucide-react";
+import { Mail, Phone, Tag, User, MessageSquare, Check, Pencil, type LucideIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { motion, type BezierDefinition } from "framer-motion";
 import toast from "react-hot-toast";
+import { emptyValues, type FormField, type PublicForm } from "@/src/lib/forms/types";
 
 const EASE: BezierDefinition = [0.22, 1, 0.36, 1];
 
@@ -22,26 +23,37 @@ const fadeUp = (delay = 0) => ({
 const inputClass =
   "h-[62px] w-full rounded-2xl border border-white/10 bg-slate-900 px-5 text-[14px] text-white placeholder:text-slate-500 transition-all duration-200 focus:border-cyan-400/60 focus:bg-slate-800/90 focus:outline-none focus:ring-2 focus:ring-cyan-400/20";
 
-export default function ContactForm() {
+const textareaClass =
+  "w-full resize-none rounded-2xl border border-white/10 bg-slate-900 py-5 pl-11 pr-5 text-[14px] text-white placeholder:text-slate-500 transition-all duration-200 focus:border-cyan-400/60 focus:bg-slate-800/90 focus:outline-none focus:ring-2 focus:ring-cyan-400/20";
+
+const NAME_ICONS: Record<string, LucideIcon> = { name: User, email: Mail, phone: Phone, topic: Tag, message: MessageSquare };
+
+function iconFor(field: FormField): LucideIcon {
+  if (NAME_ICONS[field.name]) return NAME_ICONS[field.name];
+  if (field.type === "email") return Mail;
+  if (field.type === "tel") return Phone;
+  if (field.type === "textarea") return MessageSquare;
+  return Pencil;
+}
+
+export default function ContactForm({ form: definition }: { form: PublicForm }) {
   const recaptchaRef = useRef<ReCAPTCHA>(null);
 
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    topic: "",
-    message: "",
-  });
+  const fields = definition.fields;
+  const [form, setForm] = useState<Record<string, string | boolean>>(() => emptyValues(fields));
 
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     setForm((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [e.target.name]:
+        e.target instanceof HTMLInputElement && e.target.type === "checkbox"
+          ? e.target.checked
+          : e.target.value,
     }));
   };
 
@@ -93,13 +105,7 @@ export default function ContactForm() {
           }
         );
       
-        setForm({
-          name: "",
-          email: "",
-          phone: "",
-          topic: "",
-          message: "",
-        });
+        setForm(emptyValues(fields));
       
         setCaptchaToken(null);
         recaptchaRef.current?.reset();
@@ -161,102 +167,92 @@ export default function ContactForm() {
             <div className="pointer-events-none absolute bottom-0 right-0 h-60 w-60 rounded-full bg-fuchsia-500/8 blur-3xl" />
 
 
-            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+            {!definition.isActive ? (
+              <p className="rounded-2xl border border-white/10 bg-slate-900 px-5 py-6 text-center text-sm text-slate-300">
+                This form is currently unavailable. Please reach out using the contact details on this page.
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+                {fields.map((field) => {
+                  const Icon = iconFor(field);
+                  const wrapper = `relative ${field.width === "full" ? "lg:col-span-2" : ""}`;
+                  const value = form[field.name];
 
-              <div className="relative">
-                <User
-                  size={15}
-                  className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"
-                />
+                  if (field.type === "textarea") {
+                    return (
+                      <div key={field.name} className={wrapper}>
+                        <Icon size={15} className="absolute left-5 top-5 text-slate-500" />
+                        <textarea
+                          rows={6}
+                          name={field.name}
+                          placeholder={field.placeholder || field.label}
+                          value={String(value ?? "")}
+                          onChange={handleChange}
+                          className={textareaClass}
+                          required={field.required}
+                        />
+                      </div>
+                    );
+                  }
 
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Full Name"
-                  value={form.name}
-                  onChange={handleChange}
-                  className={`${inputClass} pl-11`}
-                  required
-                />
+                  if (field.type === "checkbox") {
+                    return (
+                      <label key={field.name} className={`${wrapper} flex cursor-pointer items-center gap-3 text-sm text-slate-300`}>
+                        <input
+                          type="checkbox"
+                          name={field.name}
+                          checked={value === true}
+                          onChange={handleChange}
+                          required={field.required}
+                          className="h-5 w-5 accent-cyan-400"
+                        />
+                        <span>{field.label}</span>
+                      </label>
+                    );
+                  }
+
+                  if (field.type === "select") {
+                    return (
+                      <div key={field.name} className={wrapper}>
+                        <Icon size={15} className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-slate-500" />
+                        <select
+                          name={field.name}
+                          value={String(value ?? "")}
+                          onChange={handleChange}
+                          className={`${inputClass} pl-11`}
+                          required={field.required}
+                        >
+                          <option value="" disabled>
+                            {field.placeholder || field.label}
+                          </option>
+                          {field.options?.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div key={field.name} className={wrapper}>
+                      <Icon size={15} className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500" />
+                      <input
+                        type={field.type}
+                        name={field.name}
+                        placeholder={field.placeholder || field.label}
+                        value={String(value ?? "")}
+                        onChange={handleChange}
+                        maxLength={field.maxLength}
+                        className={`${inputClass} pl-11`}
+                        required={field.required}
+                      />
+                    </div>
+                  );
+                })}
               </div>
-
-
-              <div className="relative">
-                <Mail
-                  size={15}
-                  className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"
-                />
-
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email Address"
-                  value={form.email}
-                  onChange={handleChange}
-                  className={`${inputClass} pl-11`}
-                  required
-                />
-              </div>
-
-            </div>
-
-
-            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-
-              <div className="relative">
-                <Phone
-                  size={15}
-                  className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"
-                />
-
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="Phone Number"
-                  value={form.phone}
-                  onChange={handleChange}
-                  className={`${inputClass} pl-11`}
-                  required
-                />
-              </div>
-
-
-              <div className="relative">
-                <Tag
-                  size={15}
-                  className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"
-                />
-
-                <input
-                  type="text"
-                  name="topic"
-                  placeholder="Your Topic"
-                  value={form.topic}
-                  onChange={handleChange}
-                  className={`${inputClass} pl-11`}
-                  required
-                />
-              </div>
-
-            </div>
-
-
-            <div className="relative">
-              <MessageSquare
-                size={15}
-                className="absolute left-5 top-5 text-slate-500"
-              />
-
-              <textarea
-                rows={6}
-                name="message"
-                placeholder="Your Message"
-                value={form.message}
-                onChange={handleChange}
-                className="w-full resize-none rounded-2xl border border-white/10 bg-slate-900 py-5 pl-11 pr-5 text-[14px] text-white placeholder:text-slate-500 transition-all duration-200 focus:border-cyan-400/60 focus:bg-slate-800/90 focus:outline-none focus:ring-2 focus:ring-cyan-400/20"
-                required
-              />
-            </div>
+            )}
 
 
             <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
@@ -276,7 +272,7 @@ export default function ContactForm() {
 
                 <motion.button
                   type="submit"
-                  disabled={loading}
+                  disabled={loading || !definition.isActive}
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.97 }}
                   className="relative overflow-hidden rounded-full bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-600 px-10 py-4 font-bold text-white shadow-lg shadow-fuchsia-500/30 transition-all duration-300 hover:shadow-fuchsia-500/50 disabled:cursor-not-allowed disabled:opacity-70"
@@ -295,13 +291,7 @@ export default function ContactForm() {
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={() => {
-                    setForm({
-                      name: "",
-                      email: "",
-                      phone: "",
-                      topic: "",
-                      message: "",
-                    });
+                    setForm(emptyValues(fields));
 
                     setCaptchaToken(null);
                     recaptchaRef.current?.reset();

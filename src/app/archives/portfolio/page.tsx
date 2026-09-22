@@ -42,14 +42,13 @@
 import { useMemo, useState } from "react";
 import PortfolioGrid from "../../portfolio/_components/PortfolioGrid";
 import {
-  categories,
   portfolio,
   allOnlyPortfolio,
 } from "../../portfolio/_components/data/portfoliodata";
 import PageBanner from "@/src/common/components/layouts/PageBanner";
 
 export default function Page() {
-  const [active, setActive] = useState("ALL");
+  const [active] = useState("ALL");
 
   const filtered = useMemo(() => {
     const allItems = [...portfolio, ...allOnlyPortfolio];
@@ -63,12 +62,7 @@ export default function Page() {
     <>
       <PageBanner title="portfolio" />
 
-      <PortfolioGrid
-        items={filtered}
-        active={active}
-        setActive={setActive}
-        categories={categories}
-      />
+      <PortfolioGrid items={filtered} />
     </>
   );
 }

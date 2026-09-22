@@ -5,13 +5,29 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+
+   {
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
+  
+  {
+    // Admin previews show arbitrary uploaded/typed image paths, where next/image adds nothing.
+    files: ["src/app/admin/**", "src/app/admin-dashboard/**"],
+    rules: {
+      "@next/next/no-img-element": "off",
+    },
+  },
+
   // Override default ignores of eslint-config-next.
   globalIgnores([
-    // Default ignores of eslint-config-next:
+       // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "src/generated/**",
   ]),
 ]);
 

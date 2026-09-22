@@ -34,7 +34,6 @@ intro=""
   // bottomTitle="Why Every Business Needs a Website"
 
   bottomDescription="To catch up with the trends is a difficult task along with managing a team of your own. But, Visualytes can assist you in bringing the latest mobile application trends inclusive of relevant customisation. Apart from a business website, a Mobile Application that provides a smooth and, interactive and responsive experience to the user can refine your reputation to a great extent. Explore these trends to match your marketing strategy requirements to achieve greater success."
-
 />
 </> )
 }

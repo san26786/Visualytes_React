@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { LayoutGrid, SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import HomeSection from "../../(home)/_componts/shared/HomeSection";
 import HomeBrandButton from "../../(home)/_componts/shared/HomeBrandButton";
 import {
@@ -67,7 +67,7 @@ export default function Portfolio() {
               <SlidersHorizontal size={14} />
               Slider
             </button>
-            <button
+            {/* <button
               onClick={() => setViewMode("grid")}
               className={`flex items-center gap-2 rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-wider transition-all ${
                 viewMode === "grid"
@@ -77,7 +77,7 @@ export default function Portfolio() {
             >
               <LayoutGrid size={14} />
               Grid
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -86,9 +86,7 @@ export default function Portfolio() {
         ) : (
           <PortfolioGrid
             items={filtered}
-            active={active}
-            setActive={setActive}
-            categories={categories}
+           
           />
         )}
 

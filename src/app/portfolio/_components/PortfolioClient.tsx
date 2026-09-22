@@ -5,9 +5,20 @@ import PortfolioGrid from "../_components/PortfolioGrid";
 import PortfolioHeader from "../_components/PortfolioHeader";
 import {
   categories,
-  portfolio,
-  allOnlyPortfolio,
-} from "../_components/data/portfoliodata";
+} from "./data/portfoliodata";
+
+interface PortfolioItem {
+  id:string;
+  image:string;
+  title:string;
+  category:string;
+}
+
+
+interface Props {
+  portfolioData: PortfolioItem[];
+}
+
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -15,16 +26,30 @@ import {
   sectionReveal,
 } from "@/src/common/components/ui/brand/page-effects";
 
-export default function Page() {
+
+export default function PortfolioClient({
+  portfolioData
+}:Props) {
   const [active, setActive] = useState("ALL");
 
-  const filtered = useMemo(() => {
-    const allItems = [...portfolio, ...allOnlyPortfolio];
+  // const filtered = useMemo(() => {
+  //   const allItems = [...portfolio, ...allOnlyPortfolio];
 
-    return active === "ALL"
-      ? allItems
-      : allItems.filter((item) => item.category === active);
-  }, [active]);
+  //   return active === "ALL"
+  //     ? allItems
+  //     : allItems.filter((item) => item.category === active);
+  // }, [active]);
+
+  const filtered = useMemo(() => {
+
+  return active === "ALL"
+    ? portfolioData
+    : portfolioData.filter(
+        (item)=>item.category === active
+      );
+
+},[active, portfolioData]);
+
 
   return (
     <main className="relative overflow-hidden bg-slate-950">
@@ -74,12 +99,15 @@ export default function Page() {
                 setActive={setActive}
                 categories={categories}
               />
-              <PortfolioGrid
+              {/* <PortfolioGrid
                 items={filtered}
                 active={active}
                 setActive={setActive}
                 categories={categories}
-              />
+              /> */}
+<PortfolioGrid 
+   items={filtered}
+/>
             </div>
           </section>
         </motion.div>

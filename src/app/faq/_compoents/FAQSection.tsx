@@ -1,84 +1,162 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { HelpCircle, Minus, Plus, ArrowUpRight } from "lucide-react";
-import { faqs } from "./data";
+import {
+  ArrowUpRight,
+  HelpCircle,
+  Minus,
+  Plus,
+} from "lucide-react";
+
 import {
   BRAND_MOTION,
   BRAND_SURFACE,
   BRAND_TEXT,
 } from "@/src/common/components/ui/brand/theme";
+import Link from "next/link";
+
+type FAQ = {
+  id: string;
+  question: string;
+  answer: string;
+};
 
 export default function FAQSection() {
+  const [faqs, setFaqs] = useState<FAQ[]>([]);
   const [open, setOpen] = useState<number | null>(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadFAQs = async () => {
+      try {
+        const res = await fetch("/api/faqs", {
+          cache: "no-store",
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch FAQs");
+        }
+
+        const data = await res.json();
+
+        setFaqs(data);
+      } catch (error) {
+        console.error("FAQ loading error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadFAQs();
+  }, []);
+
+  if (loading) {
+    return null;
+  }
+
+  if (faqs.length === 0) {
+    return null;
+  }
 
   return (
     <>
-      <section className="px-4 pb-16 pt-4">
-        <div className="mx-auto max-w-4xl">
-          <div className="space-y-4">
-            {faqs.map((item, index) => {
-              const active = open === index;
+    <section className="px-4 pb-16 pt-4">
+      <div className="mx-auto max-w-4xl">
+        <div className="space-y-4">
+          {faqs.map((item, index) => {
+            const active = open === index;
 
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-20px" }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                  className={`overflow-hidden ${BRAND_SURFACE.mutedGlassCard} ${BRAND_MOTION.softTransition} ${
-                    active ? "border-cyan-300/30" : "hover:border-white/20"
-                  }`}
+            return (
+              <motion.div
+                key={item.id}
+                initial={{
+                  opacity: 0,
+                  y: 20,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                viewport={{
+                  once: true,
+                  margin: "-20px",
+                }}
+                transition={{
+                  duration: 0.4,
+                  delay: index * 0.05,
+                }}
+                className={`overflow-hidden ${
+                  BRAND_SURFACE.mutedGlassCard
+                } ${
+                  BRAND_MOTION.softTransition
+                } ${
+                  active
+                    ? "border-cyan-300/30"
+                    : "hover:border-white/20"
+                }`}
+              >
+                <button
+                  type="button"
+                  onClick={() =>
+                    setOpen(active ? null : index)
+                  }
+                  className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left sm:px-7 sm:py-6"
                 >
-                  <button
-                    type="button"
-                    onClick={() => setOpen(active ? null : index)}
-                    className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left sm:px-7 sm:py-6"
-                  >
-                    <div className="flex items-start gap-3 sm:gap-4">
-                      <HelpCircle
-                        size={18}
-                        className={`mt-0.5 shrink-0 ${active ? "text-cyan-300" : "text-fuchsia-300"}`}
-                      />
-                      <span className="text-sm font-semibold leading-snug text-white sm:text-base">
-                        {item.question}
-                      </span>
-                    </div>
-                    <span
-                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors ${
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <HelpCircle
+                      size={18}
+                      className={`mt-0.5 shrink-0 ${
                         active
-                          ? "border-cyan-300/40 bg-cyan-300/10 text-cyan-300"
-                          : "border-white/15 bg-white/5 text-white/70"
+                          ? "text-cyan-300"
+                          : "text-fuchsia-300"
                       }`}
-                    >
-                      {active ? <Minus size={16} /> : <Plus size={16} />}
-                    </span>
-                  </button>
+                    />
 
-                  <div
-                    className={`grid transition-all duration-400 ease-in-out ${
-                      active ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                    <span className="text-sm font-semibold leading-snug text-white sm:text-base">
+                      {item.question}
+                    </span>
+                  </div>
+
+                  <span
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors ${
+                      active
+                        ? "border-cyan-300/40 bg-cyan-300/10 text-cyan-300"
+                        : "border-white/15 bg-white/5 text-white/70"
                     }`}
                   >
-                    <div className="overflow-hidden">
-                      <div className="border-t border-white/10 px-5 pb-6 pt-4 sm:px-7">
-                        <p className={`whitespace-pre-line ${BRAND_TEXT.cardBody}`}>
-                          {item.answer}
-                        </p>
-                      </div>
+                    {active ? (
+                      <Minus size={16} />
+                    ) : (
+                      <Plus size={16} />
+                    )}
+                  </span>
+                </button>
+
+                <div
+                  className={`grid transition-all duration-400 ease-in-out ${
+                    active
+                      ? "grid-rows-[1fr]"
+                      : "grid-rows-[0fr]"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="border-t border-white/10 px-5 pb-6 pt-4 sm:px-7">
+                      <p
+                        className={`whitespace-pre-line ${BRAND_TEXT.cardBody}`}
+                      >
+                        {item.answer}
+                      </p>
                     </div>
                   </div>
-                </motion.div>
-              );
-            })}
-          </div>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
-      </section>
-
-      <section className="relative mx-4 mb-24 overflow-hidden rounded-[2rem] border border-white/12 sm:mx-6 lg:mx-auto lg:max-w-5xl">
+      </div>
+    </section>
+    <section className="relative mx-4 mb-24 overflow-hidden rounded-[2rem] border border-white/12 sm:mx-6 lg:mx-auto lg:max-w-5xl">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: "url('/assets/jpg/bg_2.jpg')" }}
@@ -105,6 +183,6 @@ export default function FAQSection() {
           </Link>
         </div>
       </section>
-    </>
+      </>
   );
 }

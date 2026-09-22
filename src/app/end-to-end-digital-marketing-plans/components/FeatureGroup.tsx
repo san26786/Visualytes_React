@@ -34,9 +34,6 @@ export default function FeatureGroup({
       >
         {group.title}
       </h3>
-
-
-
       <ul
         className="
         grid
@@ -44,14 +41,10 @@ export default function FeatureGroup({
         gap-3
         "
       >
-
-
         {
           group.items?.map((item) => (
-
             <li
               key={item.name}
-
               className={`
               flex
               items-start

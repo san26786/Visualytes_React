@@ -4,11 +4,13 @@ import { BrandPageBackdrop } from "@/src/common/components/ui/brand/page-effects
 import { motion } from "framer-motion";
 import { CheckCircle2, Home } from "lucide-react";
 import Link from "next/link";
+import ConfirmPayment from "./ConfirmPayment";
 
 export default function PaymentSuccessPage() {
   return (
      <main className="relative overflow-hidden  min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-emerald-100 px-6">
           <BrandPageBackdrop />
+      <ConfirmPayment />
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}

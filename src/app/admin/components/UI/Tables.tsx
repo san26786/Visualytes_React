@@ -1,0 +1,1 @@
+export { Table } from "../../../admin-dashboard/components/UI/Table";

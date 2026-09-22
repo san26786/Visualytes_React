@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import type { PublicForm } from "@/src/lib/forms/types";
 import ContactForm from "./ContactForm";
 import LiveSupport from "./LiveSupport";
 import OfficeLocation from "./OfficeLocation";
@@ -11,7 +12,7 @@ import {
   sectionReveal,
 } from "@/src/common/components/ui/brand/page-effects";
 
-export default function Page() {
+export default function Page({ form }: { form: PublicForm }) {
   return (
     <main className="relative overflow-hidden bg-slate-950">
       <BrandPageBackdrop />
@@ -25,7 +26,7 @@ export default function Page() {
         </motion.div>
 
         <motion.div {...sectionReveal}>
-          <ContactForm />
+          <ContactForm form={form} />
         </motion.div>
 
         <motion.div {...sectionReveal}>

@@ -599,14 +599,12 @@
 import { useState } from "react";
 import { BrandPageBackdrop } from "@/src/common/components/ui/brand/page-effects";
 
-import { marketingPlans } from "./data/data";
-
 import type { MarketingPlan } from "./types";
 
 import MarketingHero from "./components/MarketingHero";
 import PlanCard from "./components/PlanCard";
 
-export default function MarketingPlansClient() {
+export default function MarketingPlansClient({ plans }: { plans: MarketingPlan[] }) {
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState("");
 
@@ -621,6 +619,7 @@ export default function MarketingPlansClient() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          id: plan.id,
           name: plan.name,
           productId: plan.productId,
         }),
@@ -693,7 +692,7 @@ export default function MarketingPlansClient() {
           items-stretch
           "
         >
-          {marketingPlans.map((plan: MarketingPlan, index: number) => (
+          {plans.map((plan: MarketingPlan, index: number) => (
             <PlanCard
               key={plan.name}
               plan={plan}

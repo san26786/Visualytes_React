@@ -1,4 +1,8 @@
+import { getPublicOffers } from "@/src/lib/packages/queries";
 import PackageWrapper from "./PackageWrapper";
+
+// Packages are managed in the admin dashboard, so always render fresh data.
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Packages | Visualytes Limited",
@@ -27,11 +31,6 @@ export const metadata = {
       "Explore Visualytes packages designed to deliver professional web development, software solutions, digital marketing, and technology services for businesses.",
   },
 };
-export default function Page() {
-
-
-  return (
-    <PackageWrapper/>
-   
-  );
+export default async function Page() {
+  return <PackageWrapper offers={await getPublicOffers()} />;
 }

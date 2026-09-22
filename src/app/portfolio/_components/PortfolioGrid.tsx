@@ -4,9 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { BRAND_HOVER } from "@/src/common/components/ui/brand/theme";
-
-import { PortfolioHeaderProps } from "./PortfolioHeader";
-import { categoryRoutes } from "./data/portfoliodata";
 import { useState } from "react";
 
 interface PortfolioItem {
@@ -14,8 +11,11 @@ interface PortfolioItem {
   title: string;
   category: string;
 }
+import {
+ categoryRoutes
+} from "./data/portfoliodata";
 
-interface Props extends PortfolioHeaderProps {
+interface Props {
   items: PortfolioItem[];
 }
 
@@ -43,14 +43,21 @@ export default function PortfolioGrid({
               }
               className={`group relative overflow-hidden rounded-3xl border border-white/15 bg-slate-900/80 shadow-[0_22px_60px_rgba(2,6,23,0.55)] backdrop-blur-xl ${BRAND_HOVER.card}`}
             >
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  width={800}
-                  height={600}
-                  className={`h-full w-full object-cover ${BRAND_HOVER.image}`}
-                />
+             <div className="relative overflow-hidden">
+  {item.image ? (
+    <Image
+      src={item.image}
+      alt={item.title}
+      width={600}
+      height={400}
+      className="w-full h-full object-cover"
+    />
+  ) : (
+    <div className="w-full h-[400px] bg-gray-100 flex items-center justify-center">
+      <span className="text-gray-400">No image available</span>
+    </div>
+  )}
+
                 <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                   <div className="px-6 text-center">
                     <Link

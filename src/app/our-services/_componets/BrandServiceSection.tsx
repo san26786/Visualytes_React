@@ -20,6 +20,7 @@ interface BrandServiceSectionProps {
   bottomTitle?: string;
   bottomDescription: string;
   reverse?: boolean;
+  pillLabel?: string;
 }
 
 function isNumberedHeading(text: string) {
@@ -36,6 +37,7 @@ export default function BrandServiceSection({
   bottomTitle,
   bottomDescription,
   reverse = false,
+  pillLabel = "Our Expertise",
 }: BrandServiceSectionProps) {
   const numberedBlocks: { heading: string; body: string[] }[] = [];
   let currentBlock: { heading: string; body: string[] } | null = null;
@@ -72,7 +74,7 @@ export default function BrandServiceSection({
               variants={popIn}
               className="inline-block rounded-full border border-cyan-300/30 bg-cyan-300/10 px-5 py-1.5 text-[11px] font-bold uppercase tracking-[0.3em] text-cyan-300"
             >
-              Our Expertise
+              {pillLabel}
             </motion.span>
 
             <motion.h2

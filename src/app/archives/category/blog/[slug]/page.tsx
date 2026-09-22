@@ -1,65 +1,48 @@
-"use client";
-
-import { use, useMemo, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+
 import BlogCard from "@/src/app/blog/_compoents/BlogCard";
-import { blogs } from "@/src/app/blog/_data/data";
 import BrandArchiveShell from "@/src/common/components/ui/brand/BrandArchiveShell";
 import { BRAND_GRADIENT } from "@/src/common/components/ui/brand/theme";
+import { getTopicName, listPublicCategories, listPublishedPosts } from "@/src/lib/blog/server";
 
 const POSTS_PER_PAGE = 6;
 
-const categorySlugLabels: Record<string, string> = {
-  blog: "Blog",
-  "custom-websites": "Custom Websites",
-  "web-design-blog": "Web Design",
-  "branding-blog": "Branding",
-  seo: "SEO",
-  "mobile-app": "Mobile App",
-  "e-commerce": "E-commerce",
-};
+const ACTIVE =
+  "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 text-white shadow-lg shadow-fuchsia-500/30";
+const IDLE =
+  "border border-white/15 bg-slate-900/80 text-slate-300 hover:border-cyan-300/40 hover:text-cyan-300";
+const ARROW =
+  "flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-slate-900/80 text-2xl font-semibold text-white transition-all";
 
-const allCategories = Array.from(
-  new Map(
-    blogs
-      .flatMap((post) => post.categories)
-      .map((cat) => [cat.slug, cat])
-  ).values()
-);
-
-export default function CategoryPage({
+export async function generateMetadata({
   params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = use(params);
-  const [currentPage, setCurrentPage] = useState(1);
+}: PageProps<"/archives/category/blog/[slug]">): Promise<Metadata> {
+  const name = await getTopicName((await params).slug);
+  return name ? { title: `${name} Articles | Visualytes Blog` } : {};
+}
 
-  const filteredBlogs = useMemo(() => {
-    return blogs.filter((post) =>
-      post.categories.some((cat) => cat.slug === slug)
-    );
-  }, [slug]);
+export default async function CategoryPage({
+  params,
+  searchParams,
+}: PageProps<"/archives/category/blog/[slug]">) {
+  const { slug } = await params;
+  const query = await searchParams;
+  const requestedPage = Number(typeof query.page === "string" ? query.page : 1) || 1;
 
-  const totalPages = Math.max(1, Math.ceil(filteredBlogs.length / POSTS_PER_PAGE));
-  const safePage = Math.min(Math.max(currentPage, 1), totalPages);
+  const [name, list, categories] = await Promise.all([
+    getTopicName(slug),
+    listPublishedPosts({ categorySlug: slug, page: requestedPage, pageSize: POSTS_PER_PAGE }),
+    listPublicCategories(),
+  ]);
+  if (!name) notFound();
 
-  const currentBlogs = useMemo(() => {
-    const start = (safePage - 1) * POSTS_PER_PAGE;
-    return filteredBlogs.slice(start, start + POSTS_PER_PAGE);
-  }, [filteredBlogs, safePage]);
-
-  const categoryName =
-    categorySlugLabels[slug] ??
-    filteredBlogs[0]?.categories.find(
-      (cat) => cat.slug === slug
-    )?.name ??
-    "Blog";
-
-  const titleParts = categoryName.split(" ");
-  const titleMain = titleParts.slice(0, -1).join(" ") || categoryName;
+  const { items, total, page, totalPages } = list;
+  const titleParts = name.split(" ");
+  const titleMain = titleParts.slice(0, -1).join(" ") || name;
   const titleAccent = titleParts.length > 1 ? titleParts.at(-1) : undefined;
+  const pageHref = (n: number) => (n > 1 ? `/archives/category/blog/${slug}?page=${n}` : `/archives/category/blog/${slug}`);
 
   return (
     <BrandArchiveShell
@@ -67,107 +50,82 @@ export default function CategoryPage({
       titleAccent={titleAccent}
       eyebrow=""
       subtitle="Discover insights, tips, and stories about design, development, and digital innovation."
-      breadcrumbs={[
-        { label: "Blog", href: "/blog" },
-        { label: categoryName },
-      ]}
+      breadcrumbs={[{ label: "Blog", href: "/blog" }, { label: name }]}
     >
       <section className="py-12 lg:py-20">
         <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
           <div className="mb-16 text-center">
             <span className="inline-block rounded-full border border-cyan-300/30 bg-cyan-300/10 px-5 py-1.5 text-[11px] font-bold uppercase tracking-[0.3em] text-cyan-300">
-              {filteredBlogs.length} Articles
+              {total} Articles
             </span>
             <h2 className="mt-5 text-[32px] font-bold text-white sm:text-[40px]">
-              Browse by{" "}
-              <span className={BRAND_GRADIENT.text}>Category</span>
+              Browse by <span className={BRAND_GRADIENT.text}>Category</span>
             </h2>
           </div>
 
           <div className="mb-12 flex flex-wrap justify-center gap-3">
-            <Link
-              href="/blog"
-              className="rounded-full border border-white/15 bg-slate-900/80 px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-slate-300 transition-all duration-300 hover:border-cyan-300/40 hover:text-cyan-300"
-            >
+            <Link href="/blog" className={`rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${IDLE}`}>
               All
             </Link>
-            {allCategories.map((cat) => {
-              const catSlug = cat.slug;
-              return (
-                <Link
-                  key={catSlug}
-                  href={`/archives/category/blog/${catSlug}`}
-                  className={`rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${
-                    catSlug === slug
-                      ? "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 text-white shadow-lg shadow-fuchsia-500/30"
-                      : "border border-white/15 bg-slate-900/80 text-slate-300 hover:border-cyan-300/40 hover:text-cyan-300"
-                  }`}
-                >
-                  {cat.name}
-                </Link>
-              );
-            })}
+            {categories.map((cat) => (
+              <Link
+                key={cat.slug}
+                href={`/archives/category/blog/${cat.slug}`}
+                className={`rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${
+                  cat.slug === slug ? ACTIVE : IDLE
+                }`}
+              >
+                {cat.name}
+              </Link>
+            ))}
           </div>
 
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-            {currentBlogs.map((post) => (
+            {items.map((post) => (
               <BlogCard key={post.id} {...post} />
             ))}
           </div>
 
-          {filteredBlogs.length === 0 && (
-            <p className="py-20 text-center text-lg text-slate-400">
-              No articles found in this category yet.
-            </p>
+          {items.length === 0 && (
+            <p className="py-20 text-center text-lg text-slate-400">No articles found in this category yet.</p>
           )}
 
           {totalPages > 1 && (
-            <nav className="mt-16 flex justify-center">
+            <nav aria-label="Category pages" className="mt-16 flex justify-center">
               <ul className="flex items-center gap-4">
                 <li>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                    disabled={safePage === 1}
-                    className="flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-slate-900/80 text-2xl font-semibold text-white transition-all disabled:cursor-not-allowed disabled:opacity-40 hover:border-cyan-300/40"
-                  >
-                    ‹
-                  </motion.button>
+                  {page > 1 ? (
+                    <Link href={pageHref(page - 1)} aria-label="Previous page" className={`${ARROW} hover:border-cyan-300/40`}>
+                      ‹
+                    </Link>
+                  ) : (
+                    <span className={`${ARROW} cursor-not-allowed opacity-40`}>‹</span>
+                  )}
                 </li>
-
                 {Array.from({ length: totalPages }).map((_, index) => {
-                  const page = index + 1;
+                  const number = index + 1;
                   return (
-                    <li key={page}>
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={() => setCurrentPage(page)}
+                    <li key={number}>
+                      <Link
+                        href={pageHref(number)}
+                        aria-current={page === number ? "page" : undefined}
                         className={`flex h-14 w-14 items-center justify-center rounded-full text-lg font-semibold transition-all duration-300 ${
-                          safePage === page
-                            ? "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 text-white shadow-lg shadow-fuchsia-500/30"
-                            : "border border-white/15 bg-slate-900/80 text-slate-300 hover:border-cyan-300/40 hover:text-cyan-300"
+                          page === number ? ACTIVE : IDLE
                         }`}
                       >
-                        {page}
-                      </motion.button>
+                        {number}
+                      </Link>
                     </li>
                   );
                 })}
-
                 <li>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() =>
-                      setCurrentPage((p) => Math.min(totalPages, p + 1))
-                    }
-                    disabled={safePage === totalPages}
-                    className="flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-slate-900/80 text-2xl font-semibold text-white transition-all disabled:cursor-not-allowed disabled:opacity-40 hover:border-cyan-300/40"
-                  >
-                    ›
-                  </motion.button>
+                  {page < totalPages ? (
+                    <Link href={pageHref(page + 1)} aria-label="Next page" className={`${ARROW} hover:border-cyan-300/40`}>
+                      ›
+                    </Link>
+                  ) : (
+                    <span className={`${ARROW} cursor-not-allowed opacity-40`}>›</span>
+                  )}
                 </li>
               </ul>
             </nav>

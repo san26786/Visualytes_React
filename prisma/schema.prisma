@@ -1,0 +1,425 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma-admin"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+enum BlogStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum PackageKind {
+  PACKAGE
+  PLAN
+}
+
+enum PurchaseStatus {
+  PENDING
+  PAID
+  EXPIRED
+  CANCELLED
+}
+
+model User {
+  id          Int              @id @default(autoincrement())
+  name        String
+  email       String           @unique
+  password    String
+  role        Role             @default(EDITOR)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  submissions FormSubmission[]
+  purchases   Purchase[]
+}
+
+model FormDefinition {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  title     String
+  fields    Json
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FormSubmission {
+  id        Int      @id @default(autoincrement())
+  formKey   String
+  name      String?
+  email     String?
+  data      Json
+  userId    Int?
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([formKey, createdAt])
+}
+
+model Package {
+  id            Int         @id @default(autoincrement())
+  name          String      @unique
+  kind          PackageKind @default(PACKAGE)
+  category      String
+  description   String?     @db.Text
+  price         Decimal     @db.Decimal(10, 2)
+  currency      String      @default("GBP")
+  billingPeriod String      @default("one-time")
+  durationDays  Int?
+  features      Json
+  // PLAN only: [{ title, items: [{ name, enabled, value? }] }]
+  groups        Json?
+  // PACKAGE only: shown as "Contact Us" instead of a price + checkout button
+  contactOnly   Boolean     @default(false)
+  productId     String?
+  sortOrder     Int         @default(0)
+  isActive      Boolean     @default(true)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  purchases     Purchase[]
+
+  @@index([kind, sortOrder])
+}
+
+model Purchase {
+  id              Int            @id @default(autoincrement())
+  packageId       Int
+  userId          Int?
+  customerName    String?
+  customerEmail   String?
+  amount          Decimal        @db.Decimal(10, 2)
+  currency        String         @default("GBP")
+  status          PurchaseStatus @default(PENDING)
+  stripeSessionId String?        @unique
+  startsAt        DateTime?
+  expiresAt       DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  package         Package        @relation(fields: [packageId], references: [id], onDelete: Restrict)
+  user            User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([customerEmail, status])
+}
+
+model SocialLink {
+  id        Int      @id @default(autoincrement())
+  platform  String   @unique
+  url       String
+  isActive  Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Portfolio {
+  id        String   @id @default(cuid())
+  title     String
+  category  String
+  image     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Blog {
+  id String @id @default(cuid())
+
+  // Basic blog information
+  title   String
+  slug    String @unique
+  blogKey String @unique
+
+  // Short description / excerpt
+  description String @db.Text
+
+  // Tiptap rich-text content stored as JSON string
+  content String? @db.LongText
+
+  // Optional generated HTML for frontend rendering
+  contentHtml String? @db.LongText
+
+  // Blog image
+  image    String
+  imageAlt String
+
+  // Author
+  authorName String
+
+  // Publishing
+  date DateTime @default(now())
+
+  // Metrics
+  views    Int @default(0)
+  likes    Int @default(0)
+  comments Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  categories BlogCategory[]
+}
+
+model Category {
+  id        String         @id @default(cuid())
+  name      String
+  slug      String         @unique
+  blogs     BlogCategory[]
+  posts     BlogPost[]
+  createdAt DateTime       @default(now())
+}
+
+// =========================================================================
+// Blog CMS: BlogPost (Tiptap JSON body) + Tag + MediaAsset.
+// Categories reuse the existing Category model above.
+// =========================================================================
+model MediaAsset {
+  id           String   @id @default(cuid())
+  url          String   @unique
+  fileName     String
+  originalName String
+  mimeType     String
+  size         Int
+  width        Int?
+  height       Int?
+  alt          String?
+  folder       String   @default("blog")
+  uploadedById Int?
+  createdAt    DateTime @default(now())
+
+  blogPosts BlogPost[] @relation("BlogFeaturedImage")
+
+  @@index([folder, createdAt])
+}
+
+// Byline names shown on posts. Separate from login accounts (User).
+model Author {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  createdAt DateTime   @default(now())
+  posts     BlogPost[]
+}
+
+model Tag {
+  id        String     @id @default(cuid())
+  name      String
+  slug      String     @unique
+  createdAt DateTime   @default(now())
+  posts     BlogPost[]
+}
+
+model BlogPost {
+  id      String @id @default(cuid())
+  title   String
+  slug    String @unique
+  excerpt String @db.Text
+
+  featuredImageId  String?
+  featuredImage    MediaAsset? @relation("BlogFeaturedImage", fields: [featuredImageId], references: [id], onDelete: SetNull)
+  featuredImageAlt String?
+
+  // Tiptap document (ProseMirror JSON) - the whole article body lives here.
+  content Json
+
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  tags       Tag[]
+
+  authorId String?
+  author   Author? @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  status      BlogStatus @default(DRAFT)
+  publishedAt DateTime?
+
+  views    Int @default(0)
+  likes    Int @default(0)
+  comments Int @default(0)
+
+  seoTitle       String?
+  seoDescription String? @db.Text
+  seoKeywords    Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, publishedAt])
+  @@index([categoryId])
+  @@index([authorId])
+}
+
+model BlogCategory {
+  blogId     String
+  categoryId String
+
+  blog     Blog     @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([blogId, categoryId])
+}
+
+model ContactPage {
+  id   String @id @default(cuid())
+  slug String @unique @default("contact-us")
+
+  hero        Json
+  contactInfo Json
+  liveSupport Json
+  contactForm Json
+  officeMap   Json
+  offices     Json
+
+  isPublished Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FAQ {
+  id        String  @id @default(cuid())
+  question  String  @db.Text
+  answer    String  @db.Text
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([sortOrder])
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  name      String
+  image     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Process {
+  id              String   @id @default(cuid())
+  title           String   @default("Our Process")
+  subtitle        String?
+  backgroundColor String   @default("#111827")
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  steps ProcessStep[]
+}
+
+model ProcessStep {
+  id        String @id @default(cuid())
+  processId String
+
+  title     String
+  text      String
+  image     String
+  color     String  @default("#ff4d7a")
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  process Process @relation(fields: [processId], references: [id], onDelete: Cascade)
+
+  @@index([processId])
+  @@index([sortOrder])
+}
+
+model CaseStudy {
+  id          String   @id @default(cuid())
+  title       String
+  category    String
+  image       String?
+  href        String?
+  accent      String?
+  tag         String?
+  description String?
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Testimonial {
+  id          String   @id @default(cuid())
+  image       String   @default("/assets/png/no-image.png")
+  name        String
+  designation String   @default("")
+  company     String?
+  review      String
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([sortOrder])
+}
+
+// =========================================================================
+// ENUM: Service Template Types
+// =========================================================================
+enum ServiceTemplate {
+  STANDARD_ARTICLE // Used for Corporate Branding, Hosting, QA, Maintenance, & new basic services
+  WEB_DESIGN // Rich layout with Experience Cards, Portfolio, Offers, Tech stack
+  DIGITAL_MARKETING // Rich layout with Sub-services, Outcomes, Pricing tiers
+  MOBILE_APP // Rich layout with Video, Awards, Case deliverables, FAQs
+  BESPOKE // Rich layout with Highlights, Segments, Products, Tech Stack
+  MODULAR_BUILDER // Fully custom drag-and-drop block sections for new admin-created services
+}
+
+// =========================================================================
+// MODEL: Service
+// =========================================================================
+model Service {
+  id              String  @id @default(cuid())
+  slug            String  @unique
+  name            String // e.g. "Website Designing"
+  tagline         String? // Short excerpt for the /our-services grid card
+  heroTitle       String? // "Corporate Branding" or "Website Designing"
+  heroTitleAccent String? // Highlighted word, e.g. "Branding"
+  heroSubtitle    String? @db.Text
+
+  // Card media displayed on the main /our-services listing page
+  cardImage String  @default("/assets/png/services/Website-designing-600x600.png")
+  route     String? // Custom route e.g. "/archives/services/web-design" or dynamic "/archives/services/[slug]"
+
+  // Template classification
+  template ServiceTemplate @default(STANDARD_ARTICLE)
+
+  // Dynamic Content (holds the specific fields matching the chosen template)
+  content Json
+
+  // Navigation, Sorting & Visibility
+  sortOrder  Int     @default(0)
+  isActive   Boolean @default(true)
+  isFeatured Boolean @default(false)
+
+  // SEO Metadata
+  metaTitle       String?
+  metaDescription String?  @db.Text
+  metaKeywords    Json? // ["web design London", "software company"]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([slug])
+  @@index([isActive])
+  @@index([sortOrder])
+}

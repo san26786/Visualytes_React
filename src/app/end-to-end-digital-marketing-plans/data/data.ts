@@ -1,6 +1,4 @@
-import type { MarketingPlan, PlanFeature, PlanFeatureGroup } from "../types";
-
-type RawPlan = Omit<MarketingPlan, "groups">;
+import type { MarketingPlan, PlanFeature, PlanFeatureGroup, RawMarketingPlan as RawPlan } from "../types";
 
 const rawPlans: RawPlan[] = [
   {

@@ -1,50 +1,36 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import Link from "next/link";
 import BlogCard from "../_compoents/BlogCard";
-import { blogs } from "../_data/data";
 import { motion } from "framer-motion";
-import {
-  BrandPageBackdrop,
-  sectionReveal,
-} from "@/src/common/components/ui/brand/page-effects";
+import { BrandPageBackdrop, sectionReveal } from "@/src/common/components/ui/brand/page-effects";
 import { BRAND_GRADIENT } from "@/src/common/components/ui/brand/theme";
+import type { PublicBlogCard } from "@/src/lib/blog/types";
 
-const allCategories = [
-  { name: "All", url: "/blog" },
-  ...Array.from(
-    new Map(
-      blogs
-        .flatMap((post) => post.categories)
-        .map((cat) => [cat.name, cat])
-    ).values()
-  ),
-];
+type Props = {
+  posts: PublicBlogCard[];
+  categories: { name: string; slug: string; postCount: number }[];
+  selectedCategory: string | null;
+  page: number;
+  totalPages: number;
+};
 
-export default function Page() {
-  const POSTS_PER_PAGE = 6;
+const ACTIVE =
+  "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 text-white shadow-lg shadow-fuchsia-500/30";
+const IDLE =
+  "border border-white/15 bg-slate-900/80 text-slate-300 hover:border-cyan-300/40 hover:text-cyan-300";
+const ARROW =
+  "flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-slate-900/80 text-2xl font-semibold text-white transition-all";
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState("All");
+function blogHref(category: string | null, page: number) {
+  const params = new URLSearchParams();
+  if (category) params.set("category", category);
+  if (page > 1) params.set("page", String(page));
+  const query = params.toString();
+  return query ? `/blog?${query}` : "/blog";
+}
 
-  const filteredBlogs = useMemo(() => {
-    if (selectedCategory === "All") return blogs;
-
-    return blogs.filter((post) =>
-      post.categories.some((cat) => cat.name === selectedCategory)
-    );
-  }, [selectedCategory]);
-
-  const totalPages = Math.max(1, Math.ceil(filteredBlogs.length / POSTS_PER_PAGE));
-
-  const safePage = Math.min(Math.max(currentPage, 1), totalPages);
-
-  const currentBlogs = useMemo(() => {
-    const start = (safePage - 1) * POSTS_PER_PAGE;
-    return filteredBlogs.slice(start, start + POSTS_PER_PAGE);
-  }, [filteredBlogs, safePage]);
-
+export default function BlogClient({ posts, categories, selectedCategory, page, totalPages }: Props) {
   return (
     <main className="relative overflow-hidden bg-slate-950">
       <BrandPageBackdrop />
@@ -58,7 +44,7 @@ export default function Page() {
 
             <ol className="relative z-10 mb-6 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.3em]">
               <li>
-                <Link href="/" className="text-cyan-300 hover:text-white transition-colors duration-200">
+                <Link href="/" className="text-cyan-300 transition-colors duration-200 hover:text-white">
                   Home
                 </Link>
               </li>
@@ -67,10 +53,7 @@ export default function Page() {
             </ol>
 
             <h1 className="relative z-10 max-w-3xl text-[52px] font-bold leading-[1.1] tracking-tight text-white sm:text-[64px] lg:text-[76px]">
-              Our{" "}
-              <span className={BRAND_GRADIENT.text}>
-                Blog
-              </span>
+              Our <span className={BRAND_GRADIENT.text}>Blog</span>
             </h1>
 
             <p className="relative z-10 mt-5 max-w-xl text-[17px] leading-relaxed text-slate-300">
@@ -95,81 +78,79 @@ export default function Page() {
               </div>
 
               <div className="mb-12 flex flex-wrap justify-center gap-3">
-                {allCategories.map((cat) => (
-                  <motion.button
-                    key={cat.name}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => {
-                      setSelectedCategory(cat.name);
-                      setCurrentPage(1);
-                    }}
-                    className={`px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${
-                      selectedCategory === cat.name
-                        ? "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 text-white shadow-lg shadow-fuchsia-500/30"
-                        : "border border-white/15 bg-slate-900/80 text-slate-300 hover:border-cyan-300/40 hover:text-cyan-300"
+                <Link
+                  href="/blog"
+                  className={`rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${
+                    selectedCategory ? IDLE : ACTIVE
+                  }`}
+                >
+                  All
+                </Link>
+                {categories.map((cat) => (
+                  <Link
+                    key={cat.slug}
+                    href={blogHref(cat.slug, 1)}
+                    className={`rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${
+                      selectedCategory === cat.slug ? ACTIVE : IDLE
                     }`}
                   >
                     {cat.name}
-                  </motion.button>
+                  </Link>
                 ))}
               </div>
 
-              <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-                {currentBlogs.map((post) => (
-                  <BlogCard key={post.id} {...post} />
-                ))}
-              </div>
+              {posts.length === 0 ? (
+                <p className="py-20 text-center text-lg text-slate-400">No articles published yet.</p>
+              ) : (
+                <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-3">
+                  {posts.map((post) => (
+                    <BlogCard key={post.id} {...post} />
+                  ))}
+                </div>
+              )}
 
-              <nav className="mt-16 flex justify-center">
-                <ul className="flex items-center gap-4">
-                  <li>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                      disabled={safePage === 1}
-                      className="flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-slate-900/80 text-white text-2xl font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:border-cyan-300/40 transition-all"
-                    >
-                      ‹
-                    </motion.button>
-                  </li>
+              {totalPages > 1 && (
+                <nav aria-label="Blog pages" className="mt-16 flex justify-center">
+                  <ul className="flex items-center gap-4">
+                    <li>
+                      {page > 1 ? (
+                        <Link href={blogHref(selectedCategory, page - 1)} aria-label="Previous page" className={`${ARROW} hover:border-cyan-300/40`}>
+                          ‹
+                        </Link>
+                      ) : (
+                        <span className={`${ARROW} cursor-not-allowed opacity-40`}>‹</span>
+                      )}
+                    </li>
 
-                  {Array.from({ length: totalPages }).map((_, index) => {
-                    const page = index + 1;
-                    return (
-                      <li key={page}>
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.97 }}
-                          onClick={() => setCurrentPage(page)}
-                          className={`flex h-14 w-14 items-center justify-center rounded-full text-lg font-semibold transition-all duration-300 ${
-                            safePage === page
-                              ? "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 text-white shadow-lg shadow-fuchsia-500/30"
-                              : "border border-white/15 bg-slate-900/80 text-slate-300 hover:border-cyan-300/40 hover:text-cyan-300"
-                          }`}
-                        >
-                          {page}
-                        </motion.button>
-                      </li>
-                    );
-                  })}
+                    {Array.from({ length: totalPages }).map((_, index) => {
+                      const number = index + 1;
+                      return (
+                        <li key={number}>
+                          <Link
+                            href={blogHref(selectedCategory, number)}
+                            aria-current={page === number ? "page" : undefined}
+                            className={`flex h-14 w-14 items-center justify-center rounded-full text-lg font-semibold transition-all duration-300 ${
+                              page === number ? ACTIVE : IDLE
+                            }`}
+                          >
+                            {number}
+                          </Link>
+                        </li>
+                      );
+                    })}
 
-                  <li>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={() =>
-                        setCurrentPage((p) => Math.min(totalPages, p + 1))
-                      }
-                      disabled={safePage === totalPages}
-                      className="flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-slate-900/80 text-white text-2xl font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:border-cyan-300/40 transition-all"
-                    >
-                      ›
-                    </motion.button>
-                  </li>
-                </ul>
-              </nav>
+                    <li>
+                      {page < totalPages ? (
+                        <Link href={blogHref(selectedCategory, page + 1)} aria-label="Next page" className={`${ARROW} hover:border-cyan-300/40`}>
+                          ›
+                        </Link>
+                      ) : (
+                        <span className={`${ARROW} cursor-not-allowed opacity-40`}>›</span>
+                      )}
+                    </li>
+                  </ul>
+                </nav>
+              )}
             </div>
           </section>
         </motion.div>

@@ -4,6 +4,8 @@ export type OfferFeature = {
 };
 
 export type Offer = {
+  /** Present when the offer comes from the database. */
+  id?: number;
   name: string;
   price: string;
   features: OfferFeature[];

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import BlogClient from "./_compoents/BlogClient";
+import { listPublicCategories, listPublishedPosts } from "@/src/lib/blog/server";
 
 
 export const metadata: Metadata = {
@@ -19,14 +20,9 @@ export const metadata: Metadata = {
   ],
 
   openGraph: {
-    title:
-      "Blog Archives - Website Design, SEO, Software Development Company",
-
-    description:
-      "Explore insights about website design, SEO, software development and digital innovation.",
-
+    title:"Blog Archives - Website Design, SEO, Software Development Company",
+    description:"Explore insights about website design, SEO, software development and digital innovation.",
     siteName: "Visualytes",
-
     type: "website",
 
     images: [
@@ -41,12 +37,8 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-
-    title:
-      "Blog Archives - Website Design, SEO, Software Development Company",
-
-    description:
-      "Read expert insights about web design, SEO, software development and digital innovation.",
+    title: "Blog Archives - Website Design, SEO, Software Development Company",
+    description: "Read expert insights about web design, SEO, software development and digital innovation.",
   },
 
   robots: {
@@ -61,6 +53,25 @@ export const metadata: Metadata = {
 };
 
 
-export default function Page() {
-  return <BlogClient />;
+const POSTS_PER_PAGE = 6;
+
+export default async function Page({ searchParams }: PageProps<"/blog">) {
+  const params = await searchParams;
+  const category = typeof params.category === "string" ? params.category : undefined;
+  const requestedPage = Number(typeof params.page === "string" ? params.page : 1) || 1;
+
+  const [list, categories] = await Promise.all([
+    listPublishedPosts({ categorySlug: category, page: requestedPage, pageSize: POSTS_PER_PAGE }),
+    listPublicCategories(),
+  ]);
+
+  return (
+    <BlogClient
+      posts={list.items}
+      categories={categories}
+      selectedCategory={category ?? null}
+      page={list.page}
+      totalPages={list.totalPages}
+    />
+  );
 }

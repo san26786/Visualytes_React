@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useState } from "react";
 // import BusinessContact, {
@@ -15,6 +16,8 @@ export default function LoginCard() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const [step, setStep] = useState(1);
 
@@ -31,18 +34,36 @@ export default function LoginCard() {
   ];
 
 
-  const handleLogin = () => {
-    const staticEmail = "admin@visualytes.com";
-    const staticPassword = "Admin@123";
+  const handleLogin = async () => {
+    setError("");
+    setIsSubmitting(true);
 
-    if (email === staticEmail && password === staticPassword) {
-      setError("");
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const result = (await response.json()) as {
+        message?: string;
+        role?: "ADMIN" | "EDITOR";
+      };
+
+      if (!response.ok || !result.role) {
+        setError(result.message ?? "Unable to sign in. Please try again.");
+        return;
+      }
+
+      if (result.role === "ADMIN") {
+        router.push("/admin-dashboard");
+        return;
+      }
+
       setStep(2);
-
-      // Or redirect if required
-      // window.location.href = "/seo-questionnaire";
-    } else {
-      setError("Invalid email or password");
+    } catch {
+      setError("Unable to sign in. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
   const [formData, setFormData] = useState<Record<string,string>>({
@@ -190,6 +211,7 @@ export default function LoginCard() {
 
               <button
                 onClick={handleLogin}
+                disabled={isSubmitting}
                 className="flex h-14 w-full items-center justify-center rounded-2xl bg-gradient-to-r from-violet-600 to-pink-500 font-semibold text-white shadow-lg transition hover:scale-[1.02]"
               >
                 Continue →

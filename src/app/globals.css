@@ -298,6 +298,41 @@ body {
 .blog-article-content li + li { margin-top: .6rem; }
 .blog-article-content img { height: auto; max-width: 100%; border-radius: 1rem; margin: 2rem auto; }
 .blog-article-content blockquote { border-left: 3px solid #22d3ee; color: #e2e8f0; font-size: 1.2rem; font-style: italic; padding-left: 1.25rem; }
+.blog-article-content h5,
+.blog-article-content h6 { color: #fff; font-weight: 700; line-height: 1.3; margin-top: 2rem; }
+.blog-article-content h5 { font-size: 1.15rem; }
+.blog-article-content h6 { font-size: 1rem; text-transform: uppercase; letter-spacing: .06em; }
+.blog-article-content code { background: rgba(148, 163, 184, .16); border-radius: .375rem; color: #f8fafc; font-size: .9em; padding: .12em .4em; }
+.blog-article-content pre { background: rgba(2, 6, 23, .7); border: 1px solid rgba(148, 163, 184, .2); border-radius: .875rem; overflow-x: auto; padding: 1rem 1.25rem; }
+.blog-article-content pre code { background: none; padding: 0; }
+.blog-article-content hr { border: 0; border-top: 1px solid rgba(148, 163, 184, .25); margin: 2.5rem 0; }
+.blog-article-content mark { border-radius: .25rem; color: #0f172a; padding: 0 .2em; background: #fde047; }
+.blog-article-content li > p { margin: 0; }
+
+/* Tiptap editor surface inside the admin Blog Editor (light theme). */
+.rte-content { color: #1e293b; font-size: 1rem; line-height: 1.75; }
+.rte-content > * + * { margin-top: 1rem; }
+.rte-content:focus { outline: none; }
+.rte-content h1, .rte-content h2, .rte-content h3, .rte-content h4, .rte-content h5, .rte-content h6 { color: #0f172a; font-weight: 700; line-height: 1.25; margin-top: 1.75rem; }
+.rte-content h1 { font-size: 2rem; }
+.rte-content h2 { font-size: 1.6rem; }
+.rte-content h3 { font-size: 1.3rem; }
+.rte-content h4 { font-size: 1.1rem; }
+.rte-content a { color: #0891b2; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.rte-content ul, .rte-content ol { padding-left: 1.5rem; }
+.rte-content ul { list-style: disc; }
+.rte-content ol { list-style: decimal; }
+.rte-content li + li { margin-top: .35rem; }
+.rte-content li > p { margin: 0; }
+.rte-content blockquote { border-left: 3px solid #22d3ee; color: #475569; font-style: italic; padding-left: 1rem; }
+.rte-content code { background: #f1f5f9; border-radius: .3rem; font-size: .9em; padding: .1em .35em; }
+.rte-content pre { background: #0f172a; border-radius: .75rem; color: #e2e8f0; overflow-x: auto; padding: .9rem 1.1rem; }
+.rte-content pre code { background: none; color: inherit; padding: 0; }
+.rte-content hr { border: 0; border-top: 1px solid #cbd5e1; margin: 1.75rem 0; }
+.rte-content mark { background: #fde047; border-radius: .2rem; padding: 0 .15em; }
+.rte-content img { border-radius: .75rem; display: block; height: auto; margin: 1.25rem auto; max-width: 100%; }
+.rte-content img.ProseMirror-selectednode { outline: 3px solid #06b6d4; outline-offset: 2px; }
+.rte-content p.is-editor-empty:first-child::before { color: #94a3b8; content: attr(data-placeholder); float: left; height: 0; pointer-events: none; }
 
 /* contact page form shimmer sweep */
 @keyframes shimmer {
@@ -336,5 +371,10 @@ body {
 
   to {
     width: 0%;
+  }
+}
+@layer components {
+  .input {
+    @apply w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-gray-400 focus:ring-2 focus:ring-gray-900/10;
   }
 }

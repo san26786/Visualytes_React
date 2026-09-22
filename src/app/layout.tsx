@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins, Roboto } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-import Mainheader from "../common/components/layouts/header/_component/Mainheader";
-import Footer from "../common/components/layouts/footer/_component/footer";
-import ScrollToTop from "../common/components/layouts/footer/_component/ScrollToTop";
+import ConditionalSiteChrome from "../common/components/layouts/ConditionalSiteChrome";
 // import LenisProvider from "../common/animations/LenisProvider";
 
 
@@ -73,9 +71,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${roboto.variable}`}
     >
       <body className={poppins.className}>
-        <Mainheader />
-
-        <main>
+        <ConditionalSiteChrome>
           {children}
           <Toaster
             position="top-right"
@@ -93,10 +89,7 @@ export default function RootLayout({
               error: { iconTheme: { primary: "#ef4444", secondary: "#fff" } },
             }}
           />
-          <ScrollToTop />
-        </main>
-
-        <Footer />
+        </ConditionalSiteChrome>
       </body>
     </html>
   );

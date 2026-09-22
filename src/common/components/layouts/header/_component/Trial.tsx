@@ -19,7 +19,7 @@ const ABOUT = [
   { label: "Our Team", href: "/team" },
   { label: "Our Process", href: "/our-process" },
   { label: "About", href: "/about" },
-  { label: "Clientele", href: "/clients" },
+  { label: "Clients", href: "/clients" },
   { label: "Testimonials", href: "/testimonials" },
   { label: "Case Studies", href: "/case-study" },
   { label: "Media & PR", href: "/media-and-pr" },

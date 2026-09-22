@@ -125,7 +125,7 @@ const navItems = [
       description: "Stories from our clients"
     },
     {
-      label: "Clientele",
+      label: "Clients",
       href: "/clients",
       icon: <Globe size={20} />,
       description: "Brands we collaborate with"
@@ -199,6 +199,14 @@ export default function Header() {
   const [hoveredNavItem, setHoveredNavItem] = useState<string | null>(null);
   const pathname = usePathname();
   // const isHome = pathname === "/";
+  // Close menus whenever the route changes (state adjusted during render, not in an effect).
+  const [lastPathname, setLastPathname] = useState(pathname);
+  if (lastPathname !== pathname) {
+    setLastPathname(pathname);
+    setHoveredNavItem(null);
+    setOpenSubMenu(null);
+    setMobileMenuOpen(false);
+  }
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -301,6 +309,10 @@ export default function Header() {
                       >
                         <Link
   href={item.href}
+   onClick={() => {
+    setHoveredNavItem(null);
+    setOpenSubMenu(null);
+  }}
   className={cn(
     `
     group/nav relative flex items-center gap-1
@@ -359,7 +371,8 @@ tracking-wide
     <motion.span
       className="relative z-10"
       animate={{ rotate: isHovered ? 90 : 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{  duration:0.22,
+    ease:[0.22,1,0.36,1] }}
     >
       <ChevronRight size={14} />
     </motion.span>
@@ -372,22 +385,37 @@ tracking-wide
                           <AnimatePresence>
                             {isHovered && (
                               <motion.div
-                                initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, y: 10, scale: 0.98 }}
-                                transition={{ duration: 0.3, ease: "easeOut" }}
-                             className="absolute left-1/2 top-full mt-4 -z-50 -translate-x-1/2 w-[min(1200px,calc(100vw-3rem))]" >
+initial={{
+    opacity:0,
+    y:8
+}}
+
+animate={{
+    opacity:1,
+    y:0
+}}
+
+exit={{
+    opacity:0,
+    y:6
+}}                                transition={{ duration: 0.3, ease: "easeOut" }}
+                             className="absolute left-0 top-full mt-4 -z-50 -translate-x-1/2 w-[min(1200px,calc(100vw-3rem))]" >
                                 <div className="bg-slate-950/95 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-[0_30px_80px_rgba(0,0,0,0.5)] overflow-hidden">
                                   <div className="grid grid-cols-12 gap-0">
                                     {/* Left Menu Items */}
                                     <div className="col-span-7 p-6 border-r border-gray/8">
                                       <div className="grid grid-cols-2 gap-4">
                                         {item.submenu.map((subItem, ) => (
-                                          <Link
-                                            key={subItem.label}
-                                            href={subItem.href}
-                                            className="group flex items-start gap-3 p-4 rounded-2xl hover:bg-white/30 transition-all duration-300"
-                                          >
+                                        <Link
+  key={subItem.label}
+  href={subItem.href}
+  onClick={() => {
+    setHoveredNavItem(null);
+    setOpenSubMenu(null);
+    setMobileMenuOpen(false);
+  }}
+  className="group flex items-start gap-3 p-4 rounded-2xl hover:bg-white/30 transition-all duration-300"
+>
                                             {"icon" in subItem && (
                                               <div className="mt-0.5 flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-pink-500/20 flex items-center justify-center text-cyan-300 group-hover:scale-110 transition-transform duration-300">
                                                 {subItem.icon}

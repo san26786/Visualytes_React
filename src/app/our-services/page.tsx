@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { getPublicServiceCards } from "@/src/lib/services/server";
 import ServicesClient from "./_componets/ServicesClient";
+
+export const dynamic = "force-dynamic";
 
 
 export const metadata: Metadata = {
@@ -56,6 +59,7 @@ export const metadata: Metadata = {
 };
 
 
-export default function Page() {
-  return <ServicesClient/>;
+export default async function Page() {
+  const services = await getPublicServiceCards();
+  return <ServicesClient services={services} />;
 }

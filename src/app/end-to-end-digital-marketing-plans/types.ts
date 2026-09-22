@@ -10,10 +10,19 @@ export interface PlanFeatureGroup {
 }
 
 export interface MarketingPlan {
+  /** Present when the plan comes from the database. */
+  id?: number;
   name: string;
   price: number;
   productId: string;
+  /** First group's items, shown in the card header. */
   keywords: PlanFeature[];
+  /** Every group (including the keywords one) shown in the feature list. */
+  groups: PlanFeatureGroup[];
+}
+
+/** Static seed shape: one array per category, turned into `groups` in data.ts. */
+export interface RawMarketingPlan extends Omit<MarketingPlan, "id" | "groups"> {
   contentMarketing: PlanFeature[];
   onPageSeo: PlanFeature[];
   offPageOptimization: PlanFeature[];
@@ -21,10 +30,7 @@ export interface MarketingPlan {
   adwordsManagement: PlanFeature[];
   reviewManagement: PlanFeature[];
   additionalInclusion: PlanFeature[];
-  /** Same features as above, grouped for display in PlanFeatures */
-  groups: PlanFeatureGroup[];
 }
- 
   
   
   export type MarketingGroup = {

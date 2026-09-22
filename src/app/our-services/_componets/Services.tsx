@@ -3,60 +3,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BRAND_HOVER,  } from "@/src/common/components/ui/brand/theme";
+import { BRAND_HOVER } from "@/src/common/components/ui/brand/theme";
 
-const services = [
-  {
-    title: "Website Designing",
-    image: "/assets/png/services/Website-designing-600x600.png",
-    href: "/archives/services/web-designing",
-    description: "Our creative web designers can read between the colours. Let the website design talk to your customers directly, while they easily navigate through your sales funnel.",
-  },
-  {
-    title: "Digital Marketing",
-    image: "/assets/png/services/Digital-header-600x600.jpg",
-    href: "/archives/services/digital-marketing",
-    description: "Performance marketing services are led by a team of professional digital marketers.",
-  },
-  {
-    title: "Mobile App Development",
-    image: "/assets/png/services/mobile-app-development.jpg-min-600x600.png",
-    href: "/archives/services/app-development",
-    description: "Launch a beast of a business in the app store and turn all the spotlight on your mobile app.",
-  },
-  {
-    title: "Corporate Branding",
-    image: "/assets/png/services/corporate-branding-min-600x600.png",
-    href: "/archives/services/corporate-branding",
-    description: "The first impression is indeed the last one and branding can boost conversion.",
-  },
-  {
-    title: "Bespoke Software",
-    image: "/assets/png/services/Bespoke-Software-Development-600x600.png",
-    href: "/archives/services/bespoke-software-branding",
-    description: "Do you have a business model in mind? Let's get it into the market.",
-  },
-  {
-    title: "Website Hosting Services",
-    image: "/assets/png/services/website-hosting-services-min-600x600.png",
-    href: "/archives/services/hosting-services",
-    description: "Reliable hosting services with advanced features to drive high traffic.",
-  },
-  {
-    title: "Quality Assurance",
-    image: "/assets/png/services/Quality-Assurance-min-600x600.png",
-    href: "/archives/services/quality-assurance",
-    description: "Experienced QA team capable of detecting flaws at an early stage.",
-  },
-  {
-    title: "Maintenance & Support",
-    image: "/assets/png/services/maintenance-and-support-1170x780-min-600x600.png",
-    href: "/archives/services/maintenance-and-support",
-    description: "Support your app or website and take it to the level you desire.",
-  },
-];
+export type ServiceCardItem = {
+  id: string;
+  name: string;
+  tagline: string;
+  cardImage: string;
+  href: string;
+};
 
-export default function ServicesPage() {
+export default function ServicesPage({ services }: { services: ServiceCardItem[] }) {
   return (
     <section className="py-12 lg:py-20">
       <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
@@ -69,7 +26,7 @@ export default function ServicesPage() {
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => (
             <motion.div
-              key={service.title}
+              key={service.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -79,8 +36,8 @@ export default function ServicesPage() {
               <div className="relative h-64 overflow-hidden">
                 <Image
                   fill
-                  src={service.image}
-                  alt={service.title}
+                  src={service.cardImage}
+                  alt={service.name}
                   className={`object-cover ${BRAND_HOVER.image}`}
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
@@ -88,11 +45,11 @@ export default function ServicesPage() {
 
               <div className="p-8">
                 <h3 className="mb-4 text-2xl font-bold text-white">
-                  {service.title}
+                  {service.name}
                 </h3>
 
                 <p className="mb-6 text-sm leading-relaxed text-slate-300 line-clamp-3">
-                  {service.description}
+                  {service.tagline}
                 </p>
 
                 <Link

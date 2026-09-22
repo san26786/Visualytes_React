@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
+import { CONTACT_FORM_KEY } from "@/src/lib/forms/defaults";
+import { getPublicForm } from "@/src/lib/forms/server";
 import ContactClient from "./_componets/ContactClient";
+
+// Form fields come from the database, so this page must not be statically cached.
+export const dynamic = "force-dynamic";
 
 
 export const metadata: Metadata = {
@@ -65,6 +70,7 @@ export const metadata: Metadata = {
 };
 
 
-export default function Page() {
-  return <ContactClient />;
+export default async function Page() {
+  const form = await getPublicForm(CONTACT_FORM_KEY);
+  return <ContactClient form={form} />;
 }

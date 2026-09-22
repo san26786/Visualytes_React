@@ -41,3 +41,12 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
+
+/src/generated/prisma
+
+# Prisma generated Windows query engine files
+src/generated/prisma-admin/query_engine-windows.dll.node
+src/generated/prisma-admin/query_engine-windows.dll.node.tmp*
+
+# Prisma generated client
+src/generated/prisma-admin/

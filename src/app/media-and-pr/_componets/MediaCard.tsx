@@ -87,15 +87,15 @@ export default function MediaCard({ item, index = 0 }: Props) {
             width={700}
             height={900}
             className="
-              aspect-[4/5]
-              w-full
-              object-cover
-              transition-all
-              duration-700
-              ease-out
-              group-hover:scale-110
-              group-hover:rotate-1
-              sm:aspect-[3/4]
+                      aspect-[4/5]
+                      w-full
+                      object-cover
+                      transition-all
+                      duration-700
+                      ease-out
+                      group-hover:scale-110
+                      group-hover:rotate-1
+                      sm:aspect-[3/4]             
             "
           />
 

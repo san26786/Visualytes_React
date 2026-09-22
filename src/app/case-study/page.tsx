@@ -5,7 +5,7 @@ export default function CaseStudyPage() {
   return (
     <BrandSubPageShell
       title="Case Studies"
-      eyebrow="Our Work"
+      eyebrow=""
       subtitle="Explore selected projects where strategy, design and development came together to deliver measurable results."
     >
       <CaseStudyGrid />
