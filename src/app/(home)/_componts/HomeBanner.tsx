@@ -22,12 +22,12 @@ const SLIDES = [
     button: [{
       text: "Get Started",
       href: "#get-started",
-      target: "_self",
-    }, {
-      text: "Get your seo score",
-      href: "#get-started",
-      target: "_self",
-    }
+      target: "_self",}
+    // }, {
+    //   text: "Get your seo score",
+    //   href: "#get-started",
+    //   target: "_self",
+    // }
     ],
   },
   // {
