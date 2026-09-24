@@ -57,7 +57,7 @@ export default function BrandServiceSection({
   );
 
   return (
-    <section className="pt-12 pb-24 lg:py-20">
+    <section className="overflow-x-clip pt-12 pb-24 lg:py-20">
       <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
         <div
           className={`grid items-start gap-12 lg:grid-cols-2 lg:gap-16 ${
@@ -69,6 +69,7 @@ export default function BrandServiceSection({
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
+            className="min-w-0 break-words"
           >
             <motion.span
               variants={popIn}
@@ -108,14 +109,15 @@ export default function BrandServiceSection({
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7, ease: "easeOut" }}
-            className="relative flex justify-center lg:justify-end"
+            className="relative flex min-w-0 justify-center lg:justify-end"
           >
-            <div className="relative">
-              <div className="pointer-events-none absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-cyan-500/20 via-fuchsia-500/15 to-pink-500/20 blur-2xl" />
+            {/* Explicit width: a shrink-wrapped wrapper collapses the fill image to 0px on mobile. */}
+            <div className="relative w-full max-w-[540px] lg:min-w-[420px]">
+              <div className="pointer-events-none absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-cyan-500/20 via-fuchsia-500/15 to-pink-500/20 blur-2xl sm:-inset-6" />
               <div
-                className={`relative overflow-hidden p-6 ${BRAND_SURFACE.glassCard} ${BRAND_HOVER.card}`}
+                className={`relative overflow-hidden p-4 sm:p-6 ${BRAND_SURFACE.glassCard} ${BRAND_HOVER.card}`}
               >
-                <div className="relative aspect-[4/3] w-full max-w-[540px] lg:min-w-[420px]">
+                <div className="relative aspect-[4/3] w-full">
                   <Image
                     src={image}
                     alt={title}
