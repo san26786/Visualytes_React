@@ -2,6 +2,7 @@ import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
 
 import { isAdmin } from "@/src/lib/admin";
+import { blobToken } from "@/src/lib/storage";
 
 export const runtime = "nodejs";
 
@@ -28,6 +29,7 @@ export async function POST(request: Request) {
     const result = await handleUpload({
       body,
       request,
+      token: blobToken(),
       onBeforeGenerateToken: async () => {
         if (!(await isAdmin())) throw new Error("Unauthorized");
         return {

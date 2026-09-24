@@ -13,7 +13,9 @@ import { del, put } from "@vercel/blob";
  *  - On Vercel the filesystem is read-only, so files go to Vercel Blob and the stored URL is the
  *    public https://…blob.vercel-storage.com URL.
  *
- * Override with UPLOAD_DRIVER=local|blob. Default: blob on Vercel, local everywhere else.
+ * Override with UPLOAD_DRIVER=local|blob. Default: blob whenever a Blob token is configured (on
+ * Vercel and locally), local disk otherwise. Local dev shares the production database, so a file
+ * written to this PC's public/uploads would be a broken link on the live site.
  */
 const PUBLIC_ROOT = path.join(process.cwd(), "public");
 const UPLOAD_ROOT = path.join(PUBLIC_ROOT, "uploads");
@@ -21,10 +23,18 @@ const UPLOAD_ROOT = path.join(PUBLIC_ROOT, "uploads");
 /** Default local paths that may be deleted (never anything outside public/). Callers narrow this. */
 const DELETABLE_PREFIXES = ["/uploads/"];
 
+/**
+ * Token for the *public* Blob store. BLOB_READ_WRITE_TOKEN belongs to a private store, which
+ * rejects `access: "public"` uploads, so the public store's token wins when both are set.
+ */
+export function blobToken(): string | undefined {
+  return process.env.PUBLIC_BLOB_READ_WRITE_TOKEN || process.env.BLOB_READ_WRITE_TOKEN || undefined;
+}
+
 export function uploadDriver(): "blob" | "local" {
   const forced = process.env.UPLOAD_DRIVER;
   if (forced === "blob" || forced === "local") return forced;
-  return process.env.VERCEL ? "blob" : "local";
+  return process.env.VERCEL || blobToken() ? "blob" : "local";
 }
 
 function isBlobUrl(url: string) {
@@ -48,6 +58,7 @@ export async function saveUpload({ folder, fileName, data, contentType }: SaveOp
       contentType,
       addRandomSuffix: false,
       allowOverwrite: false,
+      token: blobToken(),
     });
     return blob.url;
   }
@@ -71,7 +82,7 @@ export async function removeUpload(
 
   try {
     if (isBlobUrl(url)) {
-      await del(url);
+      await del(url, { token: blobToken() });
       return;
     }
 
