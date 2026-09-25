@@ -129,12 +129,7 @@ if (processData && !processData.isActive) {
     ease: [0.16, 1, 0.3, 1],
   }}
   className="relative overflow-hidden"
-  style={{
-    backgroundColor:
-      processData?.backgroundColor ?? "#111827",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-  }}
+ 
 >
         <div
           className="
@@ -147,30 +142,7 @@ if (processData && !processData.isActive) {
           "
           style={{ transform: "skewY(-3deg)" }}
         >
-          <motion.h2
-  initial={{
-    opacity: 0,
-    y: 80,
-    scale: 0.8,
-  }}
-  animate={
-    isInView
-      ? {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-        }
-      : {}
-  }
-  transition={{
-    duration: 0.9,
-    delay: 0.2,
-    type: "spring",
-  }}
-  className="text-center text-white text-5xl md:text-6xl font-light mb-10"
->
-  {processData?.title ?? "Our Process"}
-</motion.h2>
+        
 
           {/* =========================
               MOBILE
