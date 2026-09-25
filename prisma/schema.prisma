@@ -423,3 +423,27 @@ model Service {
   @@index([isActive])
   @@index([sortOrder])
 }
+
+/// Admin-editable definition of the client SEO questionnaire (steps, fields, settings) - one row, key "seo-questionnaire".
+model SeoQuestionnaireConfig {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  config    Json
+  updatedAt DateTime @updatedAt
+}
+
+/// Site-wide settings edited in the admin "Settings" tab (header phone, footer legal info, analytics...). One row, key "site".
+model SiteSettings {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  config    Json
+  updatedAt DateTime @updatedAt
+}
+
+/// Admin-editable content of simple pages (team, about, our story, media, sponsors, careers) - one row per page key.
+model PageContent {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  content   Json
+  updatedAt DateTime @updatedAt
+}
