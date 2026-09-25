@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import { MediaNews } from "./mediaData";
+import { isRemoteImage } from "@/src/lib/page-content/image";
 
 import {
   BRAND_MOTION,
@@ -84,6 +85,7 @@ export default function MediaCard({ item, index = 0 }: Props) {
           <Image
             src={item.image}
             alt={item.title}
+            unoptimized={isRemoteImage(item.image)}
             width={700}
             height={900}
             className="

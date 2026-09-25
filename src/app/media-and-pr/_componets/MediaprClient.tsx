@@ -1,22 +1,18 @@
 import BrandSubPageShell from "@/src/common/components/ui/brand/BrandSubPageShell";
 import MediaCard from "../_componets/MediaCard";
-import { mediaNews } from "../_componets/mediaData";
 import { BRAND_TEXT } from "@/src/common/components/ui/brand/theme";
+import type { MediaContent } from "@/src/lib/page-content/types";
 
-export default function MediaprClient() {
+export default function MediaprClient({ content }: { content: MediaContent }) {
   return (
-    <BrandSubPageShell
-      title="Media & PR"
-      eyebrow=""
-      subtitle="Stories and features highlighting Visualytes' community impact and digital innovation."
-    >
+    <BrandSubPageShell title={content.header.title} eyebrow={content.header.eyebrow} subtitle={content.header.subtitle}>
       <section className="px-4 pb-24 pt-4">
         <div className="mx-auto max-w-7xl">
           <div className="mb-16 text-center">
             <h2 className={BRAND_TEXT.sectionTitle}>
-              Visualytes{" "}
+              {content.heading.normal}{" "}
               <span className="bg-gradient-to-r from-cyan-300 via-fuchsia-300 to-pink-400 bg-clip-text text-transparent">
-                In The News
+                {content.heading.highlight}
               </span>
             </h2>
             <div className="mt-6 flex items-center justify-center gap-3">
@@ -27,8 +23,8 @@ export default function MediaprClient() {
           </div>
 
           <div className="space-y-10">
-            {mediaNews.map((item, index) => (
-              <MediaCard key={item.id} item={item} index={index} />
+            {content.items.map((item, index) => (
+              <MediaCard key={index} item={{ ...item, id: index + 1 }} index={index} />
             ))}
           </div>
         </div>

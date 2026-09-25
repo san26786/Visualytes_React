@@ -217,6 +217,17 @@ export function ContactPagePanel({
             }
           />
           <Input
+            label="WhatsApp Number"
+            hint="digits with country code · empty hides the button"
+            value={content.liveSupport.whatsappNumber ?? "447913027482"}
+            onChangeValue={(v) =>
+              patch("liveSupport", {
+                ...content.liveSupport,
+                whatsappNumber: v.replace(/[^d]/g, ""),
+              })
+            }
+          />
+          <Input
             label="Average Response Time"
             value={content.liveSupport.responseTimeValue}
             onChangeValue={(v) =>

@@ -1,4 +1,5 @@
 
+import { getPageContent } from "@/src/lib/page-content/server";
 import MediaprClient from "./_componets/MediaprClient";
 
 export const metadata = {
@@ -29,9 +30,9 @@ export const metadata = {
       "Stay updated with Visualytes company news, business insights, media updates, financial information, strategy, and public relations announcements.",
   },
 };
-export default function MediaPage() {
-  return (
-    <MediaprClient/>
-  );
+export default async function MediaPage() {
+  const content = await getPageContent("media-and-pr");
+
+  return <MediaprClient content={content} />;
 }
 
