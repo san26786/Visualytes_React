@@ -1,10 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   LayoutDashboard,
   Users,
+  ClipboardCheck,
+  FileText,
   ClipboardList,
+  Loader2,
+  LogOut,
   Package,
   MessageSquareQuote,
   Link2,
@@ -18,10 +22,8 @@ import {
   Sparkles,
   ChevronRight,
   ShieldCheck,
-  FileText,
   ImageIcon,
   ListChecks,
-  SearchCheck,
   Settings,
 } from "lucide-react";
 import { Tab } from "../../admin-dashboard/types/dashboard";
@@ -48,8 +50,8 @@ export const NAV_GROUPS: NavGroup[] = [
     title: "Content",
     items: [
       { id: "blogs", label: "Blog Posts", icon: BookOpen },
-      { id: "pages", label: "Pages", icon: FileText, badge: "Soon" },
       { id: "services", label: "Services", icon: Layers, badge: "Dynamic" },
+      { id: "page-content", label: "Page Content", icon: FileText },
       { id: "case-studies", label: "Case Studies", icon: BriefcaseBusiness },
       { id: "faqs", label: "FAQs", icon: HelpCircle },
       { id: "testimonials", label: "Testimonials", icon: MessageSquareQuote },
@@ -63,13 +65,10 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [{ id: "media", label: "Media Library", icon: ImageIcon }],
   },
   {
-    title: "SEO",
-    items: [{ id: "seo", label: "SEO Settings", icon: SearchCheck, badge: "Soon" }],
-  },
-  {
     title: "Forms & Sales",
     items: [
       { id: "forms", label: "Forms & Responses", icon: ClipboardList },
+      { id: "seo-questionnaire", label: "SEO Questionnaire", icon: ClipboardCheck, badge: "Dynamic" },
       { id: "packages", label: "Packages & Billing", icon: Package },
     ],
   },
@@ -80,7 +79,7 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     title: "Settings",
     items: [
-      { id: "settings", label: "Settings", icon: Settings, badge: "Soon" },
+      { id: "settings", label: "Settings", icon: Settings },
       { id: "contact-page", label: "Contact Content", icon: PhoneCall },
       { id: "social", label: "Social Links", icon: Link2 },
     ],
@@ -98,6 +97,18 @@ interface SidebarProps {
 }
 
 export function Sidebar({ tab, setTab, open, setOpen, adminName }: SidebarProps) {
+  const [signingOut, setSigningOut] = useState(false);
+
+  const signOut = async () => {
+    setSigningOut(true);
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } finally {
+      // Full navigation so no signed-in state survives; /seo-questionnaire shows the sign-in card.
+      window.location.href = "/seo-questionnaire";
+    }
+  };
+
   return (
     <>
       {/* Mobile Backdrop */}
@@ -226,6 +237,17 @@ export function Sidebar({ tab, setTab, open, setOpen, adminName }: SidebarProps)
                 </p>
               </div>
             </div>
+            <button
+              type="button"
+              onClick={signOut}
+              disabled={signingOut}
+              title="Sign out"
+              aria-label="Sign out"
+              className="ml-2 flex h-9 shrink-0 cursor-pointer items-center gap-1.5 rounded-lg border border-slate-800 px-2.5 text-[11px] font-semibold text-slate-300 transition hover:border-rose-500/40 hover:bg-rose-500/10 hover:text-rose-300 disabled:opacity-60"
+            >
+              {signingOut ? <Loader2 size={14} className="animate-spin" /> : <LogOut size={14} />}
+              <span>Sign out</span>
+            </button>
           </div>
         </div>
       </aside>

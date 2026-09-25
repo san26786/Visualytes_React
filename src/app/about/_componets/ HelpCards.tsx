@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { cards } from "./data";
+import type { AboutContent } from "@/src/lib/page-content/types";
+import { isRemoteImage } from "@/src/lib/page-content/image";
 import {
   BRAND_MOTION,
   BRAND_SURFACE,
@@ -28,7 +29,7 @@ const accents = [
   { border: "from-orange-400/40 to-amber-300/20", glow: "bg-orange-400/10",  tag: "text-orange-300", dot: "bg-orange-400" },
 ];
 
-export default function HelpCards() {
+export default function HelpCards({ content }: { content: AboutContent["help"] }) {
   return (
     <section className="relative px-4 pb-24 pt-10">
       <div className="mx-auto max-w-[1220px]">
@@ -37,19 +38,18 @@ export default function HelpCards() {
         <motion.div {...fadeUp(0)} className="mb-16 text-center">
           <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-lime-300/30 bg-lime-300/10 px-6 py-2 text-[11px] font-bold uppercase tracking-[0.3em] text-lime-300">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-lime-400" />
-            Our Services
+            {content.eyebrow}
           </span>
 
           <h2 className={`mt-5 ${BRAND_TEXT.sectionTitle} lg:text-6xl`}>
-            How Can We{" "}
+            {content.titleNormal}{" "}
             <span className="bg-gradient-to-r from-lime-300 via-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">
-              Help You?
+              {content.titleHighlight}
             </span>
           </h2>
 
           <p className={`mx-auto mt-5 max-w-2xl ${BRAND_TEXT.sectionBody}`}>
-            From websites to bespoke software, hardware and marketing — we cover
-            every aspect of your digital journey under one roof.
+            {content.description}
           </p>
 
           {/* decorative divider */}
@@ -62,7 +62,7 @@ export default function HelpCards() {
 
         {/* ── Cards grid ── */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {cards.map((card, index) => {
+          {content.cards.map((card, index) => {
             const accent = accents[index % accents.length];
             return (
               <motion.div
@@ -79,6 +79,7 @@ export default function HelpCards() {
                     src={card.image}
                     alt={card.title}
                     fill
+                    unoptimized={isRemoteImage(card.image)}
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   {/* dark gradient over image */}

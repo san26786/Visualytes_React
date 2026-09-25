@@ -7,7 +7,6 @@ import { Sidebar } from "../admin/components/Sidebar";
 import { OverviewPanel } from "../admin/components/OverviewPanel";
 import BlogPanel from "./panels/BlogPanel";
 import MediaLibraryPanel from "./panels/MediaLibraryPanel";
-import { PlaceholderPanel } from "./panels/PlaceholderPanel";
 import { PortfolioPanel } from "./panels/PortfolioPanel";
 import { UsersPanel } from "./panels/UsersPanel";
 import { FormsPanel } from "./panels/FormsPanel";
@@ -20,6 +19,9 @@ import FAQPanel from "./panels/FAQPanel";
 import ClientsPanel from "./panels/ClientsPanel";
 import ProcessPanel from "./panels/ProcessPanel";
 import ServicesPanel from "./panels/ServicesPanel";
+import SeoQuestionnairePanel from "./panels/SeoQuestionnairePanel";
+import PageContentPanel from "./panels/PageContentPanel";
+import { SettingsPanel } from "./panels/SettingsPanel";
 import { useAdminData } from "../admin/hooks/useAdminData";
 import { ToastProvider } from "./components/UI/Toast";
 import { X, CheckCircle2 } from "lucide-react";
@@ -103,6 +105,10 @@ function AdminDashboardContent({ adminName, initialTab }: { adminName: string; i
 
             {tab === "packages" && <PackagesPanel />}
 
+            {tab === "seo-questionnaire" && <SeoQuestionnairePanel />}
+
+            {tab === "page-content" && <PageContentPanel />}
+
             {tab === "social" && (
               <SocialPanel
                 links={data.socialLinks}
@@ -176,17 +182,7 @@ function AdminDashboardContent({ adminName, initialTab }: { adminName: string; i
 
             {tab === "media" && <MediaLibraryPanel />}
 
-            {tab === "pages" && (
-              <PlaceholderPanel title="Pages" description="Manage static site pages such as About, Team and Careers." />
-            )}
-
-            {tab === "seo" && (
-              <PlaceholderPanel title="SEO Settings" description="Site-wide metadata, sitemap and social sharing defaults." />
-            )}
-
-            {tab === "settings" && (
-              <PlaceholderPanel title="Settings" description="General site configuration." />
-            )}
+            {tab === "settings" && <SettingsPanel onOpenTab={setTab} />}
 
             {tab === "services" && <ServicesPanel />}
 

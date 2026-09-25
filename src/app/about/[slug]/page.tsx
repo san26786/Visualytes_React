@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import ServicePageBanner from "@/src/common/components/layouts/ServicePageBanner";
 import AboutSection from "../_componets/AboutSection";
-import { aboutPages } from "../_componets/data";
+import { getPageContent } from "@/src/lib/page-content/server";
 
 interface Props {
   params: Promise<{
@@ -12,7 +12,8 @@ interface Props {
 export default async function Page({ params }: Props) {
   const { slug } = await params;
 
-  const page = aboutPages[slug];
+  const { pages } = await getPageContent("about-pages");
+  const page = pages.find((item) => item.slug === slug);
 
   if (!page) {
     notFound();
@@ -40,7 +41,7 @@ export default async function Page({ params }: Props) {
         image={page.image}
         topDescription={page.topDescription}
         bullets={page.bullets}
-        bottomTitle={page.bottomTitle}
+        bottomTitle={page.bottomTitle || undefined}
         bottomDescription={page.bottomDescription}
       />
     </>

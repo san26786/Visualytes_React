@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import ScrollReveal from "../../our-services/_componets/ScrollReveal";
+import { isRemoteImage } from "@/src/lib/page-content/image";
 
 interface AboutSectionProps {
   title: string;
@@ -66,6 +67,7 @@ export default function AboutSection({
         src={image}
         alt={title}
         fill
+        unoptimized={isRemoteImage(image)}
         sizes="(max-width: 1024px) 100vw, 540px"
         className="object-contain"
       />

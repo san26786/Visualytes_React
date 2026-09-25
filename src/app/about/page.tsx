@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { ABOUT_FORM_KEY } from "@/src/lib/forms/defaults";
+import { getPublicForm } from "@/src/lib/forms/server";
+import { getPageContent } from "@/src/lib/page-content/server";
 import AboutBrandSection from "./_componets/AboutBrandSection";
 
 
@@ -67,6 +70,11 @@ export const metadata: Metadata = {
 };
 
 
-export default function Page() {
-  return <AboutBrandSection />;
+// Cached for an hour; any admin save clears it straight away (see api/admin/[...slug]/route.ts).
+export const revalidate = 3600;
+
+export default async function Page() {
+  const [content, form] = await Promise.all([getPageContent("about"), getPublicForm(ABOUT_FORM_KEY)]);
+
+  return <AboutBrandSection content={content} form={form} />;
 }

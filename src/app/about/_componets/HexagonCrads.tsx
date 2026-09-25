@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { features } from "./data";
+import type { AboutContent } from "@/src/lib/page-content/types";
+import { isRemoteImage } from "@/src/lib/page-content/image";
 import {
   BRAND_MOTION,
   BRAND_SURFACE,
@@ -43,33 +44,28 @@ const featureAccents = [
   },
 ];
 
-const narrative = [
-  "There are many website and IT companies out there, but Visualytes Ltd is in a unique position: a company that in a previous incarnation has been trusted by some of the largest banks, charities and retail businesses in the world, which is now focusing that experience solely on the needs and interests of SMEs.",
-  "With extensive contacts throughout the world, we have backing which ensures the stability of our services. We're not going anywhere (except forwards), and you can rely on us to offer a stable, long-lasting service for as long as you need us.",
-  "We offer all the services you'll require under one roof, and what we have now is just the start. Every day, we're searching, experimenting, innovating and learning in our quest to develop more and better solutions for SMEs.",
-  "\"All innovation begins with creative ideas.\" We at Visualytes Ltd are brimming over with creative ideas, and we're dedicated to applying those ideas to providing ongoing services for SMEs at a reasonable cost — so you can concentrate on what you do best.",
-];
 
-export default function HexagonCrads() {
+export default function HexagonCrads({ content }: { content: AboutContent["strengths"] }) {
+  const { features, narrative } = content;
+
   return (
     <section className="relative px-4 py-16 lg:py-20">
       <div className="mx-auto max-w-[1220px]">
         <motion.div {...fadeUp(0)} className="mb-14 text-center">
           <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-violet-300/30 bg-violet-300/10 px-6 py-2 text-[11px] font-bold uppercase tracking-[0.3em] text-violet-300">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-violet-400" />
-            Our Strengths
+            {content.eyebrow}
           </span>
 
           <h2 className={BRAND_TEXT.sectionTitle}>
-            What Makes Us{" "}
+            {content.titleNormal}{" "}
             <span className="bg-gradient-to-r from-orange-300 via-lime-300 to-violet-300 bg-clip-text text-transparent">
-              Different
+              {content.titleHighlight}
             </span>
           </h2>
 
           <p className={`mx-auto mt-5 max-w-2xl ${BRAND_TEXT.sectionBody}`}>
-            Four pillars that define how we partner with businesses and deliver
-            lasting value.
+            {content.subtitle}
           </p>
 
           <div className="mt-8 flex items-center justify-center gap-3">
@@ -99,6 +95,7 @@ export default function HexagonCrads() {
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    unoptimized={isRemoteImage(item.image)}
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-slate-950/10 via-slate-950/40 to-slate-950/95" />
                   <div className="absolute inset-0 ring-1 ring-inset ring-white/10" />

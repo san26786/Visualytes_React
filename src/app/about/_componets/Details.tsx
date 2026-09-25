@@ -1,53 +1,15 @@
+import type { AboutContent } from "@/src/lib/page-content/types";
 
-  const items = [
-    {
-      title: "Who We Are",
-      icon: "rt-icon2-user",
-      color: "#fff",
-      bg: "#A0CE4E",
-      content: (
-        <>
-          <p>
-            We are a team of San Diego web design and development professionals who love partnering with good people and businesses to help them achieve online success.
-          </p>
-  
-        </>
-      ),
-    },
-    {
-      title: "What We Do",
-      icon: "rt-icon2-diamond2",
-      color: "#fff",
-      bg: "#00bea3",
-  
-      content: (
-        <>
-          <p>
-            We’re focused on honing our crafts and bringing everything we have to the table for our clients. We create custom, functional websites focused on converting your users into customers.
-          </p>
-  
-  
-        </>
-      ),
-    },
-    {
-      title: "Why We Do It",
-      icon: "rt-icon2-like",
-      color: "#fff",
-      bg: "#F57C00",
-      content: (
-        <>
-          <p>
-            Each of us loves what we do and we feel that spirit helps translate into the quality of our work. Working with clients who love their work combines into a fun, wonderful partnership for everyone involved.
-          </p>
-  
-  
-        </>
-      ),
-    },
-  ];
-  
-export default function Details() {
+const PALETTE = ["#A0CE4E", "#00bea3", "#F57C00", "#784191", "#3B82C4", "#E85D12"];
+
+export default function Details({ content }: { content: AboutContent["details"] }) {
+  const items = content.items.map((item, index) => ({
+    ...item,
+    color: "#fff",
+    bg: PALETTE[index % PALETTE.length],
+    content: <p>{item.text}</p>,
+  }));
+
   return (
     <section className="relative overflow-visible py-16">
       <div className="mx-auto max-w-[1270px] px-[15px]">
