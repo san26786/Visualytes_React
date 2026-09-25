@@ -1,9 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { items } from "@/src/common/components/layouts/AboveFooter";
+import { buildContactCards } from "@/src/common/components/layouts/contactCards";
+import type { ContactContent } from "@/src/lib/contact-page";
 
-export default function PageHeader() {
+export default function PageHeader({ hero, contactInfo }: { hero: ContactContent["hero"]; contactInfo: ContactContent["contactInfo"] }) {
+  const items = buildContactCards(contactInfo);
+
   return (
     <section className="relative mt-[130px] overflow-hidden">
       {/* ── Hero band ── */}
@@ -26,15 +29,14 @@ export default function PageHeader() {
 
         {/* headline */}
         <h1 className="relative z-10 max-w-3xl text-[52px] font-bold leading-[1.1] tracking-tight text-white sm:text-[64px] lg:text-[76px]">
-          Let&apos;s{" "}
+          {hero.titleNormal}{" "}
           <span className="bg-gradient-to-r from-cyan-300 via-fuchsia-300 to-pink-400 bg-clip-text text-transparent">
-            Talk
+            {hero.titleHighlight}
           </span>
         </h1>
 
         <p className="relative z-10 mt-5 max-w-xl text-[17px] leading-relaxed text-slate-300">
-          We&apos;re always happy to hear from you — whether it&apos;s a new
-          project, a quick question, or just a hello.
+          {hero.subtitle}
         </p>
 
         {/* decorative line */}
@@ -50,7 +52,7 @@ export default function PageHeader() {
         <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
           {items.map((item) => (
             <div
-              key={item.title}
+              key={item.icon}
               className="group rounded-3xl border border-white/10 bg-slate-900/80 p-8 text-center shadow-[0_20px_60px_rgba(0,0,0,0.4)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:border-cyan-300/40 hover:shadow-cyan-500/10"
             >
               {/* icon */}

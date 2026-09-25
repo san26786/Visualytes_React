@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { motion, type BezierDefinition } from "framer-motion";
 import toast from "react-hot-toast";
+import type { ContactContent } from "@/src/lib/contact-page";
 import { emptyValues, type FormField, type PublicForm } from "@/src/lib/forms/types";
 
 const EASE: BezierDefinition = [0.22, 1, 0.36, 1];
@@ -36,7 +37,14 @@ function iconFor(field: FormField): LucideIcon {
   return Pencil;
 }
 
-export default function ContactForm({ form: definition }: { form: PublicForm }) {
+type ContactFormProps = {
+  form: PublicForm;
+  content: ContactContent["contactForm"] & { intro?: string };
+  /** Where the form posts. Defaults to the Contact page endpoint. */
+  endpoint?: string;
+};
+
+export default function ContactForm({ form: definition, content, endpoint = "/api/contact" }: ContactFormProps) {
   const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   const fields = definition.fields;
@@ -68,7 +76,7 @@ export default function ContactForm({ form: definition }: { form: PublicForm }) 
     setLoading(true);
 
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -129,15 +137,16 @@ export default function ContactForm({ form: definition }: { form: PublicForm }) 
           {...fadeUp(0)}
         >
           <span className="inline-block rounded-full border border-cyan-300/30 bg-cyan-300/10 px-5 py-1.5 text-[11px] font-bold uppercase tracking-[0.3em] text-cyan-300">
-            We Read Every Message
+            {content.badge}
           </span>
 
           <h2 className="mt-5 text-[38px] font-bold text-white sm:text-[46px]">
-            Send Your{" "}
+            {content.titleNormal}{" "}
             <span className="bg-gradient-to-r from-fuchsia-300 to-pink-400 bg-clip-text text-transparent">
-              Message
+              {content.titleHighlight}
             </span>
           </h2>
+          {content.intro && <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-relaxed text-slate-300">{content.intro}</p>}
         </motion.div>
 
 
@@ -278,7 +287,7 @@ export default function ContactForm({ form: definition }: { form: PublicForm }) 
                   className="relative overflow-hidden rounded-full bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-600 px-10 py-4 font-bold text-white shadow-lg shadow-fuchsia-500/30 transition-all duration-300 hover:shadow-fuchsia-500/50 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   <span className="relative z-10">
-                    {loading ? "Sending…" : "Send Message"}
+                    {loading ? "Sending…" : content.submitButtonText}
                   </span>
 
                   <span className="absolute inset-0 -translate-x-full animate-[shimmer_2.4s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
@@ -298,7 +307,7 @@ export default function ContactForm({ form: definition }: { form: PublicForm }) 
                   }}
                   className="rounded-full border border-cyan-400/50 bg-transparent px-10 py-4 font-bold text-cyan-300 transition-all duration-300 hover:border-cyan-400 hover:bg-cyan-400 hover:text-slate-950"
                 >
-                  Clear
+                  {content.clearButtonText}
                 </motion.button>
 
               </div>

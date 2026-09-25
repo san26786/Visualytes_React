@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { CONTACT_FORM_KEY } from "@/src/lib/forms/defaults";
 import { getPublicForm } from "@/src/lib/forms/server";
+import { getContactContent } from "@/src/lib/contact-page";
 import ContactClient from "./_componets/ContactClient";
 
-// Form fields come from the database, so this page must not be statically cached.
-export const dynamic = "force-dynamic";
+// Cached for an hour; any admin save clears it straight away (see api/admin/[...slug]/route.ts).
+export const revalidate = 3600;
 
 
 export const metadata: Metadata = {
@@ -71,6 +72,6 @@ export const metadata: Metadata = {
 
 
 export default async function Page() {
-  const form = await getPublicForm(CONTACT_FORM_KEY);
-  return <ContactClient form={form} />;
+  const [form, content] = await Promise.all([getPublicForm(CONTACT_FORM_KEY), getContactContent()]);
+  return <ContactClient form={form} content={content} />;
 }

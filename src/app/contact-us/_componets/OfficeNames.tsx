@@ -1,54 +1,22 @@
 "use client";
 
 import { BRAND_SURFACE, BRAND_TEXT } from "@/src/common/components/ui/brand/theme";
+import type { ContactContent } from "@/src/lib/contact-page";
 
-const officeData = [
-  {
-    title: "Delivery Centers",
-    locations: [
-      "Southampton, United Kingdom",
-      "London, United Kingdom",
-      "Mumbai, India",
-      "Ahmedabad, India",
-      "Kolkata, India",
-      "Noida, India",
-    ],
-  },
-  {
-    title: "Sales Offices",
-    locations: [
-      "London, United Kingdom",
-      "Mumbai, India",
-      "Texas, USA",
-      "Sydney, Australia",
-      "United Arab Emirates",
-      "Douglas, Isle of Man",
-    ],
-  },
-  {
-    title: "Corporate Offices",
-    locations: [
-      "London, United Kingdom",
-      "Basingstoke, United Kingdom",
-      "Mumbai, India",
-    ],
-  },
-];
-
-export default function OfficeNames() {
+export default function OfficeNames({ content }: { content: ContactContent["offices"] }) {
   return (
     <section className="bg-transparent pb-20 pt-14 md:pt-16">
       <div className="mx-auto max-w-7xl px-5">
         <div className="mb-10 text-center">
           <p className={`mb-3 ${BRAND_TEXT.sectionEyebrow}`}>
-            Global Presence
+            {content.badge}
           </p>
           <h2 className="text-3xl font-semibold text-white sm:text-4xl">
-            Offices Across Continents
+            {content.title}
           </h2>
         </div>
         <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
-          {officeData.map((office) => (
+          {content.groups.map((office) => (
             <div
               key={office.title}
               className={`${BRAND_SURFACE.mutedGlassCard} p-7`}
