@@ -1,6 +1,8 @@
 import { createDispatcher, type RouteEntry } from "@/src/server/dispatch";
 
+import { POST as aboutUsPOST } from "@/src/server/api/about-us/handlers";
 import { POST as authLoginPOST } from "@/src/server/api/auth/login/handlers";
+import { POST as authLogoutPOST } from "@/src/server/api/auth/logout/handlers";
 import { GET as blogGET } from "@/src/server/api/blog/handlers";
 import { GET as blogSlugGET } from "@/src/server/api/blog/[slug]/handlers";
 import { POST as blogSlugViewPOST } from "@/src/server/api/blog/[slug]/view/handlers";
@@ -12,6 +14,7 @@ import { POST as enquiryPOST } from "@/src/server/api/enquiry/handlers";
 import { POST as estimateProjectPOST } from "@/src/server/api/estimate-project/handlers";
 import { GET as faqsGET } from "@/src/server/api/faqs/handlers";
 import { POST as importPOST } from "@/src/server/api/import/handlers";
+import { POST as seoQuestionnairePOST } from "@/src/server/api/seo-questionnaire/handlers";
 import { GET as servicesGET } from "@/src/server/api/services/handlers";
 import { GET as servicesIdGET } from "@/src/server/api/services/[id]/handlers";
 import { GET as socialLinksGET } from "@/src/server/api/social-links/handlers";
@@ -24,7 +27,9 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const routes: RouteEntry[] = [
+  { method: "POST", segments: ["about-us"], handler: aboutUsPOST },
   { method: "POST", segments: ["auth", "login"], handler: authLoginPOST },
+  { method: "POST", segments: ["auth", "logout"], handler: authLogoutPOST },
   { method: "GET", segments: ["blog"], handler: blogGET },
   { method: "GET", segments: ["blog", ":slug"], handler: blogSlugGET },
   { method: "POST", segments: ["blog", ":slug", "view"], handler: blogSlugViewPOST },
@@ -36,6 +41,7 @@ const routes: RouteEntry[] = [
   { method: "POST", segments: ["estimate-project"], handler: estimateProjectPOST },
   { method: "GET", segments: ["faqs"], handler: faqsGET },
   { method: "POST", segments: ["import"], handler: importPOST },
+  { method: "POST", segments: ["seo-questionnaire"], handler: seoQuestionnairePOST },
   { method: "GET", segments: ["services"], handler: servicesGET },
   { method: "GET", segments: ["services", ":id"], handler: servicesIdGET },
   { method: "GET", segments: ["social-links"], handler: socialLinksGET },

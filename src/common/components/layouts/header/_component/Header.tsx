@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Logo from "../../../../../../public/assets/svg/Logo";
 import { usePathname } from "next/navigation";
@@ -24,6 +24,8 @@ import {
   Sparkles
 } from "lucide-react";
 import Image from "next/image";
+import ClientLoginButton from "./ClientLoginButton";
+import { useSiteData } from "../../SiteDataProvider";
 // Utility function for class merging (create if needed)
 
 
@@ -160,39 +162,9 @@ const navItems = [
   { label: "Client Login", href: "/seo-questionnaire" },
 ];
 
-// Magnetic Button Component
-function MagneticButton({ children, className }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef<HTMLButtonElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [, setIsHovering] = useState(false);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left - rect.width / 2) / 6;
-    const y = (e.clientY - rect.top - rect.height / 2) / 6;
-    setPosition({ x, y });
-  };
-
-  return (
-    <motion.button
-      ref={ref}
-      className={cn("relative cursor-pointer", className)}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => {
-        setIsHovering(false);
-        setPosition({ x: 0, y: 0 });
-      }}
-      animate={{ x: position.x, y: position.y }}
-      transition={{ type: "spring", stiffness: 150, damping: 20, mass: 0.1 }}
-    >
-      {children}
-    </motion.button>
-  );
-}
-
 export default function Header() {
+  const { settings } = useSiteData();
+  const phone = settings.contact;
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
@@ -579,26 +551,15 @@ exit={{
               {/* Right Section: Phone + CTA */}
               <div className="hidden lg:flex items-center gap-2">
                 <a
-                  href="tel:02380970305"
+                  href={`tel:${phone.phoneLink}`}
                   className="flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors"
                 >
                   <Phone size={16} className="text-cyan-400" />
-                  <span className="tracking-wide">+023 8097 0305</span>
+                  <span className="tracking-wide">{phone.phoneDisplay}</span>
                 </a>
 
-                {/* Premium CTA Button */}
-                <MagneticButton>
-                  <Link
-                    href="/seo-questionnaire"
-                    className="relative inline-flex items-center  px-7 py-3 rounded-full overflow-hidden bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-white text-xs font-bold uppercase tracking-[0.2em] shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 transition-all duration-300 mr-8"
-                  >
-                    <span className="relative z-10 flex items-center gap-2 ">
-                      Client Login
-                      <ArrowUpRight size={14} />
-                    </span>
-                    <span className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 opacity-0 hover:opacity-100 transition-opacity duration-500" />
-                  </Link>
-                </MagneticButton>
+                {/* CTA */}
+                <ClientLoginButton className="mr-8" />
               </div>
 
               {/* Mobile Menu Toggle */}
@@ -697,18 +658,22 @@ exit={{
                             </AnimatePresence>
                           </div>
                         ) : (
-                          <Link
-                            href={item.href}
-                            onClick={() => setMobileMenuOpen(false)}
-                            className={cn(
-                              "block py-4 text-lg font-medium transition-colors",
-                              item.label === "Client Login"
-                                ? "bg-gradient-to-r from-pink-500 to-purple-500 text-white px-4 rounded-xl mt-4"
-                                : "text-white hover:text-cyan-300"
-                            )}
-                          >
-                            {item.label}
-                          </Link>
+                          item.label === "Client Login" ? (
+                            <ClientLoginButton
+                              fullWidth
+                              className="mt-4"
+                              href={item.href}
+                              onNavigate={() => setMobileMenuOpen(false)}
+                            />
+                          ) : (
+                            <Link
+                              href={item.href}
+                              onClick={() => setMobileMenuOpen(false)}
+                              className="block py-4 text-lg font-medium text-white transition-colors hover:text-cyan-300"
+                            >
+                              {item.label}
+                            </Link>
+                          )
                         )}
                       </li>
                     ))}
@@ -718,7 +683,7 @@ exit={{
                 {/* Mobile Footer */}
                 <div className="p-6 border-t border-white/5">
                   <a
-                    href="tel:02380970305"
+                    href={`tel:${phone.phoneLink}`}
                     className="flex items-center gap-3 text-slate-300"
                   >
                     <div className="w-10 h-10 rounded-full bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
@@ -726,7 +691,7 @@ exit={{
                     </div>
                     <div>
                       <p className="text-xs uppercase tracking-wider text-slate-500">Call Us</p>
-                      <p className="font-medium">+023 8097 0305</p>
+                      <p className="font-medium">{phone.phoneDisplay}</p>
                     </div>
                   </a>
                 </div>

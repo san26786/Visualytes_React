@@ -1,3 +1,5 @@
+import { revalidateTag } from "next/cache";
+import { PORTFOLIO_TAG } from "@/src/lib/portfolio";
 import { prisma } from "@/src/lib/prisma";
 import { NextResponse } from "next/server";
 
@@ -24,6 +26,7 @@ export async function POST(req: Request) {
       skipDuplicates: true,
     });
 
+    revalidateTag(PORTFOLIO_TAG, { expire: 0 });
     return NextResponse.json({
       success: true,
       inserted: portfolio.length,

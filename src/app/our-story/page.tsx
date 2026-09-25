@@ -1,3 +1,4 @@
+import { getPageContent } from "@/src/lib/page-content/server";
 import StoryClient from "./_componets/StoryClient"
 export const metadata = {
   title: "Our Story | Visualytes - IT Solutions & Digital Innovation",
@@ -38,9 +39,9 @@ export const metadata = {
   },
 };
 
-export default function OurStoryPage() {
-  return (
-    <StoryClient />
-  );
+export default async function OurStoryPage() {
+  const content = await getPageContent("our-story");
+
+  return <StoryClient content={content} />;
 }
 

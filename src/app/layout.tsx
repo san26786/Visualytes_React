@@ -1,76 +1,81 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Poppins, Roboto } from "next/font/google";
+import { Poppins } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import ConditionalSiteChrome from "../common/components/layouts/ConditionalSiteChrome";
+import { SiteDataProvider } from "../common/components/layouts/SiteDataProvider";
+import { getSiteData } from "../lib/site/server";
 // import LenisProvider from "../common/animations/LenisProvider";
 
 
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["500", "600", "700","900"],
   variable: "--font-poppins",
 });
 
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["500"],
-  variable: "--font-roboto",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  // Title, description and the Search Console code are edited in Admin > Settings.
+  const { settings } = await getSiteData();
+  const { siteName, defaultTitle, defaultDescription } = settings.general;
+  const verification = settings.analytics.searchConsoleVerification;
 
-export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-  ),
+  return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
 
-  title: "Web Designing & Digital Marketing Company London-Visualytes",
-  description: "Visualytes",
+    title: defaultTitle,
+    description: defaultDescription,
 
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-    ],
-    apple: "/apple-touch-icon.png",
-  },
+    icons: {
+      icon: [{ url: "/favicon.ico", sizes: "any" }],
+      apple: "/apple-touch-icon.png",
+    },
 
-  openGraph: {
-    title: "Web Designing & Digital Marketing Company London-Visualytes",
-    description: "Visualytes",
-    url: "/",
-    siteName: "Visualytes",
-    locale: "en_GB",
-    type: "website",
-  },
+    ...(verification ? { verification: { google: verification } } : {}),
 
-  twitter: {
-    card: "summary_large_image",
-    title: "Web Designing & Digital Marketing Company London-Visualytes",
-    description: "Visualytes",
-  },
-};
+    openGraph: {
+      title: defaultTitle,
+      description: defaultDescription,
+      url: "/",
+      siteName,
+      locale: "en_GB",
+      type: "website",
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: defaultTitle,
+      description: defaultDescription,
+    },
+  };
+}
 
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const site = await getSiteData();
+  const analyticsId = site.settings.analytics.googleAnalyticsId;
+
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${roboto.variable}`}
+      className={poppins.variable}
     >
       <body className={poppins.className}>
+        {analyticsId && (
+          <>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`} strategy="afterInteractive" />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', '${analyticsId}');`}
+            </Script>
+          </>
+        )}
+        <SiteDataProvider value={site}>
         <ConditionalSiteChrome>
           {children}
           <Toaster
@@ -90,6 +95,7 @@ export default function RootLayout({
             }}
           />
         </ConditionalSiteChrome>
+        </SiteDataProvider>
       </body>
     </html>
   );

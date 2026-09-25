@@ -1,7 +1,7 @@
 import type { FormField } from "@/src/lib/forms/types";
 import type { AdminPackage, AdminPurchase } from "@/src/lib/packages/types";
 
-export const TABS = ["overview", "users", "forms", "packages", "social", "portfolio", "blogs", "services", "contact-page", "faqs", "clients", "process", "case-studies", "testimonials", "pages", "media", "seo", "settings"] as const;
+export const TABS = ["overview", "users", "forms", "seo-questionnaire", "packages", "social", "portfolio", "blogs", "services", "contact-page", "faqs", "clients", "process", "case-studies", "testimonials", "page-content", "media", "settings"] as const;
 export type Tab = (typeof TABS)[number];
 export type User = { 
   id: number; 
@@ -86,6 +86,7 @@ export interface ContactPageContent {
     whatsappButtonText: string;
     whatsappNote: string;
     image: string;            // uploaded image url
+    whatsappNumber?: string;  // digits with country code, e.g. 447913027482
     availabilityLabel: string; // "AVAILABLE"
     availabilityValue: string; // "24/7"
     responseTimeLabel: string; // "RESPONSE TIME"

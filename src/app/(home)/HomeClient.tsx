@@ -7,18 +7,19 @@ import HomeWrapper from "./HomeWrapper";
 
 export default function HomeClient() {
 
-  const [started, setStarted] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
 
 
+  // The page renders (and server-renders) straight away; the intro plays as an overlay on top of it.
   return (
     <>
-      {!started && (
+      {!introDone && (
         <IntroLoader
-          onComplete={() => setStarted(true)}
+          onComplete={() => setIntroDone(true)}
         />
       )}
 
-      {started && <HomeWrapper />}
+      <HomeWrapper />
     </>
   );
 }

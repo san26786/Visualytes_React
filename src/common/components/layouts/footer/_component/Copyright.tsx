@@ -2,7 +2,11 @@
 
 import { motion } from "framer-motion";
 
+import { useSiteData } from "../../SiteDataProvider";
+
 const Copyright = () => {
+  const { settings } = useSiteData();
+
   return (
     <section className="relative bg-[#075783] border-t border-white/5">
       {/* Decorative gradient line */}
@@ -17,9 +21,9 @@ const Copyright = () => {
         >
           <p className="text-sm font-medium tracking-widest uppercase text-white">
             <span className="bg-gradient-to-r from-cyan-300 via-pink-300 to-purple-300 bg-clip-text text-transparent">
-              © Copyright 2026
+              © Copyright {new Date().getFullYear()}
             </span>{" "}
-            All Rights Reserved by Visualytes Limited
+            {settings.footer.copyrightText}
           </p>
         </motion.div>
       </div>

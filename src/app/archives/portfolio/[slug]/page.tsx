@@ -1,11 +1,8 @@
 import { notFound } from "next/navigation";
 import PortfolioShowcase from "../../../portfolio/_components/PortfolioShowcase";
 import BrandArchiveShell from "@/src/common/components/ui/brand/BrandArchiveShell";
-import {
-  portfolio,
-  allOnlyPortfolio,
-  slugMap,
-} from "../../../portfolio/_components/data/portfoliodata";
+import { getPortfolioItems } from "@/src/lib/portfolio";
+import { slugMap } from "../../../portfolio/_components/data/portfoliodata";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -18,7 +15,7 @@ export default async function Page({ params }: Props) {
 
   if (!category) notFound();
 
-  const items = [...portfolio, ...allOnlyPortfolio].filter(
+  const items = (await getPortfolioItems()).filter(
     (item) => item.category === category
   );
 

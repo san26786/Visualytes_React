@@ -54,7 +54,8 @@ export async function listForms() {
   for (const [key, def] of Object.entries(DEFAULT_FORMS)) {
     await prisma.formDefinition.upsert({ where: { key }, create: { key, title: def.title, fields: def.fields }, update: {} });
   }
-  const rows = await prisma.formDefinition.findMany({ orderBy: { id: "asc" } });
+  // The SEO questionnaire has its own tab (SEO Questionnaire); an old definition row for it must not show here.
+  const rows = await prisma.formDefinition.findMany({ where: { key: { not: "seo-questionnaire" } }, orderBy: { id: "asc" } });
   return Promise.all(
     rows.map(async (row) => {
       const fields = upgradeLegacy(row.key, row.fields);

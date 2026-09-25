@@ -12,39 +12,8 @@ import {
   BRAND_TEXT,
 } from "@/src/common/components/ui/brand/theme";
 import toast from "react-hot-toast";
-const jobs = [
-  {
-    icon: "/assets/png/info_icon_1.png",
-    title: "Lead Developer",
-    desc: "A passionate leader and team player",
-  },
-  {
-    icon: "/assets/png/info_icon_2.png",
-    title: "Mobile Developer",
-    desc: "Self-motivated with a strong sense of ownership",
-  },
-  {
-    icon: "/assets/png/info_icon_3.png",
-    title: "Team Leader",
-    desc: "A QA Team leader with at least 5 years' experience",
-  },
-  {
-    icon: "/assets/png/info_icon_4.png",
-    title: "Product Designer",
-    desc: "Designer with 3 years' experience in UX",
-  },
-  {
-    icon: "/assets/png/info_icon_5.png",
-    title: "Head of Marketing",
-    desc: "Close-to-numbers individual with a passion for products",
-  },
-  {
-    icon: "/assets/png/info_icon_6.png",
-    title: "Office Manager",
-    desc: "A service-oriented go-getter with 3+ years' experience",
-  },
-];
-
+import type { CareersContent } from "@/src/lib/page-content/types";
+import { isRemoteImage } from "@/src/lib/page-content/image";
 const accents = [
   "group-hover:border-cyan-300/40",
   "group-hover:border-fuchsia-300/40",
@@ -57,7 +26,9 @@ const accents = [
 const inputClass =
   "h-14 w-full rounded-2xl border border-white/10 bg-slate-900/60 px-5 text-sm text-white placeholder:text-slate-500 outline-none transition-colors focus:border-cyan-300/40 sm:h-16 sm:px-6";
 
-export default function CareersClient() {
+export default function CareersClient({ content }: { content: CareersContent }) {
+  const { jobs } = content;
+
   const [resume, setResume] = useState<File | null>(null);
   const [captchaToken, setCaptchaToken] = useState<string>("");
   const recaptchaRef = useRef<ReCAPTCHA>(null);
@@ -157,9 +128,9 @@ export default function CareersClient() {
 
   return (
     <BrandSubPageShell
-      title="Careers"
-      eyebrow="Join Our Team"
-      subtitle="Build meaningful digital products with a passionate team. Submit your application and we'll be in touch when a role opens up."
+      title={content.header.title}
+      eyebrow={content.header.eyebrow}
+      subtitle={content.header.subtitle}
     >
       <section className="px-4 pb-12 pt-4">
         <div className="mx-auto max-w-7xl">
@@ -177,6 +148,7 @@ export default function CareersClient() {
                   <Image
                     src={job.icon}
                     alt={job.title}
+                    unoptimized={isRemoteImage(job.icon)}
                     width={40}
                     height={40}
                     className="object-contain brightness-0 invert opacity-80 transition-all duration-300 group-hover:opacity-100 group-hover:brightness-100 group-hover:invert-0"
@@ -192,17 +164,19 @@ export default function CareersClient() {
 
       <section className="px-4 pb-24 pt-4">
         <div className="mx-auto max-w-7xl">
+          {content.notice && (
           <div className="mb-8 overflow-hidden rounded-2xl border border-fuchsia-300/20 bg-fuchsia-300/5">
             <div className="animate-marquee whitespace-nowrap py-3 text-center text-sm font-medium text-fuchsia-200">
-              Currently we do not have any vacancies. Please fill out the form below — we&apos;ll update you when roles become available.
+              {content.notice}
             </div>
           </div>
+          )}
 
           <div className={`p-6 sm:p-10 ${BRAND_SURFACE.sectionWrap}`}>
             <div className="mb-8 text-center">
-              <h2 className={BRAND_TEXT.sectionTitle}>Apply Now</h2>
+              <h2 className={BRAND_TEXT.sectionTitle}>{content.formTitle}</h2>
               <p className={`mt-3 ${BRAND_TEXT.sectionBody}`}>
-                Share your details and we&apos;ll keep your profile on file for future opportunities.
+                {content.formIntro}
               </p>
             </div>
 

@@ -7,7 +7,13 @@ import { getTemplate } from "@/src/lib/services/sections/templates";
 
 import { ServiceSections } from "../_sections/renderers";
 
-export const dynamic = "force-dynamic";
+// Cached for an hour; any admin save clears it straight away (see api/admin/[...slug]/route.ts).
+export const revalidate = 3600;
+
+// Nothing prerendered at build; each service page is cached on its first visit.
+export function generateStaticParams() {
+  return [];
+}
 
 interface PageProps {
   params: Promise<{ slug: string }>;

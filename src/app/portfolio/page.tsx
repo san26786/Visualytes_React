@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import PortfolioClient from "./_components/PortfolioClient";
-import { getPortfolio } from "./lib/api/portfolio";
+import { getPortfolioItems } from "@/src/lib/portfolio";
 
 
 export const metadata: Metadata = {
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
 
 
 export default async function Page() {
-    const portfolioData = await getPortfolio();
+    const portfolioData = await getPortfolioItems();
 
   return <PortfolioClient 
       portfolioData={portfolioData}

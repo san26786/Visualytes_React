@@ -1,3 +1,4 @@
+import { getPageContent } from "@/src/lib/page-content/server";
 import TeamClient from "./TeamClient";
 export const metadata = {
   title: "Team | Website Design, SEO & Software Development Experts",
@@ -26,9 +27,9 @@ export const metadata = {
       "Meet the Visualytes team led by Founder Nagendra Mishra. We deliver high-quality website design, SEO, and software development solutions for businesses.",
   },
 };
-export default function OurStoryPage() {
-  return (
-    <TeamClient />
-  );
+export default async function OurStoryPage() {
+  const content = await getPageContent("team");
+
+  return <TeamClient content={content} />;
 }
 

@@ -1,23 +1,30 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import SponsorDetailClient from "../SponsorDetailClient";
-import { sponsorContentById } from "../sponsor-content";
-import { getSponsorship, sponsorships } from "../sponsor-data";
+import { getPageContent } from "@/src/lib/page-content/server";
+import { toSponsorships } from "../sponsor-view";
 
-export function generateStaticParams() {
-  return sponsorships.map(({ id }) => ({ slug: id }));
+async function findSponsor(slug: string) {
+  const { items } = await getPageContent("sponsors");
+  const index = items.findIndex((item) => item.id === slug);
+  return index < 0 ? null : { sponsor: toSponsorships(items)[index], html: items[index].content };
+}
+
+export async function generateStaticParams() {
+  const { items } = await getPageContent("sponsors");
+  return items.map(({ id }) => ({ slug: id }));
 }
 
 export async function generateMetadata({ params }: PageProps<"/we-sponsor/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const sponsor = getSponsorship(slug);
-  return sponsor ? { title: `${sponsor.title} | We Sponsor`, description: sponsor.detail } : {};
+  const found = await findSponsor(slug);
+  return found ? { title: `${found.sponsor.title} | We Sponsor`, description: found.sponsor.detail } : {};
 }
 
 export default async function SponsorDetailPage({ params }: PageProps<"/we-sponsor/[slug]">) {
   const { slug } = await params;
-  const sponsor = getSponsorship(slug);
-  if (!sponsor) notFound();
+  const found = await findSponsor(slug);
+  if (!found) notFound();
 
-  return <SponsorDetailClient sponsor={sponsor} contentHtml={sponsorContentById[sponsor.postId] || `<p>${sponsor.detail}</p>`} />;
+  return <SponsorDetailClient sponsor={found.sponsor} contentHtml={found.html || `<p>${found.sponsor.detail}</p>`} />;
 }

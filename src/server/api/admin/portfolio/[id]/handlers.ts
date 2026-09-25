@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
+import { PORTFOLIO_TAG } from "@/src/lib/portfolio";
 import { prisma } from "@/src/lib/prisma";
 
 interface Props {
@@ -50,6 +52,7 @@ export async function PATCH(
     },
   });
 
+  revalidateTag(PORTFOLIO_TAG, { expire: 0 });
   return NextResponse.json(portfolio);
 }
 
@@ -65,6 +68,7 @@ export async function DELETE(
     },
   });
 
+  revalidateTag(PORTFOLIO_TAG, { expire: 0 });
   return NextResponse.json({
     success: true,
   });

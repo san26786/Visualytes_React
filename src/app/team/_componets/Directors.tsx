@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { directors } from "./data";
+import { isRemoteImage } from "@/src/lib/page-content/image";
+import type { TeamContent } from "@/src/lib/page-content/types";
 import { BRAND_SURFACE, BRAND_TEXT } from "@/src/common/components/ui/brand/theme";
 
-export default function Directors() {
+export default function Directors({ content }: { content: TeamContent["directors"] }) {
   return (
     <section className="px-4 py-10">
       <div className="mx-auto max-w-[1220px]">
@@ -15,17 +16,17 @@ export default function Directors() {
           viewport={{ once: true }}
           className="mb-10 text-center"
         >
-          <p className={BRAND_TEXT.sectionEyebrow}>Leadership</p>
+          <p className={BRAND_TEXT.sectionEyebrow}>{content.eyebrow}</p>
           <h2 className={`mt-3 ${BRAND_TEXT.sectionTitle}`}>
-            Meet the{" "}
+            {content.titleNormal}{" "}
             <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">
-              Directors
+              {content.titleHighlight}
             </span>
           </h2>
         </motion.div>
 
         <div className="flex flex-wrap justify-center gap-8">
-          {directors.map((item, index) => (
+          {content.items.map((item, index) => (
             <motion.article
               key={index}
               initial={{ opacity: 0, y: 30 }}
@@ -41,6 +42,7 @@ export default function Directors() {
                   fill
                   className="object-contain transition-transform duration-500 group-hover:scale-105"
                   sizes="300px"
+                  unoptimized={isRemoteImage(item.image)}
                 />
             
               </div>

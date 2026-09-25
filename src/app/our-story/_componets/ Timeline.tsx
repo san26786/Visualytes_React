@@ -4,47 +4,11 @@ import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { BRAND_SURFACE, BRAND_TEXT } from "@/src/common/components/ui/brand/theme";
+import type { StoryContent } from "@/src/lib/page-content/types";
 
-const timeline = [
-  {
-    year: "2009",
-    text: "Founded our first proprietary company Geecon Global in UK",
-  },
-  {
-    year: "2011",
-    text: "Registered Geecon Systems as a Private Limited Company in India as a first Delivery Center with Team Size of 6",
-  },
-  {
-    year: "2012",
-    text: "Registered Geecon Global as a Private Limited Company in UK and launched our flagship in the Middle East.",
-  },
-  {
-    year: "2013",
-    text: "Global Team Strength reached 100.",
-  },
-  {
-    year: "2015",
-    text: "Launched our flagship in Australia, Canada and the United States. Team Strength reached 200.",
-  },
-  {
-    year: "2016",
-    text: "Registered Geeconsys Limited as the UK subsidiary of Geecon Systems.",
-  },
-  {
-    year: "2017",
-    text: "Launched our flagship in Ireland.",
-  },
-  {
-    year: "2018",
-    text: "Rebranded Geeconsys Limited as Visualytes Limited. Team Strength reached 250.",
-  },
-  {
-    year: "2019",
-    text: "Acquired i-Wood Inc Limited and crossed 300 clients with over 500 successful projects.",
-  },
-];
 
-export default function Timeline() {
+export default function Timeline({ content }: { content: StoryContent["timeline"] }) {
+  const timeline = content.items;
   const [active, setActive] = useState(0);
   const ITEM_WIDTH = 220;
   const START_OFFSET = 500;
@@ -91,12 +55,12 @@ export default function Timeline() {
 
           <div className="relative z-10">
             <p className={`text-center ${BRAND_TEXT.sectionEyebrow}`}>
-              Milestones
+              {content.eyebrow}
             </p>
             <h2 className={`mt-3 text-center ${BRAND_TEXT.sectionTitle}`}>
-              Our{" "}
+              {content.titleNormal}{" "}
               <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">
-                Timeline
+                {content.titleHighlight}
               </span>
             </h2>
 

@@ -1,8 +1,8 @@
 import { getPublicOffers } from "@/src/lib/packages/queries";
 import PackageWrapper from "./PackageWrapper";
 
-// Packages are managed in the admin dashboard, so always render fresh data.
-export const dynamic = "force-dynamic";
+// Cached for an hour; any admin save clears it straight away (see api/admin/[...slug]/route.ts).
+export const revalidate = 3600;
 
 export const metadata = {
   title: "Packages | Visualytes Limited",

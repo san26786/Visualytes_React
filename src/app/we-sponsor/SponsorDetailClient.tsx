@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, CalendarDays, HeartHandshake } from "lucide-react";
 import type { Sponsorship } from "./sponsor-data";
+import { isRemoteImage } from "@/src/lib/page-content/image";
 import { BrandPageBackdrop } from "@/src/common/components/ui/brand/page-effects";
 
 export default function SponsorDetailClient({ sponsor, contentHtml }: { sponsor: Sponsorship; contentHtml: string }) {
@@ -20,7 +21,7 @@ export default function SponsorDetailClient({ sponsor, contentHtml }: { sponsor:
           <div className="mt-6 inline-flex items-center gap-2 text-sm text-cyan-200"><CalendarDays size={16} /> {sponsor.dateLabel}</div>
         </motion.div>
         <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, delay: 0.1 }} className="relative mt-10 aspect-[16/8] overflow-hidden rounded-3xl border border-white/15 shadow-2xl">
-          <Image src={sponsor.image} alt={sponsor.title} fill priority sizes="(max-width: 1200px) 100vw, 1152px" className="object-cover" />
+          <Image src={sponsor.image} alt={sponsor.title} fill unoptimized={isRemoteImage(sponsor.image)} priority sizes="(max-width: 1200px) 100vw, 1152px" className="object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/45 to-transparent" />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.18 }} className="blog-article-content mx-auto mt-12 max-w-3xl" dangerouslySetInnerHTML={{ __html: contentHtml }} />

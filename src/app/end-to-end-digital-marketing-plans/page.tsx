@@ -3,7 +3,7 @@ import MarketingPlansClient from "./MarketingPlansClient";
 
 export const metadata = { title: "End To End Digital Marketing Plans | Visualytes", description: "End To End Digital Marketing Plans from Visualytes." };
 
-// Plans are managed in the admin dashboard, so always render fresh data.
-export const dynamic = "force-dynamic";
+// Cached for an hour; any admin save clears it straight away (see api/admin/[...slug]/route.ts).
+export const revalidate = 3600;
 
 export default async function Page() { return <MarketingPlansClient plans={await getPublicPlans()} />; }

@@ -1,3 +1,7 @@
+import { revalidatePath } from "next/cache";
+import { NextResponse, type NextRequest } from "next/server";
+
+import { getCurrentSession } from "@/src/lib/auth";
 import { createDispatcher, type RouteEntry } from "@/src/server/dispatch";
 
 import { DELETE as authorsIdDELETE } from "@/src/server/api/admin/authors/[id]/handlers";
@@ -29,7 +33,13 @@ import { DELETE as processStepsIdDELETE, PUT as processStepsIdPUT } from "@/src/
 import { POST as processStepsPOST } from "@/src/server/api/admin/process/steps/handlers";
 import { DELETE as servicesSlugDELETE, GET as servicesSlugGET, PATCH as servicesSlugPATCH } from "@/src/server/api/admin/services/[slug]/handlers";
 import { GET as servicesGET, POST as servicesPOST } from "@/src/server/api/admin/services/handlers";
+import { DELETE as seoConfigDELETE, GET as seoConfigGET, PUT as seoConfigPUT } from "@/src/server/api/admin/seo-questionnaire/config/handlers";
+import { GET as seoSubmissionsGET } from "@/src/server/api/admin/seo-questionnaire/submissions/handlers";
+import { DELETE as seoSubmissionsIdDELETE } from "@/src/server/api/admin/seo-questionnaire/submissions/[id]/handlers";
+import { GET as seoSubmissionsIdPdfGET } from "@/src/server/api/admin/seo-questionnaire/submissions/[id]/pdf/handlers";
+import { DELETE as pageContentDELETE, GET as pageContentGET, PUT as pageContentPUT } from "@/src/server/api/admin/page-content/[key]/handlers";
 import { PUT as servicesReorderPUT } from "@/src/server/api/admin/services/reorder/handlers";
+import { GET as siteSettingsGET, PUT as siteSettingsPUT } from "@/src/server/api/admin/site-settings/handlers";
 import { GET as socialLinksGET, POST as socialLinksPOST } from "@/src/server/api/admin/social-links/handlers";
 import { DELETE as testimonialsIdDELETE, PUT as testimonialsIdPUT } from "@/src/server/api/admin/testimonials/[id]/handlers";
 import { GET as testimonialsGET, POST as testimonialsPOST } from "@/src/server/api/admin/testimonials/handlers";
@@ -81,6 +91,9 @@ const routes: RouteEntry[] = [
   { method: "GET", segments: ["media"], handler: mediaGET },
   { method: "PATCH", segments: ["media", ":id"], handler: mediaIdPATCH },
   { method: "DELETE", segments: ["media", ":id"], handler: mediaIdDELETE },
+  { method: "GET", segments: ["page-content", ":key"], handler: pageContentGET },
+  { method: "PUT", segments: ["page-content", ":key"], handler: pageContentPUT },
+  { method: "DELETE", segments: ["page-content", ":key"], handler: pageContentDELETE },
   { method: "GET", segments: ["packages"], handler: packagesGET },
   { method: "POST", segments: ["packages"], handler: packagesPOST },
   { method: "PATCH", segments: ["packages", ":id"], handler: packagesIdPATCH },
@@ -96,12 +109,20 @@ const routes: RouteEntry[] = [
   { method: "POST", segments: ["process", "steps"], handler: processStepsPOST },
   { method: "PUT", segments: ["process", "steps", ":id"], handler: processStepsIdPUT },
   { method: "DELETE", segments: ["process", "steps", ":id"], handler: processStepsIdDELETE },
+  { method: "GET", segments: ["seo-questionnaire", "config"], handler: seoConfigGET },
+  { method: "PUT", segments: ["seo-questionnaire", "config"], handler: seoConfigPUT },
+  { method: "DELETE", segments: ["seo-questionnaire", "config"], handler: seoConfigDELETE },
+  { method: "GET", segments: ["seo-questionnaire", "submissions"], handler: seoSubmissionsGET },
+  { method: "DELETE", segments: ["seo-questionnaire", "submissions", ":id"], handler: seoSubmissionsIdDELETE },
+  { method: "GET", segments: ["seo-questionnaire", "submissions", ":id", "pdf"], handler: seoSubmissionsIdPdfGET },
   { method: "GET", segments: ["services"], handler: servicesGET },
   { method: "POST", segments: ["services"], handler: servicesPOST },
   { method: "GET", segments: ["services", ":slug"], handler: servicesSlugGET },
   { method: "PATCH", segments: ["services", ":slug"], handler: servicesSlugPATCH },
   { method: "DELETE", segments: ["services", ":slug"], handler: servicesSlugDELETE },
   { method: "PUT", segments: ["services", "reorder"], handler: servicesReorderPUT },
+  { method: "GET", segments: ["site-settings"], handler: siteSettingsGET },
+  { method: "PUT", segments: ["site-settings"], handler: siteSettingsPUT },
   { method: "GET", segments: ["social-links"], handler: socialLinksGET },
   { method: "POST", segments: ["social-links"], handler: socialLinksPOST },
   { method: "GET", segments: ["testimonials"], handler: testimonialsGET },
@@ -123,7 +144,29 @@ const routes: RouteEntry[] = [
   { method: "DELETE", segments: ["users", ":id"], handler: usersIdDELETE },
 ];
 
-const dispatch = createDispatcher(routes);
+const dispatchRoute = createDispatcher(routes);
+
+// Blog writing is open to editors too; every other change needs an ADMIN.
+const EDITOR_SECTIONS = new Set(["blogs", "authors", "categories", "blog-meta", "upload-blog"]);
+
+/**
+ * Central guard: nothing under /api/admin may be changed (POST/PUT/PATCH/DELETE) without a signed-in
+ * ADMIN (or an EDITOR, for the blog sections). Reads stay as each handler decides - some feed public pages.
+ */
+async function dispatch(request: NextRequest, context: { params: Promise<{ slug?: string[] }> }): Promise<Response> {
+  if (request.method !== "GET" && request.method !== "HEAD") {
+    const session = await getCurrentSession();
+    const section = (await context.params).slug?.[0] ?? "";
+    const allowed = session?.role === "ADMIN" || (session?.role === "EDITOR" && EDITOR_SECTIONS.has(section));
+    if (!allowed) return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
+
+    // Public pages are cached; any successful admin change drops the whole cache so it shows straight away.
+    const response = await dispatchRoute(request, context);
+    if (response.ok) revalidatePath("/", "layout");
+    return response;
+  }
+  return dispatchRoute(request, context);
+}
 
 export const GET = dispatch;
 export const POST = dispatch;

@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { team } from "./data";
+import { isRemoteImage } from "@/src/lib/page-content/image";
+import type { TeamContent } from "@/src/lib/page-content/types";
 import { BRAND_SURFACE, BRAND_TEXT } from "@/src/common/components/ui/brand/theme";
 
-export default function TeamGrid() {
+export default function TeamGrid({ content }: { content: TeamContent["team"] }) {
   return (
     <section className="px-4 pb-24 pt-6">
       <div className="mx-auto max-w-[1220px]">
@@ -15,17 +16,17 @@ export default function TeamGrid() {
           viewport={{ once: true }}
           className="mb-12 text-center"
         >
-          <p className={BRAND_TEXT.sectionEyebrow}>Our People</p>
+          <p className={BRAND_TEXT.sectionEyebrow}>{content.eyebrow}</p>
           <h2 className={`mt-3 ${BRAND_TEXT.sectionTitle}`}>
-            The{" "}
+            {content.titleNormal}{" "}
             <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">
-              Team
+              {content.titleHighlight}
             </span>
           </h2>
         </motion.div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {team.map((item, index) => (
+          {content.items.map((item, index) => (
             <motion.article
               key={`${item.role}-${index}`}
               initial={{ opacity: 0, y: 30 }}
@@ -47,6 +48,7 @@ export default function TeamGrid() {
                   src={item.image}
                   alt={item.role}
                   fill
+                  unoptimized={isRemoteImage(item.image)}
                   className="
                     object-cover
                     transition-all duration-700 ease-out

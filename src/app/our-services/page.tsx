@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { getPublicServiceCards } from "@/src/lib/services/server";
 import ServicesClient from "./_componets/ServicesClient";
 
-export const dynamic = "force-dynamic";
+// Cached for an hour; any admin save clears it straight away (see api/admin/[...slug]/route.ts).
+export const revalidate = 3600;
 
 
 export const metadata: Metadata = {

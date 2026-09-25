@@ -1,12 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { founder } from "./data";
+import { isRemoteImage } from "@/src/lib/page-content/image";
+import type { TeamContent } from "@/src/lib/page-content/types";
 import {
   BRAND_TEXT,
 } from "@/src/common/components/ui/brand/theme";
 
-export default function Founder() {
+export default function Founder({ founder }: { founder: TeamContent["founder"] }) {
   return (
     <section className=" pb-12 pt-4">
       <div className="mx-auto max-w-6xl">
@@ -19,6 +20,7 @@ export default function Founder() {
               width={470}
               height={741}
               className="object-contain rounded-2xl"
+              unoptimized={isRemoteImage(founder.image)}
             />
           </div>
 

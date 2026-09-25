@@ -5,7 +5,10 @@ import { ArrowUpRight } from "lucide-react";
 
 import styles from "./sponsors.module.css";
 import BrandSubPageShell from "@/src/common/components/ui/brand/BrandSubPageShell";
-import { sponsorships } from "./sponsor-data";
+import type { Sponsorship } from "./sponsor-data";
+import { toSponsorships } from "./sponsor-view";
+import { getPageContent } from "@/src/lib/page-content/server";
+import { isRemoteImage } from "@/src/lib/page-content/image";
 
 export const metadata: Metadata = {
   title: "We Sponsor | Visualytes",
@@ -13,7 +16,9 @@ export const metadata: Metadata = {
     "Events and communities Visualytes has sponsored, from local festivals to charity tournaments.",
 };
 
-export default function WeSponsorPage() {
+export default async function WeSponsorPage() {
+  const content = await getPageContent("sponsors");
+  const sponsorships = toSponsorships(content.items);
   const tickerItems = [...sponsorships, ...sponsorships];
 
   const firstCards = sponsorships.filter((item) => !item.featured);
@@ -21,9 +26,9 @@ export default function WeSponsorPage() {
 
   return (
     <BrandSubPageShell
-      title="We Sponsored"
-      eyebrow="Our Partnerships"
-      subtitle="Visualytes proudly supports community events, cultural celebrations, and initiatives that bring people together."
+      title={content.header.title}
+      eyebrow={content.header.eyebrow}
+      subtitle={content.header.subtitle}
     >
           <div
           className={`${styles.tickerViewport} border-y border-neutral-200 py-3 dark:border-neutral-800 `}
@@ -49,7 +54,7 @@ export default function WeSponsorPage() {
         {/* Heading */}
         <header className="pb-8 pt-10 text-center sm:pt-12">
           <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
-            Hover, or focus with tab, any card to see the details.
+            {content.hint}
           </p>
         </header>
 
@@ -103,7 +108,7 @@ function SponsorCard({
   item,
   index,
 }: {
-  item: (typeof sponsorships)[number];
+  item: Sponsorship;
   index: number;
 }) {
   return (
@@ -139,6 +144,7 @@ function SponsorCard({
                 fill
                 sizes="(max-width:768px) 100vw, 50vw"
                 className="object-cover"
+                unoptimized={isRemoteImage(item.image)}
                 priority={item.featured}
               />
             )}

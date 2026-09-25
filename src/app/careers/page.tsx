@@ -1,4 +1,5 @@
 
+import { getPageContent } from "@/src/lib/page-content/server";
 import CareersClient from "./CareersClient";
 export const metadata = {
   title: "Visualytes Careers & Job Opportunities | Visualytes",
@@ -28,11 +29,9 @@ export const metadata = {
       "Visualytes careers open the door for professional growth and development, giving you access to innovative tools, experiences, and opportunities.",
   },
 };
-export default function CareersPage() {
-  
+export default async function CareersPage() {
+  const content = await getPageContent("careers");
 
-  return (
-  <CareersClient/>
-  );
+  return <CareersClient content={content} />;
 }
 

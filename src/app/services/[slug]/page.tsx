@@ -1,6 +1,6 @@
-import ServiceDynamicPage, { generateMetadata } from "../../archives/services/[slug]/page";
+import ServiceDynamicPage, { generateMetadata, generateStaticParams } from "../../archives/services/[slug]/page";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
-export { generateMetadata };
+export { generateMetadata, generateStaticParams };
 export default ServiceDynamicPage;
