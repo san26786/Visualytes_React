@@ -104,8 +104,8 @@ export function Sidebar({ tab, setTab, open, setOpen, adminName }: SidebarProps)
     try {
       await fetch("/api/auth/logout", { method: "POST" });
     } finally {
-      // Full navigation so no signed-in state survives; /seo-questionnaire shows the sign-in card.
-      window.location.href = "/seo-questionnaire";
+      // Full navigation so no signed-in state survives; /admin shows the sign-in card.
+      window.location.href = "/admin";
     }
   };
 
@@ -145,7 +145,7 @@ export function Sidebar({ tab, setTab, open, setOpen, adminName }: SidebarProps)
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-base font-bold tracking-tight text-white">
+                <span className="text-lg font-bold tracking-tight text-white">
                   Visualytes
                 </span>
                 <span className="rounded-md bg-cyan-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-cyan-400 border border-cyan-500/20">
@@ -183,7 +183,7 @@ export function Sidebar({ tab, setTab, open, setOpen, adminName }: SidebarProps)
                         setTab(id);
                         setOpen(false);
                       }}
-                      className={`group relative flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-xs font-medium transition-all duration-150 cursor-pointer ${
+                      className={`group relative flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150 cursor-pointer ${
                         active
                           ? "bg-gradient-to-r from-cyan-500/15 via-cyan-500/10 to-transparent text-cyan-300 font-semibold border-l-3 border-cyan-400 shadow-xs"
                           : "text-slate-400 hover:bg-slate-900/80 hover:text-slate-200"

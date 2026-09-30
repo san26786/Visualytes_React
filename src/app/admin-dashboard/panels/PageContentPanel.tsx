@@ -10,6 +10,7 @@ import { Button } from "../components/UI/Button";
 import { ConfirmDialog } from "../components/UI/ConfirmDialog";
 import { Panel } from "../components/UI/Panel";
 import { useToast } from "../components/UI/Toast";
+import { useConfirm } from "../components/UI/Confirm";
 import NodeEditor from "./page-content/NodeEditor";
 import { api } from "./seo-questionnaire/api";
 
@@ -18,6 +19,7 @@ type Loaded = { content: unknown; customised: boolean };
 const clone = <T,>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 
 export default function PageContentPanel() {
+  const confirm = useConfirm();
   const { showToast } = useToast();
   const [pageKey, setPageKey] = useState<PageKey>(PAGE_KEYS[0]);
   const [saved, setSaved] = useState<unknown>(null);
@@ -54,9 +56,9 @@ export default function PageContentPanel() {
     };
   }, [pageKey]);
 
-  const choose = (key: PageKey) => {
+  const choose = async (key: PageKey) => {
     if (key === pageKey) return;
-    if (dirty && !confirm("You have unsaved changes on this page. Leave without saving?")) return;
+    if (dirty && !(await confirm({ title: "Discard unsaved changes?", description: "You have unsaved changes on this page. Leave without saving?", confirmLabel: "Leave page" }))) return;
     setLoading(true);
     setDraft(null);
     setPageKey(key);

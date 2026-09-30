@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, X } from "lucide-react";
 import { Button } from "./Button";
 
 type Props = {
@@ -46,9 +46,18 @@ export function ConfirmDialog({
         role="alertdialog"
         aria-modal="true"
         aria-labelledby="confirm-title"
-        className="relative w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl"
+        className="relative w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl animate-in fade-in zoom-in-95"
       >
-        <div className="flex gap-4">
+        <button
+          type="button"
+          onClick={onCancel}
+          disabled={loading}
+          aria-label="Close"
+          className="absolute right-3 top-3 rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 disabled:opacity-50"
+        >
+          <X size={16} />
+        </button>
+        <div className="flex gap-4 pr-6">
           <span
             className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
               tone === "danger" ? "bg-rose-50 text-rose-600" : "bg-cyan-50 text-cyan-600"

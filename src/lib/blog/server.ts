@@ -344,8 +344,9 @@ export async function updatePost(id: string, raw: unknown): Promise<WriteResult>
         where: { slug: input.slug, id: { not: id } },
         select: { id: true },
       });
-      if (taken) return fail(409, "That slug is already used by another post.", { slug: "That slug is already used by another post." });
-      slug = input.slug;
+      if (taken && input.slugAuto) slug = await uniqueSlug(input.slug, id);
+      else if (taken) return fail(409, "That slug is already used by another post.", { slug: "That slug is already used by another post." });
+      else slug = input.slug;
     }
   }
 

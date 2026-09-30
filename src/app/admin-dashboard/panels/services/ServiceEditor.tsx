@@ -24,6 +24,7 @@ import type { FieldDef, SectionInstance, ServiceTemplateKey } from "@/src/lib/se
 import { Button } from "../../components/UI/Button";
 import { Input, Textarea } from "../../components/UI/Input";
 import { useToast } from "../../components/UI/Toast";
+import { useConfirm } from "../../components/UI/Confirm";
 import { FieldsEditor } from "./FieldEditor";
 import { LivePreview } from "./LivePreview";
 import { SectionLibraryDialog } from "./SectionLibraryDialog";
@@ -145,6 +146,7 @@ type Props = {
 
 export function ServiceEditor({ record, seed, onCancel, onSave }: Props) {
   const { showToast } = useToast();
+  const confirm = useConfirm();
   const [draft, setDraft] = useState(() => toDraft(record, seed));
   const [baseline, setBaseline] = useState(() => JSON.stringify(draft));
   const [savedSlug, setSavedSlug] = useState<string | null>(record?.slug ?? null);
@@ -190,8 +192,8 @@ export function ServiceEditor({ record, seed, onCancel, onSave }: Props) {
     if (closeAfter) onCancel();
   }
 
-  function leave() {
-    if (dirty && !window.confirm("You have unsaved changes. Leave without saving?")) return;
+  async function leave() {
+    if (dirty && !(await confirm({ title: "Discard unsaved changes?", description: "You have unsaved changes. Leave without saving?", confirmLabel: "Leave" }))) return;
     onCancel();
   }
 
@@ -351,8 +353,8 @@ export function ServiceEditor({ record, seed, onCancel, onSave }: Props) {
                       size="sm"
                       variant="outline"
                       icon={<Sparkles size={14} />}
-                      onClick={() => {
-                        if (window.confirm("Convert to a Custom page? You'll be able to add and remove sections. Your content is kept.")) set("template", "MODULAR_BUILDER");
+                      onClick={async () => {
+                        if (await confirm({ title: "Convert to a Custom page?", description: "You'll be able to add and remove sections. Your content is kept.", confirmLabel: "Convert", tone: "primary" })) set("template", "MODULAR_BUILDER");
                       }}
                     >
                       Convert to Custom
@@ -441,8 +443,8 @@ export function ServiceEditor({ record, seed, onCancel, onSave }: Props) {
                               className={`${ICON_BTN} hover:text-rose-600`}
                               aria-label="Remove"
                               title="Remove"
-                              onClick={() => {
-                                if (window.confirm(`Remove “${def.label}” from this page?`)) setSections((list) => list.filter((item) => item.id !== section.id));
+                              onClick={async () => {
+                                if (await confirm({ title: `Remove “${def.label}” from this page?`, confirmLabel: "Remove section" })) setSections((list) => list.filter((item) => item.id !== section.id));
                               }}
                             >
                               <Trash2 size={15} />
@@ -458,8 +460,8 @@ export function ServiceEditor({ record, seed, onCancel, onSave }: Props) {
                             <div className="border-t border-slate-200 pt-4">
                               <button
                                 type="button"
-                                onClick={() => {
-                                  if (window.confirm("Replace this section's content with the original sample content?")) updateSection(section.id, { data: createSection(section.type).data });
+                                onClick={async () => {
+                                  if (await confirm({ title: "Reset to sample content?", description: "This section's content will be replaced with the original sample content.", confirmLabel: "Reset" })) updateSection(section.id, { data: createSection(section.type).data });
                                 }}
                                 className="inline-flex cursor-pointer items-center gap-1.5 text-xs font-semibold text-slate-500 transition hover:text-slate-900"
                               >

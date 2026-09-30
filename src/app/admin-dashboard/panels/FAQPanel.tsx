@@ -6,6 +6,7 @@ import type { FAQ, FAQForm } from "../types/dashboard";
 import { Panel } from "../components/UI/Panel";
 import { Input, Textarea } from "../components/UI/Input";
 import { Button } from "../components/UI/Button";
+import { useToast } from "../components/UI/Toast";
 import {
   Plus,
   Pencil,
@@ -49,6 +50,7 @@ export default function FAQPanel({
   remove,
   toggleActive,
 }: FAQPanelProps) {
+  const { showToast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
@@ -106,11 +108,11 @@ export default function FAQPanel({
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!form.question.trim()) {
-      alert("Please enter a question.");
+      showToast("Please enter a question.", "error");
       return;
     }
     if (!form.answer.trim()) {
-      alert("Please enter an answer.");
+      showToast("Please enter an answer.", "error");
       return;
     }
 

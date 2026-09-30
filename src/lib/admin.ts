@@ -1,15 +1,13 @@
 import "server-only";
 
-import { getCurrentSession } from "./auth";
+import { getCurrentSession, isAdminRole } from "./auth";
 
 export async function isAdmin() {
-  return (await getCurrentSession())?.role === "ADMIN";
+  return isAdminRole((await getCurrentSession())?.role);
 }
 
-/** Blog / content management is open to both ADMIN and EDITOR roles. */
+/** Blog / content management - ADMIN only (client accounts never reach the admin panel). */
 export async function getContentManager() {
   const session = await getCurrentSession();
-  return session && (session.role === "ADMIN" || session.role === "EDITOR")
-    ? session
-    : null;
+  return session && isAdminRole(session.role) ? session : null;
 }

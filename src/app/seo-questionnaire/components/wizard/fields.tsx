@@ -378,14 +378,14 @@ export function TagInput({ label, values, onChange, max, noun, placeholder, hint
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.85 }}
               transition={{ duration: 0.15 }}
-              className="inline-flex items-center gap-1 rounded-full border border-fuchsia-200 bg-fuchsia-50 py-1 pl-3 pr-1 text-[13px] font-medium text-fuchsia-800"
+              className="inline-flex max-w-full items-center gap-1 rounded-full border border-fuchsia-200 bg-fuchsia-50 py-1 pl-3 pr-1 text-[13px] font-medium text-fuchsia-800"
             >
-              {value}
+              <span className="min-w-0 break-all">{value}</span>
               <button
                 type="button"
                 onClick={() => onChange(values.filter((item) => item !== value))}
                 aria-label={`Remove ${value}`}
-                className="grid h-5 w-5 cursor-pointer place-items-center rounded-full text-fuchsia-500 transition-colors hover:bg-fuchsia-200 hover:text-fuchsia-900"
+                className="grid h-5 w-5 shrink-0 cursor-pointer place-items-center rounded-full text-fuchsia-500 transition-colors hover:bg-fuchsia-200 hover:text-fuchsia-900"
               >
                 <X size={12} />
               </button>
@@ -402,7 +402,7 @@ export function TagInput({ label, values, onChange, max, noun, placeholder, hint
           placeholder={full ? `Limit of ${max} reached` : values.length ? `Add another ${noun}…` : placeholder}
           aria-invalid={!!error}
           aria-describedby={describedBy(id, error, hint)}
-          className="min-w-40 flex-1 bg-transparent px-2 py-1.5 text-[15px] text-slate-900 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed"
+          className="min-w-0 basis-40 flex-1 bg-transparent px-2 py-1.5 text-[15px] text-slate-900 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed"
         />
         <button
           type="button"

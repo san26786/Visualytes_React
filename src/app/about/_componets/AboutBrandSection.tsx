@@ -17,7 +17,7 @@ import {
 } from "@/src/common/components/ui/brand/page-effects";
 
 export default function AboutBrandSection({ content, form }: { content: AboutContent; form: PublicForm }) {
-  return (
+return (
     <main className="relative overflow-hidden bg-slate-950">
       <BrandPageBackdrop />
 

@@ -194,7 +194,7 @@ export function FormsPanel({ forms, submissions, request, reload, notify }: Form
   };
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[320px_1fr]">
+    <div className="grid gap-6 @min-[1100px]:grid-cols-[320px_1fr]">
       {/* Forms list */}
       <Panel
         title="Website Forms"
@@ -289,12 +289,12 @@ export function FormsPanel({ forms, submissions, request, reload, notify }: Form
                   const pinned = EMAIL_REQUIRED_FORMS.includes(selected.key) && field.name === "email";
                   return (
                     <div key={index} className={`rounded-xl border p-4 ${field.enabled ? "border-slate-200 bg-white" : "border-dashed border-slate-300 bg-slate-50"}`}>
-                      <div className="mb-3 flex items-center justify-between gap-2">
-                        <span className="font-mono text-[11px] text-slate-500">
+                      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                        <span className="min-w-0 break-all font-mono text-[11px] text-slate-500">
                           #{index + 1} · {field.name}
                           {field.locked && <span className="ml-2 rounded bg-slate-100 px-1.5 py-0.5 text-[10px] text-slate-500">core</span>}
                         </span>
-                        <div className="flex items-center gap-1">
+                        <div className="ml-auto flex shrink-0 items-center gap-1">
                           <Button size="sm" variant="ghost" disabled={index === 0} onClick={() => moveField(index, -1)} aria-label="Move up" icon={<ArrowUp size={14} />}>
                             Up
                           </Button>

@@ -29,14 +29,16 @@ import {
   CaseStudy,
   Testimonial,
   TestimonialForm,
+  UserForm,
 } from "../../admin-dashboard/types/dashboard";
 
 import { useToast } from "../../admin-dashboard/components/UI/Toast";
 
-const BLANK_USER = {
+const BLANK_USER: UserForm = {
   name: "",
   email: "",
   password: "",
+  role: "USER",
 };
 
 const BLANK_FAQ: FAQForm = {
@@ -58,7 +60,15 @@ const BLANK_TESTIMONIAL: TestimonialForm = {
 export function useAdminData() {
   const { showToast } = useToast();
 
-  const [message, setMessage] = useState("");
+  // Status messages are shown as short-lived toasts (auto-dismiss) instead of a sticky banner.
+  const message = "";
+  const setMessage = useCallback(
+    (text: string) => {
+      if (!text) return;
+      showToast(text, /fail|unable|could not|couldn't|error|invalid|denied|not allowed/i.test(text) ? "error" : "success");
+    },
+    [showToast]
+  );
 
   // =========================================================
   // DATA STATES
@@ -420,7 +430,7 @@ const createTestimonial = useCallback(
       throw error;
     }
   },
-  [request, loadTestimonials]
+  [request, loadTestimonials, setMessage]
 );
 const updateTestimonial = useCallback(
   async (
@@ -450,7 +460,7 @@ const updateTestimonial = useCallback(
       throw error;
     }
   },
-  [request, loadTestimonials]
+  [request, loadTestimonials, setMessage]
 );
 const deleteTestimonial = useCallback(
   async (id: string) => {
@@ -476,7 +486,7 @@ const deleteTestimonial = useCallback(
       throw error;
     }
   },
-  [request, loadTestimonials]
+  [request, loadTestimonials, setMessage]
 );
 const toggleTestimonial = useCallback(
   async (testimonial: Testimonial) => {
@@ -515,7 +525,7 @@ const toggleTestimonial = useCallback(
       throw error;
     }
   },
-  [request, loadTestimonials]
+  [request, loadTestimonials, setMessage]
 );
   // =========================================================
   // ERROR HANDLER
@@ -528,7 +538,6 @@ const toggleTestimonial = useCallback(
           ? error.message
           : "An unexpected error occurred.";
 
-      setMessage(msg);
       showToast(msg, "error");
     },
     [showToast]
@@ -977,6 +986,16 @@ const moveProcessStep = useCallback(
       setEditingUser(null);
       setUserForm(BLANK_USER);
 
+      loadUsers();
+    } catch (err) {
+      showError(err);
+    }
+  };
+
+  const removeUser = async (id: number) => {
+    try {
+      await request(`/api/admin/users/${id}`, { method: "DELETE" });
+      setMessage("User deleted.");
       loadUsers();
     } catch (err) {
       showError(err);
@@ -1448,6 +1467,7 @@ const moveCaseStudy = useCallback(
     editingUser,
     setEditingUser,
     saveUser,
+    removeUser,
     loadUsers,
     BLANK_USER,
 

@@ -20,6 +20,7 @@ import {
 
 import { Button } from "../../components/UI/Button";
 import { ConfirmDialog } from "../../components/UI/ConfirmDialog";
+import { useConfirm } from "../../components/UI/Confirm";
 import { Input, Textarea } from "../../components/UI/Input";
 import { Panel } from "../../components/UI/Panel";
 import { useToast } from "../../components/UI/Toast";
@@ -339,6 +340,7 @@ type Props = { initial: QConfig; customised: boolean; defaults: QConfig; onSaved
 
 export default function BuilderView({ initial, customised, defaults, onSaved }: Props) {
   const { showToast } = useToast();
+  const confirm = useConfirm();
   const [draft, setDraft] = useState<QConfig>(() => clone(initial));
   const [saved, setSaved] = useState<QConfig>(() => clone(initial));
   const [stepIndex, setStepIndex] = useState<number | "settings">(0);
@@ -480,7 +482,7 @@ export default function BuilderView({ initial, customised, defaults, onSaved }: 
                     <Button size="sm" variant="ghost" disabled={index === draft.steps.length - 1} aria-label="Move step down" icon={<ArrowDown size={14} />} onClick={() => { setDraft((d) => ({ ...d, steps: move(d.steps, index, 1) })); setStepIndex(index + 1); }}>{""}</Button>
                     <Button size="sm" variant="ghost" aria-label={s.enabled ? "Hide step" : "Show step"} icon={s.enabled ? <Eye size={14} /> : <EyeOff size={14} />} onClick={() => patchStep(index, { enabled: !s.enabled })}>{""}</Button>
                     <span className="flex-1" />
-                    <Button size="sm" variant="danger" disabled={draft.steps.length <= 1} aria-label="Delete step" icon={<Trash2 size={14} />} onClick={() => { if (confirm(`Delete the step "${s.title}" and all its questions?`)) removeStep(index); }}>{""}</Button>
+                    <Button size="sm" variant="danger" disabled={draft.steps.length <= 1} aria-label="Delete step" icon={<Trash2 size={14} />} onClick={async () => { if (await confirm({ title: `Delete the step "${s.title}"?`, description: "All questions in this step will be removed too.", confirmLabel: "Delete step" })) removeStep(index); }}>{""}</Button>
                   </div>
                 )}
               </div>
@@ -546,7 +548,7 @@ export default function BuilderView({ initial, customised, defaults, onSaved }: 
                           <Button size="sm" variant="ghost" disabled={fi === 0} aria-label="Move up" icon={<ArrowUp size={14} />} onClick={() => setDraft((d) => ({ ...d, steps: d.steps.map((s, i) => (i === stepIndex ? { ...s, fields: move(s.fields, fi, -1) } : s)) }))}>{""}</Button>
                           <Button size="sm" variant="ghost" disabled={fi === step.fields.length - 1} aria-label="Move down" icon={<ArrowDown size={14} />} onClick={() => setDraft((d) => ({ ...d, steps: d.steps.map((s, i) => (i === stepIndex ? { ...s, fields: move(s.fields, fi, 1) } : s)) }))}>{""}</Button>
                           <Button size="sm" variant="ghost" aria-label={field.enabled ? "Hide" : "Show"} icon={field.enabled ? <Eye size={14} /> : <EyeOff size={14} />} onClick={() => patchField(stepIndex, fi, { enabled: !field.enabled })}>{""}</Button>
-                          <Button size="sm" variant="danger" aria-label="Delete question" icon={<Trash2 size={14} />} onClick={() => { if (confirm(`Delete "${field.label.slice(0, 60)}"?`)) setDraft((d) => ({ ...d, steps: d.steps.map((s, i) => (i === stepIndex ? { ...s, fields: s.fields.filter((_, j) => j !== fi) } : s)) })); }}>{""}</Button>
+                          <Button size="sm" variant="danger" aria-label="Delete question" icon={<Trash2 size={14} />} onClick={async () => { if (await confirm({ title: `Delete "${field.label.slice(0, 60)}"?`, confirmLabel: "Delete question" })) setDraft((d) => ({ ...d, steps: d.steps.map((s, i) => (i === stepIndex ? { ...s, fields: s.fields.filter((_, j) => j !== fi) } : s)) })); }}>{""}</Button>
                         </div>
                       </div>
                       {open && <FieldEditor field={field} config={draft} onChange={(patch) => patchField(stepIndex, fi, patch)} />}

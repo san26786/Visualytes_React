@@ -130,7 +130,7 @@ export default function DynamicStep({ step, plans, ...props }: Props) {
   const fields = visibleFields(step, props.values);
 
   return (
-    <div className="grid gap-x-5 gap-y-5 sm:grid-cols-2">
+    <div className="grid grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-2 [&>*]:min-w-0">
       <AnimatePresence initial={false}>
         {fields.map((field, index) => {
           const full = field.width === "full" || ALWAYS_FULL.has(field.type);

@@ -33,6 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
       apple: "/apple-touch-icon.png",
     },
 
+
     ...(verification ? { verification: { google: verification } } : {}),
 
     openGraph: {

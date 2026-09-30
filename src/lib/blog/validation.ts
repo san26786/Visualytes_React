@@ -51,6 +51,7 @@ export const blogPostSchema = z.object({
     .refine((v) => v === "" || SLUG_PATTERN.test(v), "Use lowercase letters, numbers and single hyphens only.")
     .optional(),
   excerpt: z.string().trim().max(LIMITS.excerptMax, `Excerpt must be ${LIMITS.excerptMax} characters or fewer.`).optional(),
+  slugAuto: z.boolean().optional(),
   content: z.unknown().optional(),
   categoryId: z.string().min(1).nullish(),
   tags: z

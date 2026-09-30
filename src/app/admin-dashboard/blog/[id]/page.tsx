@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "Blog Editor | Visualytes Admin", rob
 
 export default async function EditBlogPostPage({ params }: PageProps<"/admin-dashboard/blog/[id]">) {
   const session = await getContentManager();
-  if (!session) redirect("/seo-questionnaire");
+  if (!session) redirect("/admin");
 
   const { id } = await params;
   const [post, meta] = await Promise.all([getAdminPost(id), getBlogMeta()]);

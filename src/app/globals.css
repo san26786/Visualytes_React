@@ -1,5 +1,8 @@
 /* Tailwind imports (must be at the top) */
 @import "tailwindcss";
+
+/* Screens tall enough for the roomy admin sidebar (group headings, larger rows). */
+@custom-variant tall (@media (min-height: 1000px));
 /* import "./globals.css";
 import "@/styles/style1.css";
 import "@/styles/style2.css";

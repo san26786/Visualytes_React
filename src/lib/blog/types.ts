@@ -117,6 +117,8 @@ export type BlogPostInput = {
   views: number;
   likes: number;
   comments: number;
+  /** The slug was generated from the title - on a clash the server adds a "-2" style suffix instead of failing. */
+  slugAuto?: boolean;
 };
 
 export type FieldErrors = Partial<Record<keyof BlogPostInput, string>>;

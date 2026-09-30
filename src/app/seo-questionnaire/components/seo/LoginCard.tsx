@@ -6,17 +6,39 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AlertCircle, ArrowRight, Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 
+import { notifyAuthChanged } from "@/src/common/utils/auth-events";
 import { cn } from "@/src/common/utils/cn";
 
 const inputShell =
   "flex h-14 items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-5 transition-[border-color,box-shadow,background-color] duration-200 " +
   "hover:border-slate-300 focus-within:border-fuchsia-500 focus-within:bg-white focus-within:ring-4 focus-within:ring-fuchsia-500/10";
 
+const COPY = {
+  client: {
+    subtitle: "SEO Questionnaire",
+    intro: "Sign in to start your SEO questionnaire. It takes about 10 minutes and your progress is saved as you go.",
+    footer: "Your business information is sent securely and only used to set up your SEO campaign.",
+    asideTitle: "Grow Your Business With Better SEO",
+    asideText: "Complete your SEO questionnaire and let our experts create a customised growth strategy for your business.",
+  },
+  admin: {
+    subtitle: "Admin Panel",
+    intro: "Sign in with your administrator account to manage the website.",
+    footer: "Restricted area. Only administrator accounts can sign in here.",
+    asideTitle: "Visualytes Admin",
+    asideText: "Manage pages, services, packages, blog posts and client questionnaire responses.",
+  },
+} as const;
+
 /**
- * Client sign-in. Admins go to the dashboard; every other user stays here and, once the
- * session cookie is set, the server re-renders this page with the questionnaire.
+ * Shared sign-in card.
+ * - portal "client" (/seo-questionnaire): client accounts only; once the session cookie is set the
+ *   server re-renders the page with the questionnaire.
+ * - portal "admin" (/admin): ADMIN accounts only; goes on to the dashboard.
+ * The API rejects the wrong kind of account for each portal.
  */
-export default function LoginCard() {
+export default function LoginCard({ portal = "client" }: { portal?: "client" | "admin" }) {
+  const copy = COPY[portal];
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,17 +58,18 @@ export default function LoginCard() {
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, portal }),
       });
-      const result = (await response.json().catch(() => ({}))) as { message?: string; role?: "ADMIN" | "EDITOR" };
+      const result = (await response.json().catch(() => ({}))) as { message?: string; role?: string };
 
       if (!response.ok || !result.role) {
         setError(result.message ?? "Unable to sign in. Please try again.");
         return;
       }
 
-      if (result.role === "ADMIN") {
-        router.push("/admin-dashboard");
+      notifyAuthChanged();
+      if (portal === "admin") {
+        startRefresh(() => router.replace("/admin-dashboard"));
         return;
       }
 
@@ -66,12 +89,12 @@ export default function LoginCard() {
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 via-fuchsia-500 to-pink-500 text-xl font-bold text-white shadow-lg shadow-fuchsia-500/30">V</div>
           <div>
             <h2 className="font-semibold text-slate-900">Visualytes</h2>
-            <p className="text-sm text-slate-500">SEO Questionnaire</p>
+            <p className="text-sm text-slate-500">{copy.subtitle}</p>
           </div>
         </div>
 
         <h1 className="text-4xl font-extrabold tracking-tight text-slate-900">Welcome back 👋</h1>
-        <p className="mt-3 text-slate-500">Sign in to start your SEO questionnaire. It takes about 10 minutes and your progress is saved as you go.</p>
+        <p className="mt-3 text-slate-500">{copy.intro}</p>
 
         <form onSubmit={handleLogin} className="mt-9" noValidate>
           <div className="mb-5">
@@ -138,15 +161,15 @@ export default function LoginCard() {
           </button>
         </form>
 
-        <p className="mt-8 rounded-2xl bg-slate-50 p-4 text-center text-xs text-slate-500">Your business information is sent securely and only used to set up your SEO campaign.</p>
+        <p className="mt-8 rounded-2xl bg-slate-50 p-4 text-center text-xs text-slate-500">{copy.footer}</p>
       </div>
 
       <div className="relative hidden overflow-hidden lg:block">
-        <Image src="/assets/jpng/3Dlogin.jpeg" alt="SEO Questionnaire Login" fill className="object-cover" priority />
+        <Image src="/assets/jpng/3Dlogin.jpeg" alt={`${copy.subtitle} login`} fill className="object-cover" priority />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
         <div className="absolute bottom-10 left-10 right-10 text-white">
-          <h2 className="text-3xl font-bold">Grow Your Business With Better SEO</h2>
-          <p className="mt-3 text-sm text-white/80">Complete your SEO questionnaire and let our experts create a customised growth strategy for your business.</p>
+          <h2 className="text-3xl font-bold">{copy.asideTitle}</h2>
+          <p className="mt-3 text-sm text-white/80">{copy.asideText}</p>
         </div>
       </div>
     </div>

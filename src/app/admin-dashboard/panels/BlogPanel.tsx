@@ -261,15 +261,15 @@ export default function BlogPanel() {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[980px] text-left text-sm">
+        <div className="@container overflow-x-auto">
+          <table className="w-full min-w-[720px] text-left text-sm">
             <thead>
               <tr className="border-y border-slate-100 bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-slate-400">
                 <th className="px-5 py-3">Post</th>
                 <th className="px-3 py-3">Category</th>
-                <th className="px-3 py-3">Author</th>
+                <th className="hidden px-3 py-3 @6xl:table-cell">Author</th>
                 <th className="px-3 py-3">Status</th>
-                <th className="px-3 py-3">Published</th>
+                <th className="hidden px-3 py-3 @5xl:table-cell">Published</th>
                 <th className="px-3 py-3">Updated</th>
                 <th className="px-3 py-3 text-right">Views</th>
                 <th className="px-5 py-3 text-right">Actions</th>
@@ -313,11 +313,11 @@ export default function BlogPanel() {
                             <span className="text-slate-300">—</span>
                           )}
                         </td>
-                        <td className="px-3 py-3.5 text-slate-600">{post.author?.name ?? "—"}</td>
+                        <td className="hidden px-3 py-3.5 text-slate-600 @6xl:table-cell">{post.author?.name ?? "—"}</td>
                         <td className="px-3 py-3.5">
                           <StatusBadge status={post.status} publishedAt={post.publishedAt} />
                         </td>
-                        <td className="whitespace-nowrap px-3 py-3.5 text-slate-500">{formatDate(post.publishedAt)}</td>
+                        <td className="hidden whitespace-nowrap px-3 py-3.5 text-slate-500 @5xl:table-cell">{formatDate(post.publishedAt)}</td>
                         <td className="whitespace-nowrap px-3 py-3.5 text-slate-500">{formatDate(post.updatedAt)}</td>
                         <td className="px-3 py-3.5 text-right font-medium tabular-nums text-slate-600">{post.views.toLocaleString()}</td>
                         <td className="px-5 py-3.5">

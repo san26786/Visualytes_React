@@ -7,6 +7,7 @@ import type { ServiceListItem, ServiceRecord } from "@/src/lib/services/server";
 import { createTemplateContent } from "@/src/lib/services/sections/templates";
 import type { ServiceTemplateKey } from "@/src/lib/services/sections/types";
 import { ConfirmDialog } from "../components/UI/ConfirmDialog";
+import { useToast } from "../components/UI/Toast";
 import { ServiceEditor, type ServiceSeed } from "./services/ServiceEditor";
 import { ServiceList } from "./services/ServiceList";
 import { TemplatePicker } from "./services/TemplatePicker";
@@ -28,6 +29,7 @@ function copyIdentity(source: ServiceRecord, existing: ServiceListItem[]) {
 
 export function ServicesPanel() {
   const { services, loadError, reload, load, create, update, remove, reorder } = useServicesAdmin();
+  const { showToast } = useToast();
   const [view, setView] = useState<View>({ mode: "list" });
   const [deleting, setDeleting] = useState<ServiceListItem | null>(null);
   const [deleteBusy, setDeleteBusy] = useState(false);
@@ -84,7 +86,7 @@ export function ServicesPanel() {
       });
     } catch (error) {
       // The list stays usable; surface the reason through the same channel as other failures.
-      window.alert(error instanceof Error ? error.message : "Could not open the service.");
+      showToast(error instanceof Error ? error.message : "Could not open the service.", "error");
     } finally {
       setOpening(false);
     }

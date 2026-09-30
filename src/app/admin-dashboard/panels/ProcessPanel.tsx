@@ -24,6 +24,8 @@ import type {
 import { Panel } from "../components/UI/Panel";
 import { Input, Textarea } from "../components/UI/Input";
 import { Button } from "../components/UI/Button";
+import { useConfirm } from "../components/UI/Confirm";
+import { useToast } from "../components/UI/Toast";
 
 interface ProcessPanelProps {
   process: ProcessSection | null;
@@ -65,6 +67,8 @@ export default function ProcessPanel({
   moveStep,
   reload,
 }: ProcessPanelProps) {
+  const confirm = useConfirm();
+  const { showToast } = useToast();
   const [editingStep, setEditingStep] = useState<ProcessStep | null>(null);
   const [stepForm, setStepForm] = useState<ProcessStepForm>(EMPTY_STEP);
   const [showStepForm, setShowStepForm] = useState(false);
@@ -131,7 +135,7 @@ export default function ProcessPanel({
       setStepForm((prev) => ({ ...prev, image: data.image }));
     } catch (err) {
       console.error(err);
-      alert("Failed to upload process image");
+      showToast("Failed to upload process image", "error");
     } finally {
       setUploadingImage(false);
     }
@@ -140,6 +144,10 @@ export default function ProcessPanel({
   const handleSaveStep = async (e: FormEvent) => {
     e.preventDefault();
     if (!stepForm.title.trim()) return;
+    if (!stepForm.image) {
+      showToast("Image is required.", "error");
+      return;
+    }
 
     try {
       setSavingStep(true);
@@ -169,7 +177,7 @@ export default function ProcessPanel({
   };
 
   const handleDeleteStep = async (id: string) => {
-    if (!window.confirm("Are you sure you want to delete this process step?")) {
+    if (!(await confirm({ title: "Delete this process step?", confirmLabel: "Delete step" }))) {
       return;
     }
     await deleteStep(id);
@@ -344,6 +352,7 @@ export default function ProcessPanel({
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-slate-700">
                   Step Icon / Illustration
+                  <span className="ml-1 text-rose-500">*</span>
                 </label>
                 <div className="flex items-center gap-3">
                   <label className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 bg-slate-50/50 p-2.5 text-xs font-semibold text-slate-700 hover:border-cyan-400 hover:bg-cyan-50/20 transition cursor-pointer">

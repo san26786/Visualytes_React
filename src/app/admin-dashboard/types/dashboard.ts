@@ -3,12 +3,18 @@ import type { AdminPackage, AdminPurchase } from "@/src/lib/packages/types";
 
 export const TABS = ["overview", "users", "forms", "seo-questionnaire", "packages", "social", "portfolio", "blogs", "services", "contact-page", "faqs", "clients", "process", "case-studies", "testimonials", "page-content", "media", "settings"] as const;
 export type Tab = (typeof TABS)[number];
-export type User = { 
-  id: number; 
-  name: string; 
-  email: string; 
-  createdAt: string 
+/** ADMIN = admin panel (/admin); USER = client, /seo-questionnaire only. EDITOR is a legacy client role. */
+export type UserRole = "ADMIN" | "USER" | "EDITOR";
+
+export type User = {
+  id: number;
+  name: string;
+  email: string;
+  role: UserRole;
+  createdAt: string;
 };
+
+export type UserForm = { name: string; email: string; password: string; role: "ADMIN" | "USER" };
 
 export type FormDefinition = { 
   id: number; 

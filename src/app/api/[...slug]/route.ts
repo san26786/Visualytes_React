@@ -3,6 +3,7 @@ import { createDispatcher, type RouteEntry } from "@/src/server/dispatch";
 import { POST as aboutUsPOST } from "@/src/server/api/about-us/handlers";
 import { POST as authLoginPOST } from "@/src/server/api/auth/login/handlers";
 import { POST as authLogoutPOST } from "@/src/server/api/auth/logout/handlers";
+import { GET as authSessionGET } from "@/src/server/api/auth/session/handlers";
 import { GET as blogGET } from "@/src/server/api/blog/handlers";
 import { GET as blogSlugGET } from "@/src/server/api/blog/[slug]/handlers";
 import { POST as blogSlugViewPOST } from "@/src/server/api/blog/[slug]/view/handlers";
@@ -30,6 +31,7 @@ const routes: RouteEntry[] = [
   { method: "POST", segments: ["about-us"], handler: aboutUsPOST },
   { method: "POST", segments: ["auth", "login"], handler: authLoginPOST },
   { method: "POST", segments: ["auth", "logout"], handler: authLogoutPOST },
+  { method: "GET", segments: ["auth", "session"], handler: authSessionGET },
   { method: "GET", segments: ["blog"], handler: blogGET },
   { method: "GET", segments: ["blog", ":slug"], handler: blogSlugGET },
   { method: "POST", segments: ["blog", ":slug", "view"], handler: blogSlugViewPOST },

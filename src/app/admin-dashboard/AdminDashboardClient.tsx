@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState, useSyncExternalStore } from "react";
 import { Tab } from "./types/dashboard";
 import { Header } from "../admin/components/Header";
 import { Sidebar } from "../admin/components/Sidebar";
@@ -24,13 +24,53 @@ import PageContentPanel from "./panels/PageContentPanel";
 import { SettingsPanel } from "./panels/SettingsPanel";
 import { useAdminData } from "../admin/hooks/useAdminData";
 import { ToastProvider } from "./components/UI/Toast";
-import { X, CheckCircle2 } from "lucide-react";
+import { useConfirm } from "./components/UI/Confirm";
+
+// Desktop sidebar size, remembered between visits. Read through useSyncExternalStore so the
+// server render (always expanded) and the first client render agree.
+const COLLAPSED_KEY = "admin-sidebar-collapsed";
+const COLLAPSED_EVENT = "admin-sidebar-collapsed-change";
+
+function readCollapsed() {
+  try {
+    return localStorage.getItem(COLLAPSED_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function writeCollapsed(value: boolean) {
+  try {
+    localStorage.setItem(COLLAPSED_KEY, value ? "1" : "0");
+  } catch {}
+  window.dispatchEvent(new Event(COLLAPSED_EVENT));
+}
+
+function subscribeCollapsed(onChange: () => void) {
+  window.addEventListener(COLLAPSED_EVENT, onChange);
+  window.addEventListener("storage", onChange);
+  return () => {
+    window.removeEventListener(COLLAPSED_EVENT, onChange);
+    window.removeEventListener("storage", onChange);
+  };
+}
 
 function AdminDashboardContent({ adminName, initialTab }: { adminName: string; initialTab: Tab }) {
   const [tab, setTab] = useState<Tab>(initialTab);
   const [open, setOpen] = useState(false);
+  const collapsed = useSyncExternalStore(subscribeCollapsed, readCollapsed, () => false);
+
+  // Mirror the open tab in the URL so a refresh (or a shared link) reopens the same panel
+  // instead of whatever ?tab= the page was first loaded with.
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (tab === "overview") url.searchParams.delete("tab");
+    else url.searchParams.set("tab", tab);
+    if (url.href !== window.location.href) window.history.replaceState(window.history.state, "", url);
+  }, [tab]);
 
   const data = useAdminData();
+  const confirm = useConfirm();
 
   return (
     <div className="min-h-screen bg-slate-50/60 font-sans text-slate-900 antialiased selection:bg-cyan-500 selection:text-white">
@@ -41,30 +81,17 @@ function AdminDashboardContent({ adminName, initialTab }: { adminName: string; i
         open={open}
         setOpen={setOpen}
         adminName={adminName}
-      
+        collapsed={collapsed}
+        setCollapsed={writeCollapsed}
       />
 
       {/* Main Workspace */}
-      <div className="flex min-h-screen flex-col lg:pl-72 transition-all duration-300">
+      <div className={`flex min-h-screen min-w-0 flex-col transition-all duration-300 ${collapsed ? "lg:pl-20" : "lg:pl-72"}`}>
         <Header tab={tab} setOpen={setOpen} />
 
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-6">
-          {/* Notification Alert Banner */}
-          {data.message && (
-            <div className="flex items-center justify-between rounded-2xl border border-cyan-200/80 bg-gradient-to-r from-cyan-50/90 via-sky-50/80 to-white px-4 py-3 text-xs font-medium text-cyan-900 shadow-xs backdrop-blur-xs animate-in fade-in slide-in-from-top-2">
-              <div className="flex items-center gap-2.5">
-                <CheckCircle2 size={16} className="text-cyan-600 shrink-0" />
-                <span>{data.message}</span>
-              </div>
-              <button
-                onClick={() => data.setMessage("")}
-                className="rounded-lg p-1 text-cyan-700 hover:bg-cyan-100/60 hover:text-cyan-950 transition"
-              >
-                <X size={14} />
-              </button>
-            </div>
-          )}
-
+        {/* Grid children default to min-width:auto, so a wide table would stretch its card past the
+            screen on phones; min-w-0 keeps every card inside the viewport and lets tables scroll. */}
+        <main className="@container flex-1 min-w-0 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-6 [&_.grid>*]:min-w-0">
           {/* Dynamic Tab Panels */}
           <div className="transition-all duration-200">
             {tab === "overview" && (
@@ -84,10 +111,7 @@ function AdminDashboardContent({ adminName, initialTab }: { adminName: string; i
                 setEditing={data.setEditingUser}
                 save={data.saveUser}
                 remove={async (id) => {
-                  if (confirm("Delete this user?")) {
-                    await data.request(`/api/admin/users/${id}`, { method: "DELETE" });
-                    data.loadUsers();
-                  }
+                  if (await confirm({ title: "Delete this user?", description: "They will lose access immediately. This cannot be undone.", confirmLabel: "Delete user" })) data.removeUser(id);
                 }}
                 blankUser={data.BLANK_USER}
               />
@@ -168,11 +192,12 @@ function AdminDashboardContent({ adminName, initialTab }: { adminName: string; i
                   });
                 }}
                 remove={async (id) => {
-                  if (confirm("Delete this portfolio item?")) {
+                  if (await confirm({ title: "Delete this portfolio item?", confirmLabel: "Delete item" })) {
                     await data.request(`/api/admin/portfolio/${id}`, {
                       method: "DELETE",
                     });
                     data.loadPortfolio();
+                    data.setMessage("Portfolio item deleted.");
                   }
                 }}
               />
@@ -214,11 +239,12 @@ function AdminDashboardContent({ adminName, initialTab }: { adminName: string; i
                   });
                 }}
                 remove={async (id) => {
-                  if (confirm("Delete this FAQ?")) {
+                  if (await confirm({ title: "Delete this FAQ?", confirmLabel: "Delete FAQ" })) {
                     await data.request(`/api/admin/faqs/${id}`, {
                       method: "DELETE",
                     });
                     await data.loadFAQs();
+                    data.setMessage("FAQ deleted.");
                   }
                 }}
                 toggleActive={async (faq) => {
@@ -232,6 +258,7 @@ function AdminDashboardContent({ adminName, initialTab }: { adminName: string; i
                     }),
                   });
                   await data.loadFAQs();
+                  data.setMessage(faq.isActive ? "FAQ hidden." : "FAQ is now visible.");
                 }}
               />
             )}

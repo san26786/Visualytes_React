@@ -6,6 +6,7 @@ import { ArrowDown, ArrowUp, ChevronDown, ChevronRight, ImageIcon, Loader2, Plus
 import { emptyValue, type Node } from "@/src/lib/page-content/schema";
 
 import { useToast } from "../../components/UI/Toast";
+import { useConfirm } from "../../components/UI/Confirm";
 import { uploadServiceFile } from "../services/api";
 
 const controlClass =
@@ -152,6 +153,7 @@ function StringsEditor({ node, value, onChange }: { node: Extract<Node, { kind: 
 }
 
 function ListEditor({ node, value, onChange }: { node: Extract<Node, { kind: "list" }>; value: Record<string, unknown>[]; onChange: (value: Record<string, unknown>[]) => void }) {
+  const confirm = useConfirm();
   const [open, setOpen] = useState<number | null>(null);
 
   const move = (index: number, dir: -1 | 1) => {
@@ -193,8 +195,8 @@ function ListEditor({ node, value, onChange }: { node: Extract<Node, { kind: "li
                   type="button"
                   className={`${iconButton} hover:bg-rose-50 hover:text-rose-600`}
                   aria-label={`Delete ${node.itemLabel.toLowerCase()}`}
-                  onClick={() => {
-                    if (confirm(`Delete “${title.slice(0, 60)}”?`)) {
+                  onClick={async () => {
+                    if (await confirm({ title: `Delete “${title.slice(0, 60)}”?`, confirmLabel: "Delete" })) {
                       onChange(value.filter((_, i) => i !== index));
                       setOpen(null);
                     }

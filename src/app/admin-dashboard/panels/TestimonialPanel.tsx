@@ -19,6 +19,8 @@ import { Panel } from "../components/UI/Panel";
 import { Input, Textarea } from "../components/UI/Input";
 import { Button } from "../components/UI/Button";
 import { Table } from "../components/UI/Table";
+import { useConfirm } from "../components/UI/Confirm";
+import { useToast } from "../components/UI/Toast";
 
 interface TestimonialPanelProps {
   testimonials: Testimonial[];
@@ -49,6 +51,8 @@ export default function TestimonialPanel({
   toggleTestimonial,
   reload,
 }: TestimonialPanelProps) {
+  const confirm = useConfirm();
+  const { showToast } = useToast();
   const [form, setForm] = useState<TestimonialForm>(EMPTY_FORM);
   const [editing, setEditing] = useState<Testimonial | null>(null);
   const [showForm, setShowForm] = useState(false);
@@ -81,7 +85,7 @@ export default function TestimonialPanel({
       }));
     } catch (error) {
       console.error(error);
-      alert(error instanceof Error ? error.message : "Failed to upload image");
+      showToast(error instanceof Error ? error.message : "Failed to upload image", "error");
     } finally {
       setUploading(false);
     }
@@ -148,7 +152,7 @@ export default function TestimonialPanel({
   };
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm("Delete this testimonial?")) return;
+    if (!(await confirm({ title: "Delete this testimonial?", confirmLabel: "Delete testimonial" }))) return;
     await deleteTestimonial(id);
     if (editing?.id === id) {
       closeForm();

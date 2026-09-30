@@ -1,7 +1,7 @@
 import { revalidatePath } from "next/cache";
 import { NextResponse, type NextRequest } from "next/server";
 
-import { getCurrentSession } from "@/src/lib/auth";
+import { getCurrentSession, isAdminRole } from "@/src/lib/auth";
 import { createDispatcher, type RouteEntry } from "@/src/server/dispatch";
 
 import { DELETE as authorsIdDELETE } from "@/src/server/api/admin/authors/[id]/handlers";
@@ -146,19 +146,14 @@ const routes: RouteEntry[] = [
 
 const dispatchRoute = createDispatcher(routes);
 
-// Blog writing is open to editors too; every other change needs an ADMIN.
-const EDITOR_SECTIONS = new Set(["blogs", "authors", "categories", "blog-meta", "upload-blog"]);
-
 /**
  * Central guard: nothing under /api/admin may be changed (POST/PUT/PATCH/DELETE) without a signed-in
- * ADMIN (or an EDITOR, for the blog sections). Reads stay as each handler decides - some feed public pages.
+ * ADMIN. Reads stay as each handler decides - some feed public pages.
  */
 async function dispatch(request: NextRequest, context: { params: Promise<{ slug?: string[] }> }): Promise<Response> {
   if (request.method !== "GET" && request.method !== "HEAD") {
     const session = await getCurrentSession();
-    const section = (await context.params).slug?.[0] ?? "";
-    const allowed = session?.role === "ADMIN" || (session?.role === "EDITOR" && EDITOR_SECTIONS.has(section));
-    if (!allowed) return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
+    if (!isAdminRole(session?.role)) return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
 
     // Public pages are cached; any successful admin change drops the whole cache so it shows straight away.
     const response = await dispatchRoute(request, context);

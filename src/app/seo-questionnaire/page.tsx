@@ -1,4 +1,4 @@
-import { getCurrentSession } from "@/src/lib/auth";
+import { getCurrentSession, isAdminRole } from "@/src/lib/auth";
 import { publicConfig } from "@/src/lib/seo-questionnaire/config";
 import { getQuestionnaireConfig } from "@/src/lib/seo-questionnaire/server";
 import { getPublicPlans } from "@/src/lib/packages/queries";
@@ -10,7 +10,9 @@ import type { PlanOption } from "./components/wizard/PlanPicker";
 export const dynamic = "force-dynamic";
 
 export default async function SeoQuestionnairePage() {
-  const session = await getCurrentSession();
+  // Only client accounts use the questionnaire; an admin session just sees the Client Login card.
+  const current = await getCurrentSession();
+  const session = current && !isAdminRole(current.role) ? current : null;
 
   // Plans (from the Packages tab in admin) are only needed once the visitor is signed in.
   const { config } = await getQuestionnaireConfig();

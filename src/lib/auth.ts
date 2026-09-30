@@ -5,12 +5,18 @@ import { cookies } from "next/headers";
 
 export const SESSION_COOKIE_NAME = "visualytes_session";
 
+export type Role = "ADMIN" | "EDITOR" | "USER";
+const ROLES: readonly Role[] = ["ADMIN", "EDITOR", "USER"];
+
 export type SessionUser = {
   id: number;
   email: string;
   name: string;
-  role: "ADMIN" | "EDITOR";
+  role: Role;
 };
+
+/** Only ADMIN accounts may use the admin panel; every other role is a client (SEO questionnaire only). */
+export const isAdminRole = (role: Role | undefined | null) => role === "ADMIN";
 
 function getSessionSecret() {
   const secret = process.env.SESSION_SECRET;
@@ -29,7 +35,7 @@ export function getSessionFromToken(token: string): SessionUser | null {
       typeof payload.id !== "number" ||
       typeof payload.email !== "string" ||
       typeof payload.name !== "string" ||
-      (payload.role !== "ADMIN" && payload.role !== "EDITOR")
+      !ROLES.includes(payload.role)
     ) return null;
 
     return { id: payload.id, email: payload.email, name: payload.name, role: payload.role };

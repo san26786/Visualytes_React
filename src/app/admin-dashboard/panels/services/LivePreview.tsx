@@ -6,10 +6,13 @@ import { Monitor, Smartphone, Tablet } from "lucide-react";
 import type { SectionInstance } from "@/src/lib/services/sections/types";
 
 const WIDTHS = [
-  { id: "desktop", label: "Desktop", width: "100%", icon: Monitor },
-  { id: "tablet", label: "Tablet", width: "768px", icon: Tablet },
-  { id: "mobile", label: "Mobile", width: "390px", icon: Smartphone },
+  { id: "desktop", label: "Desktop", width: 0, icon: Monitor },
+  { id: "tablet", label: "Tablet", width: 768, icon: Tablet },
+  { id: "mobile", label: "Mobile", width: 390, icon: Smartphone },
 ] as const;
+
+/** Narrowest width the public sections are designed for; the desktop view never renders below it. */
+const MIN_WIDTH = 390;
 
 type Props = {
   sections: SectionInstance[];
@@ -22,6 +25,8 @@ type Props = {
 export function LivePreview({ sections, mainClass, height = "72vh", className = "" }: Props) {
   const frame = useRef<HTMLIFrameElement>(null);
   const latest = useRef({ sections, mainClass });
+  const box = useRef<HTMLDivElement>(null);
+  const [boxWidth, setBoxWidth] = useState(0);
   const [device, setDevice] = useState<(typeof WIDTHS)[number]["id"]>("desktop");
 
   const send = () => {
@@ -45,11 +50,22 @@ export function LivePreview({ sections, mainClass, height = "72vh", className = 
     return () => window.removeEventListener("message", onMessage);
   }, []);
 
+  useEffect(() => {
+    if (!box.current) return;
+    const observer = new ResizeObserver(([entry]) => setBoxWidth(entry.contentRect.width));
+    observer.observe(box.current);
+    return () => observer.disconnect();
+  }, []);
+
   const current = WIDTHS.find((item) => item.id === device) ?? WIDTHS[0];
+  // When the pane is narrower than the device (e.g. the admin on a phone), render the page at the
+  // device width and shrink it to fit, so the preview is never cut off or squeezed below a real phone.
+  const frameWidth = current.width || Math.max(boxWidth, MIN_WIDTH);
+  const scale = boxWidth && frameWidth > boxWidth ? boxWidth / frameWidth : 1;
 
   return (
     <div className={className}>
-      <div className="mb-3 flex items-center justify-between gap-3">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
         <p className="text-xs text-slate-500">Live preview - updates as you type. Header and footer are hidden here.</p>
         <div className="inline-flex rounded-xl border border-slate-200 bg-white p-0.5">
           {WIDTHS.map(({ id, label, icon: Icon }) => (
@@ -68,15 +84,21 @@ export function LivePreview({ sections, mainClass, height = "72vh", className = 
           ))}
         </div>
       </div>
-      <div className="flex justify-center overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 p-3">
-        <iframe
-          ref={frame}
-          title="Service preview"
-          src="/admin-dashboard/service-preview"
-          onLoad={send}
-          style={{ width: current.width, height, maxWidth: "100%" }}
-          className="rounded-xl border border-slate-300 bg-slate-950 shadow-sm transition-[width] duration-300"
-        />
+      <div ref={box} className="flex justify-center overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 p-3">
+        <div style={scale < 1 ? { width: boxWidth, height } : undefined}>
+          <iframe
+            ref={frame}
+            title="Service preview"
+            src="/admin-dashboard/service-preview"
+            onLoad={send}
+            style={
+              scale < 1
+                ? { width: frameWidth, height: `calc(${height} / ${scale})`, transform: `scale(${scale})`, transformOrigin: "top left" }
+                : { width: current.width || "100%", height, maxWidth: "100%" }
+            }
+            className="rounded-xl border border-slate-300 bg-slate-950 shadow-sm transition-[width] duration-300"
+          />
+        </div>
       </div>
     </div>
   );

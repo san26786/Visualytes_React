@@ -17,6 +17,7 @@ import { Panel } from "../components/UI/Panel";
 import { Input } from "../components/UI/Input";
 import { Button } from "../components/UI/Button";
 import { Table } from "../components/UI/Table";
+import { useConfirm } from "../components/UI/Confirm";
 
 interface ClientsPanelProps {
   clients: Client[];
@@ -40,6 +41,7 @@ export default function ClientsPanel({
   deleteClient,
   uploadClientImage,
 }: ClientsPanelProps) {
+  const confirm = useConfirm();
   const [form, setForm] = useState<ClientForm>(EMPTY_FORM);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -98,9 +100,7 @@ export default function ClientsPanel({
   };
 
   const handleDelete = async (id: string) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this client logo?"
-    );
+    const confirmed = await confirm({ title: "Delete this client logo?", confirmLabel: "Delete logo" });
     if (!confirmed) return;
 
     await deleteClient(id);
@@ -116,7 +116,7 @@ export default function ClientsPanel({
   }, [clients, search]);
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[400px_1fr]">
+    <div className="grid gap-6 @min-[1100px]:grid-cols-[400px_1fr]">
       {/* Form Card */}
       <Panel
         title={editingId ? "Edit Client Brand" : "Add Client Logo"}

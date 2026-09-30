@@ -21,6 +21,8 @@ import { Panel } from "../components/UI/Panel";
 import { Input, Textarea } from "../components/UI/Input";
 import { Button } from "../components/UI/Button";
 import { Table } from "../components/UI/Table";
+import { useConfirm } from "../components/UI/Confirm";
+import { useToast } from "../components/UI/Toast";
 
 interface CaseStudiesPanelProps {
   caseStudies: CaseStudy[];
@@ -94,6 +96,8 @@ export default function CaseStudiesPanel({
   moveCaseStudy,
   reload,
 }: CaseStudiesPanelProps) {
+  const confirm = useConfirm();
+  const { showToast } = useToast();
   const [form, setForm] = useState<CaseStudyForm>(BLANK_FORM);
   const [editing, setEditing] = useState<CaseStudy | null>(null);
   const [saving, setSaving] = useState(false);
@@ -153,7 +157,7 @@ export default function CaseStudiesPanel({
       }
     } catch (err) {
       console.error(err);
-      alert("Failed to upload case study image");
+      showToast("Failed to upload case study image", "error");
     } finally {
       setUploading(false);
     }
@@ -193,7 +197,7 @@ export default function CaseStudiesPanel({
   };
 
   const handleDelete = async (item: CaseStudy) => {
-    if (!window.confirm(`Delete "${item.title}"?`)) return;
+    if (!(await confirm({ title: `Delete "${item.title}"?`, confirmLabel: "Delete case study" }))) return;
     await deleteCaseStudy(item.id);
     if (editing?.id === item.id) {
       resetForm();
@@ -202,7 +206,7 @@ export default function CaseStudiesPanel({
   };
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[440px_1fr]">
+    <div className="grid gap-6 @min-[1100px]:grid-cols-[440px_1fr]">
       {/* Form Card */}
       <Panel
         title={editing ? "Edit Case Study" : "Create Case Study"}

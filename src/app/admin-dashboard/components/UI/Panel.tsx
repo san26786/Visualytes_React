@@ -25,20 +25,20 @@ export function Panel({
     >
       {(title || description || headerAction) && (
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-slate-100 pb-4">
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-3">
             {icon && (
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
                 {icon}
               </span>
             )}
-            <div>
+            <div className="min-w-0">
               <div className="flex items-center gap-2.5">
                 {title && (
                   <h2 className="text-base font-bold tracking-tight text-slate-900 sm:text-lg">
                     {title}
                   </h2>
                 )}
-                {badge && <span>{badge}</span>}
+                {badge && <span className="shrink-0 whitespace-nowrap">{badge}</span>}
               </div>
               {description && (
                 <p className="mt-0.5 text-xs text-slate-500">{description}</p>

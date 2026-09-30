@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import {
   AlertCircle,
@@ -10,8 +11,11 @@ import {
   Circle,
   ExternalLink,
   ImageIcon,
+  Link2,
   Loader2,
+  Pencil,
   Plus,
+  RefreshCw,
   Save,
   Send,
   Undo2,
@@ -31,6 +35,7 @@ import { LIMITS, getPublishBlockers } from "@/src/lib/blog/validation";
 import { Button } from "../../components/UI/Button";
 import { ConfirmDialog } from "../../components/UI/ConfirmDialog";
 import { useToast } from "../../components/UI/Toast";
+import { useConfirm } from "../../components/UI/Confirm";
 import { MediaPickerDialog } from "../../components/editor/MediaPickerDialog";
 import RichTextEditor from "../../components/editor/RichTextEditor";
 import { ApiError, blogApi } from "../_lib/api";
@@ -97,8 +102,23 @@ function initialState(post: AdminBlogPost | null, defaultAuthorId: string | null
   };
 }
 
+/** True on the lg breakpoint, where the editor uses two independently scrolling columns. */
+function useIsDesktop() {
+  const [desktop, setDesktop] = useState(() => typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches);
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1024px)");
+    const onChange = () => setDesktop(query.matches);
+    query.addEventListener("change", onChange);
+    return () => query.removeEventListener("change", onChange);
+  }, []);
+  return desktop;
+}
+
 export default function BlogEditorForm({ post, meta, defaultAuthorId }: Props) {
   const { showToast } = useToast();
+  const confirmAction = useConfirm();
+  const router = useRouter();
+  const isDesktop = useIsDesktop();
 
   const [postId, setPostId] = useState<string | null>(post?.id ?? null);
   const [form, setForm] = useState<FormState>(() => initialState(post, defaultAuthorId));
@@ -123,13 +143,20 @@ export default function BlogEditorForm({ post, meta, defaultAuthorId }: Props) {
   const versionRef = useRef(0);
   const savingRef = useRef(false);
   const failedVersionRef = useRef(-1);
-  const slugTouchedRef = useRef(!!post);
+  // The permalink follows the title automatically until the user edits it by hand.
+  // Live posts start "custom" so renaming them never silently breaks a public URL.
+  const [slugAuto, setSlugAuto] = useState(
+    () => !post || (post.status !== "PUBLISHED" && post.slug === slugify(post.title))
+  );
+  const [editingSlug, setEditingSlug] = useState(false);
   const formRef = useRef(form);
+  const slugAutoRef = useRef(slugAuto);
   const postIdRef = useRef(postId);
 
   useEffect(() => {
     formRef.current = form;
     postIdRef.current = postId;
+    slugAutoRef.current = slugAuto;
   });
 
   const dirty = version !== savedVersion;
@@ -153,9 +180,9 @@ export default function BlogEditorForm({ post, meta, defaultAuthorId }: Props) {
     setForm((prev) => ({
       ...prev,
       title,
-      slug: slugTouchedRef.current ? prev.slug : slugify(title),
+      slug: slugAuto ? slugify(title) : prev.slug,
     }));
-    setErrors((prev) => ({ ...prev, title: undefined, ...(slugTouchedRef.current ? {} : { slug: undefined }) }));
+    setErrors((prev) => ({ ...prev, title: undefined, ...(slugAuto ? { slug: undefined } : {}) }));
     touch();
   };
 
@@ -174,6 +201,7 @@ export default function BlogEditorForm({ post, meta, defaultAuthorId }: Props) {
     return {
       title: f.title.trim(),
       slug: f.slug.trim(),
+      slugAuto: slugAutoRef.current,
       excerpt: f.excerpt.trim(),
       content: contentRef.current,
       categoryId: f.categoryId,
@@ -241,7 +269,8 @@ export default function BlogEditorForm({ post, meta, defaultAuthorId }: Props) {
           ...prev,
           status: saved.status,
           publishedAt: saved.publishedAt,
-          slug: !id || !prev.slug ? saved.slug : prev.slug,
+          // Pick up the server's final slug (it may add a "-2" suffix) unless the user changed it meanwhile.
+          slug: !id || !prev.slug || (slugAutoRef.current && prev.slug === f.slug.trim()) ? saved.slug : prev.slug,
         }));
         setErrors({});
         setSavedVersion(startedAt);
@@ -430,15 +459,22 @@ export default function BlogEditorForm({ post, meta, defaultAuthorId }: Props) {
   const publicUrl = form.slug ? `/blog/${form.slug}` : null;
 
   return (
-    <div className="min-h-screen bg-slate-50/70 text-slate-900">
+    <div className="min-h-screen bg-slate-50/70 text-slate-900 lg:flex lg:h-screen lg:flex-col lg:overflow-hidden">
       {/* Top bar */}
-      <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/90 backdrop-blur-md">
+      <header className="sticky top-0 z-40 shrink-0 border-b border-slate-200/80 bg-white/90 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between gap-3 px-4 sm:px-6">
           <div className="flex min-w-0 items-center gap-3">
             <Link
               href={BACK_HREF}
-              onClick={(event) => {
-                if (dirty && !window.confirm("You have unsaved changes. Leave without saving?")) event.preventDefault();
+              onClick={async (event) => {
+                if (!dirty) return;
+                event.preventDefault();
+                const leave = await confirmAction({
+                  title: "Discard unsaved changes?",
+                  description: "You have unsaved changes. Leave without saving?",
+                  confirmLabel: "Leave",
+                });
+                if (leave) router.push(BACK_HREF);
               }}
               className="flex h-9 shrink-0 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900"
             >
@@ -496,9 +532,10 @@ export default function BlogEditorForm({ post, meta, defaultAuthorId }: Props) {
         </div>
       </header>
 
-      <div className="mx-auto grid max-w-[1440px] gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+      {/* On desktop both columns stay in place and scroll independently of each other. */}
+      <div className="mx-auto grid w-full max-w-[1440px] gap-6 px-4 py-6 sm:px-6 lg:min-h-0 lg:flex-1 lg:grid-cols-[minmax(0,1fr)_340px] lg:grid-rows-[minmax(0,1fr)] lg:py-0">
         {/* Main column */}
-        <main className="min-w-0 space-y-5">
+        <main className={`min-w-0 space-y-5 lg:overflow-y-auto lg:overscroll-contain lg:py-6 lg:pr-2 ${SCROLL_CLASS}`}>
           <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm sm:p-6">
             <label htmlFor="field-title" className="sr-only">
               Title
@@ -515,47 +552,96 @@ export default function BlogEditorForm({ post, meta, defaultAuthorId }: Props) {
             {errors.title && <p className="mt-1.5 text-xs text-rose-500">{errors.title}</p>}
 
             <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
-              <span className="font-semibold text-slate-400">Permalink</span>
-              <div
-                id="field-slug"
-                className={`flex min-w-[240px] flex-1 items-center overflow-hidden rounded-lg border bg-slate-50 text-slate-600 transition focus-within:border-cyan-500 focus-within:bg-white ${
-                  errors.slug ? "border-rose-300" : "border-slate-200"
-                }`}
-              >
-                <span className="select-none pl-3 text-slate-400">/blog/</span>
-                <input
-                  value={form.slug}
-                  onChange={(event) => {
-                    slugTouchedRef.current = true;
-                    setField("slug", event.target.value.toLowerCase().replace(/\s+/g, "-"));
-                  }}
-                  onBlur={() => {
-                    const clean = slugify(form.slug);
-                    if (form.slug && clean !== form.slug) setField("slug", clean);
-                  }}
-                  placeholder="auto-generated-from-title"
-                  aria-label="Slug"
-                  className="h-8 flex-1 bg-transparent px-1 text-xs font-medium outline-none"
-                />
-              </div>
-              {slugTouchedRef.current && form.title && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    slugTouchedRef.current = false;
-                    setField("slug", slugify(form.title));
-                  }}
-                  className="rounded-lg px-2 py-1 font-semibold text-cyan-700 transition hover:bg-cyan-50"
-                >
-                  Regenerate
-                </button>
+              <span className="inline-flex items-center gap-1 font-semibold text-slate-400">
+                <Link2 size={12} /> Permalink
+              </span>
+              {editingSlug ? (
+                <>
+                  <div
+                    id="field-slug"
+                    className={`flex min-w-[240px] flex-1 items-center overflow-hidden rounded-lg border bg-white text-slate-600 transition focus-within:border-cyan-500 focus-within:ring-2 focus-within:ring-cyan-500/15 ${
+                      errors.slug ? "border-rose-300" : "border-slate-200"
+                    }`}
+                  >
+                    <span className="select-none pl-3 text-slate-400">/blog/</span>
+                    <input
+                      autoFocus
+                      value={form.slug}
+                      onChange={(event) => {
+                        setSlugAuto(false);
+                        setField("slug", event.target.value.toLowerCase().replace(/\s+/g, "-"));
+                      }}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === "Escape") {
+                          event.preventDefault();
+                          event.currentTarget.blur();
+                        }
+                      }}
+                      onBlur={() => {
+                        const clean = slugify(form.slug) || slugify(form.title);
+                        if (clean !== form.slug) setField("slug", clean);
+                        if (clean === slugify(form.title) && !isPublished) setSlugAuto(true);
+                        setEditingSlug(false);
+                      }}
+                      placeholder="your-post-url"
+                      aria-label="Slug"
+                      className="h-8 flex-1 bg-transparent px-1 text-xs font-medium outline-none"
+                    />
+                  </div>
+                  <span className="text-[11px] text-slate-400">Press Enter to confirm</span>
+                </>
+              ) : (
+                <>
+                  <div
+                    id="field-slug"
+                    className={`flex min-w-0 max-w-full items-center rounded-lg border px-3 py-1.5 ${
+                      errors.slug ? "border-rose-300 bg-rose-50/40" : "border-slate-200 bg-slate-50"
+                    }`}
+                  >
+                    <span className="truncate font-medium text-slate-600">
+                      <span className="text-slate-400">/blog/</span>
+                      {form.slug || <span className="italic text-slate-300">generated from the title</span>}
+                    </span>
+                  </div>
+                  <span
+                    className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${
+                      slugAuto ? "bg-cyan-50 text-cyan-700" : "bg-slate-100 text-slate-500"
+                    }`}
+                    title={slugAuto ? "Updates automatically when you change the title" : "Set by hand - changing the title will not change it"}
+                  >
+                    {slugAuto ? "Auto" : "Custom"}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setEditingSlug(true)}
+                    className="inline-flex items-center gap-1 rounded-lg px-2 py-1 font-semibold text-cyan-700 transition hover:bg-cyan-50"
+                  >
+                    <Pencil size={11} /> Edit
+                  </button>
+                  {!slugAuto && form.title && slugify(form.title) !== form.slug && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSlugAuto(true);
+                        setField("slug", slugify(form.title));
+                      }}
+                      title="Generate the permalink from the title again"
+                      className="inline-flex items-center gap-1 rounded-lg px-2 py-1 font-semibold text-slate-500 transition hover:bg-slate-100"
+                    >
+                      <RefreshCw size={11} /> Use title
+                    </button>
+                  )}
+                </>
               )}
-              {publicUrl && isPublished && !scheduled && (
+              {publicUrl && isPublished && !scheduled && !editingSlug && (
                 <a href={publicUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded-lg px-2 py-1 font-semibold text-slate-500 transition hover:bg-slate-100">
                   View live <ExternalLink size={11} />
                 </a>
               )}
             </div>
+            {isPublished && editingSlug && (
+              <p className="mt-1.5 text-[11px] text-amber-600">This post is live - changing the permalink changes its public URL.</p>
+            )}
             {errors.slug && <p className="mt-1.5 text-xs text-rose-500">{errors.slug}</p>}
           </div>
 
@@ -579,12 +665,12 @@ export default function BlogEditorForm({ post, meta, defaultAuthorId }: Props) {
           </div>
 
           <div id="field-content">
-            <RichTextEditor initialContent={contentRef.current} onChange={onContentChange} error={errors.content} />
+            <RichTextEditor initialContent={contentRef.current} onChange={onContentChange} error={errors.content} stickyTop={isDesktop ? 0 : 64} />
           </div>
         </main>
 
         {/* Sidebar */}
-        <aside className="space-y-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto lg:pr-1">
+        <aside className={`space-y-4 lg:overflow-y-auto lg:overscroll-contain lg:py-6 lg:pr-1 ${SCROLL_CLASS}`}>
           <Card title="Publish">
             <div className="space-y-4">
               <div className="flex items-center justify-between text-sm">
@@ -916,6 +1002,8 @@ const CHECKLIST: { key: keyof FieldErrors; label: string }[] = [
 const INPUT_CLASS =
   "h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-cyan-500 focus:ring-3 focus:ring-cyan-500/15";
 const SELECT_CLASS = INPUT_CLASS;
+const SCROLL_CLASS =
+  "[scrollbar-width:thin] [scrollbar-color:rgba(148,163,184,0.45)_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-300";
 
 function Card({ title, children }: { title: string; children: ReactNode }) {
   return (

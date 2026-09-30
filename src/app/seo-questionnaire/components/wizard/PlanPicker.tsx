@@ -20,7 +20,7 @@ type Props = { plans: PlanOption[]; value: string; onChange: (value: string) => 
 export default function PlanPicker({ plans, value, onChange, error }: Props) {
   return (
     <div>
-      <div role="radiogroup" aria-label="SEO plan" className="grid gap-4 sm:grid-cols-2">
+      <div role="radiogroup" aria-label="SEO plan" className="grid grid-cols-1 gap-4 sm:grid-cols-2 [&>*]:min-w-0">
         {plans.map((plan) => {
           const label = planLabel(plan);
           const selected = value === label;
@@ -49,8 +49,8 @@ export default function PlanPicker({ plans, value, onChange, error }: Props) {
               <span className="absolute inset-0 -z-10 rounded-2xl bg-white" />
 
               <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-sm font-semibold uppercase tracking-wider text-slate-500">{plan.name}</p>
+                <div className="min-w-0">
+                  <p className="break-words text-sm font-semibold uppercase tracking-wider text-slate-500">{plan.name}</p>
                   <p className="mt-1 text-3xl font-extrabold tracking-tight text-slate-900">£{plan.price}</p>
                 </div>
                 <span
@@ -68,7 +68,7 @@ export default function PlanPicker({ plans, value, onChange, error }: Props) {
                   {plan.highlights.map((item) => (
                     <li key={item} className="flex items-center gap-2 text-[13px] text-slate-600">
                       <Check size={14} className="shrink-0 text-emerald-500" />
-                      {item}
+                      <span className="min-w-0 break-words">{item}</span>
                     </li>
                   ))}
                 </ul>

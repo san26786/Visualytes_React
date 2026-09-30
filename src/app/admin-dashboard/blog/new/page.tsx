@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "New Blog Post | Visualytes Admin", r
 
 export default async function NewBlogPostPage() {
   const session = await getContentManager();
-  if (!session) redirect("/seo-questionnaire");
+  if (!session) redirect("/admin");
 
   const [meta, defaultAuthorId] = await Promise.all([getBlogMeta(), getDefaultAuthorId(session.name)]);
   return <BlogEditorForm post={null} meta={meta} defaultAuthorId={defaultAuthorId} />;

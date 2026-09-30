@@ -92,7 +92,7 @@ export function PortfolioPanel({
   }, [portfolio, search]);
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[400px_1fr]">
+    <div className="grid gap-6 @min-[1100px]:grid-cols-[400px_1fr]">
       {/* Form Card */}
       <Panel
         title={editing ? "Edit Portfolio Item" : "Add Portfolio Item"}

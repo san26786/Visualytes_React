@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { getContentManager } from "@/src/lib/admin";
 import type { WriteResult } from "./server";
 
-/** Guard for every admin blog/media endpoint (ADMIN or EDITOR only). */
+/** Guard for every admin blog/media endpoint (ADMIN only). */
 export async function requireContentManager() {
   const session = await getContentManager();
   if (!session) {

@@ -16,7 +16,7 @@ const LABELS = { DRAFT: "Draft", PUBLISHED: "Published", ARCHIVED: "Archived" } 
 /** Renders any post (draft included) exactly as the public article page will. */
 export default async function BlogPreviewPage({ params }: PageProps<"/admin-dashboard/blog/[id]/preview">) {
   const session = await getContentManager();
-  if (!session) redirect("/seo-questionnaire");
+  if (!session) redirect("/admin");
 
   const { id } = await params;
   const [post, meta] = await Promise.all([

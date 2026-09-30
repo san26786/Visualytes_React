@@ -6,6 +6,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { AlertCircle, ArrowLeft, ArrowRight, Check, Loader2, LogOut, Phone, RotateCcw, Save, Send, X } from "lucide-react";
 
 import Logo from "../../../../../public/assets/svg/Logo";
+import { notifyAuthChanged } from "@/src/common/utils/auth-events";
 import { cn } from "@/src/common/utils/cn";
 import type { QConfig } from "@/src/lib/seo-questionnaire/config";
 import { emptyValues, validateAll, validateStep, type Values } from "@/src/lib/seo-questionnaire/schema";
@@ -82,6 +83,7 @@ export default function Wizard({ user, plans, config }: Props) {
     try {
       await fetch("/api/auth/logout", { method: "POST" });
     } finally {
+      notifyAuthChanged();
       // The page re-renders for a signed-out visitor (the login card).
       router.refresh();
     }

@@ -42,7 +42,7 @@ export function SocialPanel({
   };
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[380px_1fr]">
+    <div className="grid gap-6 @min-[1100px]:grid-cols-[380px_1fr]">
       {/* Form Card */}
       <Panel
         title="Social Channel Config"
