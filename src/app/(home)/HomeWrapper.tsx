@@ -8,64 +8,48 @@ import HomeBanner from "./_componts/HomeBanner";
 // import { motion } from "framer-motion";
 
 const DigitalMarketingIntro = dynamic(
-  () => import("./_componts/DigitalMarketingIntro")
+  () => import("./_componts/DigitalMarketingIntro"),
 );
 
 const ProcessSection = dynamic(
-  () => import("../our-process/_components/ProcessSection")
+  () => import("../our-process/_components/ProcessSection"),
 );
 
-const Portfolio = dynamic(
-  () => import("../portfolio/_components/Portfolio")
-);
+const Portfolio = dynamic(() => import("../portfolio/_components/Portfolio"));
 
-const CaseStudy = dynamic(
-  () => import("./_componts/Casestudies")
-);
+const CaseStudy = dynamic(() => import("./_componts/Casestudies"));
 
-const VideoSection = dynamic(
-  () => import("./_componts/VideoSection")
-);
+const VideoSection = dynamic(() => import("./_componts/VideoSection"));
 
 const BusinessCommunities = dynamic(
-  () => import("./_componts/BusinessCommunities")
+  () => import("./_componts/BusinessCommunities"),
 );
 
-const BooksSection = dynamic(
-  () => import("./_componts/BooksSection")
-);
+const BooksSection = dynamic(() => import("./_componts/BooksSection"));
 
 const TestimonialsSection = dynamic(
-  () => import("./_componts/TestimonialsSection")
+  () => import("./_componts/TestimonialsSection"),
 );
 
-const AppointmentTalk = dynamic(
-  () => import("./_componts/AppointmentTalk")
-);
+const AppointmentTalk = dynamic(() => import("./_componts/AppointmentTalk"));
 
-const ClientSlider = dynamic(
-  () => import("./_componts/ClientSlider")
-);
+const ClientSlider = dynamic(() => import("./_componts/ClientSlider"));
 
 export default function HomeWrapper() {
   return (
     <>
-    <main className="relative overflow-hidden bg-slate-950">
-      <BrandPageBackdrop />
+      <main className='relative overflow-hidden bg-slate-950'>
+        <BrandPageBackdrop />
 
-      <div className="relative z-10">
+        <div className='relative z-10'>
+          {/* Always loaded */}
+          <HomeBanner />
 
-        {/* Always loaded */}
-        <HomeBanner />
-
-
-        {/*
-          Each section owns its loading boundary. This prevents a single
-          below-the-fold intersection from mounting every heavy section and
-          downloading all of their client-side code at once.
-        */}
+          {
+            // Each section owns its loading boundary. This prevents a single below-the-fold intersection from mounting every heavy section and downloading all of their client-side code at once.
+          }
           <DigitalMarketingIntro />
-          <h2 className="text-center text-white text-5xl md:text-6xl font-light mb-10">
+          <h2 className='text-center text-white text-5xl md:text-6xl font-light mb-10'>
             Our Process
           </h2>
 
@@ -87,11 +71,9 @@ export default function HomeWrapper() {
 
           <ClientSlider />
 
-
-        <AboveFooter />
-
-      </div>
-    </main>
+          <AboveFooter />
+        </div>
+      </main>
     </>
   );
 }
