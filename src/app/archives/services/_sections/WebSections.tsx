@@ -569,7 +569,7 @@ export function ClientLogos({ data }: { data: ClientLogosData }) {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 pl-50">
           {data.items.map((client, index) => (
             <motion.div
               key={index}
