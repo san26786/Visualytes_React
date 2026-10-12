@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { email, escapeHtml, isFile, requiredText, textToHtml, ValidationError } from "@/src/lib/server/forms";
-import { mailRecipient, mailTransport, verifyCaptcha } from "@/src/lib/server/services";
+import { mailRecipient, mailTransport, sendConfirmation, verifyCaptcha } from "@/src/lib/server/services";
 
 const MAX_RESUME_BYTES = 5 * 1024 * 1024;
 const ALLOWED_RESUME_TYPES = new Set([
@@ -37,6 +37,14 @@ export async function POST(request: Request) {
         content: Buffer.from(await resume.arrayBuffer()),
         contentType: resume.type,
       }],
+    });
+
+    await sendConfirmation({
+      to: senderEmail,
+      name,
+      subject: "We've received your application — Visualytes",
+      intro: "Thank you for your interest in joining Visualytes. We've received your application and resume, and our team will be in touch if your profile matches a current or future opening.",
+      rows: [["Preferred role", designation], ["Message", message]],
     });
 
     return NextResponse.json({ success: true, message: "Application submitted successfully." });

@@ -10,6 +10,7 @@ import {
   BRAND_SURFACE,
   BRAND_TEXT,
 } from "@/src/common/components/ui/brand/theme";
+import { caseStudyPath } from "@/src/lib/case-study-links";
 
 interface CaseStudy {
   id: string;
@@ -177,12 +178,7 @@ export default function CaseStudyGrid() {
                     }
                   >
                     <Link
-                      href={
-                        study.href ||
-                        "/portfolio"
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href={caseStudyPath(study.title)}
                       className={`group relative block overflow-hidden ${BRAND_SURFACE.glassCard} ${BRAND_MOTION.softTransition} hover:-translate-y-2 hover:border-cyan-300/30 hover:shadow-[0_28px_70px_rgba(34,211,238,0.12)] ${
                         index === 0
                           ? "h-[280px] sm:h-[360px] md:h-full md:min-h-[520px]"

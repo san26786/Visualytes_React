@@ -7,6 +7,7 @@ import { motion, type BezierDefinition } from "framer-motion";
 import toast from "react-hot-toast";
 import type { ContactContent } from "@/src/lib/contact-page";
 import { emptyValues, type FormField, type PublicForm } from "@/src/lib/forms/types";
+import { PHONE_DIGITS, digitsOnly, fieldError, formErrors, isNumericFieldName } from "@/src/lib/forms/validation";
 
 const EASE: BezierDefinition = [0.22, 1, 0.36, 1];
 
@@ -52,21 +53,54 @@ export default function ContactForm({ form: definition, content, endpoint = "/ap
 
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const setError = (name: string, message: string) =>
+    setErrors((prev) => {
+      if ((prev[name] ?? "") === message) return prev;
+      const next = { ...prev };
+      if (message) next[name] = message;
+      else delete next[name];
+      return next;
+    });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    setForm((prev) => ({
-      ...prev,
-      [e.target.name]:
-        e.target instanceof HTMLInputElement && e.target.type === "checkbox"
-          ? e.target.checked
-          : e.target.value,
-    }));
+    const { name } = e.target;
+    const field = fields.find((f) => f.name === name);
+    let value: string | boolean =
+      e.target instanceof HTMLInputElement && e.target.type === "checkbox"
+        ? e.target.checked
+        : e.target.value;
+
+    // Phone and numeric fields keep digits only; tell the visitor why a key was ignored.
+    if (field && typeof value === "string" && (field.type === "tel" || isNumericFieldName(field.name))) {
+      const digits = digitsOnly(value);
+      if (digits !== value) {
+        setError(name, `${field.label} must contain numbers only.`);
+        value = digits;
+      } else if (errors[name]) {
+        setError(name, fieldError(field, value));
+      }
+    } else if (field && errors[name]) {
+      setError(name, fieldError(field, value));
+    }
+
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
+
+  const handleBlur = (field: FormField) => setError(field.name, fieldError(field, form[field.name]));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const found = formErrors(fields, form);
+    setErrors(found);
+    if (Object.keys(found).length > 0) {
+      toast.error("Please correct the highlighted fields.");
+      return;
+    }
 
     if (!captchaToken) {
       toast.error("Please verify that you are not a robot.");
@@ -114,6 +148,7 @@ export default function ContactForm({ form: definition, content, endpoint = "/ap
         );
       
         setForm(emptyValues(fields));
+        setErrors({});
       
         setCaptchaToken(null);
         recaptchaRef.current?.reset();
@@ -168,6 +203,7 @@ export default function ContactForm({ form: definition, content, endpoint = "/ap
 
           <form
             onSubmit={handleSubmit}
+            noValidate
             className="relative z-10 space-y-5 rounded-[2.25rem] border border-white/10 bg-slate-950/95 p-6 shadow-[0_40px_100px_rgba(0,0,0,0.6)] backdrop-blur-xl md:p-10 lg:p-14"
           >
 
@@ -186,6 +222,15 @@ export default function ContactForm({ form: definition, content, endpoint = "/ap
                   const Icon = iconFor(field);
                   const wrapper = `relative ${field.width === "full" ? "lg:col-span-2" : ""}`;
                   const value = form[field.name];
+                  const error = errors[field.name];
+                  const errorId = `${field.name}-error`;
+                  const a11y = { "aria-invalid": !!error, "aria-describedby": error ? errorId : undefined, onBlur: () => handleBlur(field) };
+                  const message = error ? (
+                    <p id={errorId} role="alert" className="mt-2 pl-2 text-xs font-medium text-red-400">
+                      {error}
+                    </p>
+                  ) : null;
+                  const invalid = error ? " border-red-500/70! focus:border-red-500/70! focus:ring-red-500/20!" : "";
 
                   if (field.type === "textarea") {
                     return (
@@ -197,9 +242,11 @@ export default function ContactForm({ form: definition, content, endpoint = "/ap
                           placeholder={field.placeholder || field.label}
                           value={String(value ?? "")}
                           onChange={handleChange}
-                          className={textareaClass}
+                          className={textareaClass + invalid}
                           required={field.required}
+                          {...a11y}
                         />
+                        {message}
                       </div>
                     );
                   }
@@ -214,8 +261,10 @@ export default function ContactForm({ form: definition, content, endpoint = "/ap
                           onChange={handleChange}
                           required={field.required}
                           className="h-5 w-5 accent-cyan-400"
+                          {...a11y}
                         />
                         <span>{field.label}</span>
+                        {message}
                       </label>
                     );
                   }
@@ -223,13 +272,14 @@ export default function ContactForm({ form: definition, content, endpoint = "/ap
                   if (field.type === "select") {
                     return (
                       <div key={field.name} className={wrapper}>
-                        <Icon size={15} className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-slate-500" />
+                        <Icon size={15} className="pointer-events-none absolute left-5 top-[31px] -translate-y-1/2 text-slate-500" />
                         <select
                           name={field.name}
                           value={String(value ?? "")}
                           onChange={handleChange}
-                          className={`${inputClass} pl-11`}
+                          className={`${inputClass} pl-11${invalid}`}
                           required={field.required}
+                          {...a11y}
                         >
                           <option value="" disabled>
                             {field.placeholder || field.label}
@@ -240,23 +290,27 @@ export default function ContactForm({ form: definition, content, endpoint = "/ap
                             </option>
                           ))}
                         </select>
+                        {message}
                       </div>
                     );
                   }
 
                   return (
                     <div key={field.name} className={wrapper}>
-                      <Icon size={15} className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500" />
+                      <Icon size={15} className="absolute left-5 top-[31px] -translate-y-1/2 text-slate-500" />
                       <input
                         type={field.type}
+                        inputMode={field.type === "tel" || isNumericFieldName(field.name) ? "numeric" : undefined}
                         name={field.name}
                         placeholder={field.placeholder || field.label}
                         value={String(value ?? "")}
                         onChange={handleChange}
-                        maxLength={field.maxLength}
-                        className={`${inputClass} pl-11`}
+                        maxLength={field.type === "tel" ? PHONE_DIGITS : field.maxLength}
+                        className={`${inputClass} pl-11${invalid}`}
                         required={field.required}
+                        {...a11y}
                       />
+                      {message}
                     </div>
                   );
                 })}
@@ -301,6 +355,7 @@ export default function ContactForm({ form: definition, content, endpoint = "/ap
                   whileTap={{ scale: 0.97 }}
                   onClick={() => {
                     setForm(emptyValues(fields));
+                    setErrors({});
 
                     setCaptchaToken(null);
                     recaptchaRef.current?.reset();

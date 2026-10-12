@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { ESTIMATE_FORM_KEY } from "@/src/lib/forms/defaults";
 import { customFields, displayValue, getForm, validateSubmission } from "@/src/lib/forms/server";
 import { escapeHtml, textToHtml, ValidationError } from "@/src/lib/server/forms";
-import { mailRecipient, mailTransport } from "@/src/lib/server/services";
+import { mailRecipient, mailTransport, sendConfirmation } from "@/src/lib/server/services";
 import { prisma } from "../../../lib/prisma";
 
 export const runtime = "nodejs";
@@ -43,6 +43,20 @@ export async function POST(request: Request) {
       replyTo: senderEmail,
       subject: "New Project Estimate Request",
       html: `<div style="font-family:Arial,sans-serif"><h2>New Estimate Project Request</h2><p><b>First Name:</b> ${escapeHtml(firstName)}</p><p><b>Last Name:</b> ${escapeHtml(lastName)}</p><p><b>Company Name:</b> ${escapeHtml(companyName)}</p><p><b>Company Personnel:</b> ${escapeHtml(companyPersonnel)}</p><p><b>Email:</b> ${escapeHtml(senderEmail)}</p><p><b>Phone:</b> ${escapeHtml(phone)}</p><p><b>Application Type:</b> ${escapeHtml(mobileType)}</p><p><b>Budget:</b> ${escapeHtml(budget)}</p><p><b>Project Details:</b><br />${textToHtml(projectDetails)}</p><p><b>Timeline:</b> ${escapeHtml(timeline)}</p><p><b>Marketing Communication:</b> ${marketing ? "Accepted" : "Not accepted"}</p>${extraRows}</div>`,
+    });
+
+    await sendConfirmation({
+      to: senderEmail,
+      name: firstName,
+      subject: "We've received your project estimate request — Visualytes",
+      intro: "We've received your project estimate request. Our team will review the details and get back to you with an estimate shortly.",
+      rows: [
+        ["Company", companyName],
+        ["Application Type", mobileType],
+        ["Budget", budget],
+        ["Timeline", timeline],
+        ["Project Details", projectDetails],
+      ],
     });
 
     return NextResponse.json({ success: true, message: "Estimate request sent successfully." });

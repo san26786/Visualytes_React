@@ -1,21 +1,25 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import HomeSection from "./shared/HomeSection";
 import { popIn, staggerContainer } from "./shared/motion";
 import { BRAND_HOVER, BRAND_SURFACE } from "@/src/common/components/ui/brand/theme";
-import { ExternalLink } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import { caseStudyPath } from "@/src/lib/case-study-links";
+
+const MotionLink = motion.create(Link);
 
 const caseStudies = [
   {
-    href: "/portfolio",
+    href: caseStudyPath("Studio Creatives"),
     image: "/assets/webp/scfullpagess.png.bv.webp",
     title: "Studio Creatives",
     tag: "Web Design",
   },
   {
-    href: "/portfolio",
+    href: caseStudyPath("Thorney Park Golf Club"),
     image: "/assets/webp/tparksshome.png.bv.webp",
     title: "Thorney Park Golf Club",
     tag: "Branding & Web",
@@ -39,11 +43,9 @@ export default function CaseStudy() {
           className="grid grid-cols-1 gap-6 md:grid-cols-2"
         >
           {caseStudies.map((study, i) => (
-            <motion.a
+            <MotionLink
               key={study.title}
               href={study.href}
-              target="_blank"
-              rel="noopener noreferrer"
               custom={i}
               variants={popIn}
               className={`group relative block h-[420px] overflow-hidden rounded-3xl ${BRAND_SURFACE.glassCard} ${BRAND_HOVER.card}`}
@@ -67,12 +69,12 @@ export default function CaseStudy() {
                 </h3>
                 <div className="mt-4 flex items-center gap-2 text-sm text-slate-300 opacity-0 transition-all duration-300 group-hover:opacity-100">
                   <span>View Project</span>
-                  <ExternalLink size={14} className="transition-transform group-hover:translate-x-1" />
+                  <ArrowUpRight size={14} className="transition-transform group-hover:translate-x-1" />
                 </div>
               </div>
 
               <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-fuchsia-500/20 blur-3xl transition-all duration-500 group-hover:scale-150 group-hover:bg-fuchsia-500/30" />
-            </motion.a>
+            </MotionLink>
           ))}
         </motion.div>
 

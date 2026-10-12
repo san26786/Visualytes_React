@@ -218,11 +218,37 @@ function validateField(field: QField, value: unknown, errors: FieldErrors) {
   }
 }
 
+/** Place names: letters (any language), spaces and . ' - only - no digits or other symbols. */
+const LETTERS_ONLY = /^[\p{L}][\p{L}\s.'-]*$/u;
+/** Countries whose postcodes contain letters (e.g. UK "SW1A 1AA"); everywhere else they are numeric. */
+const ALPHANUMERIC_POSTCODE_COUNTRIES = new Set(["United Kingdom", "Ireland", "Canada", "Netherlands"]);
+const NUMERIC_POSTCODE = /^\d[\d\s-]{1,9}$/;
+const ALPHANUMERIC_POSTCODE = /^[A-Za-z0-9][A-Za-z0-9\s-]{1,9}$/;
+
+/** Formats of the built-in address fields (matched by key, as the admin can only edit their labels). */
+function validateFormat(field: QField, values: Values, errors: FieldErrors) {
+  if (errors[field.key] || field.type !== "text") return;
+  const v = typeof values[field.key] === "string" ? (values[field.key] as string).trim() : "";
+  if (!v) return;
+  if ((field.key === "city" || field.key === "state") && !LETTERS_ONLY.test(v)) {
+    errors[field.key] = `${field.label} must contain letters only.`;
+  } else if (field.key === "postalCode") {
+    const country = String(values.country ?? "");
+    if (ALPHANUMERIC_POSTCODE_COUNTRIES.has(country)) {
+      if (!ALPHANUMERIC_POSTCODE.test(v)) errors[field.key] = `Enter a valid ${field.label}, letters and numbers only.`;
+    } else if (!NUMERIC_POSTCODE.test(v)) {
+      errors[field.key] = `${field.label} must contain numbers only.`;
+    }
+  }
+}
+
 /** Validate one step against the current answers. Empty object = valid. */
 export function validateStep(step: QStep, values: Values): FieldErrors {
   const errors: FieldErrors = {};
   for (const field of visibleFields(step, values)) {
-    if (isInput(field)) validateField(field, values[field.key], errors);
+    if (!isInput(field)) continue;
+    validateField(field, values[field.key], errors);
+    validateFormat(field, values, errors);
   }
   return errors;
 }

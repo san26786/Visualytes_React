@@ -179,6 +179,11 @@ function SponsorCard({
               {item.dateLabel}
             </p>
 
+            {/* Name the event on this side too, so it is clear which page "View details" opens. */}
+            <p className={item.featured ? "text-xl font-semibold leading-tight" : "text-lg font-semibold leading-tight"}>
+              {item.title}
+            </p>
+
             <p className={item.featured ? "text-base leading-snug" : "text-sm leading-snug"}>
               {item.detail}
             </p>

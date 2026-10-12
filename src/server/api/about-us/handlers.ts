@@ -4,7 +4,7 @@ import { ABOUT_FORM_KEY } from "@/src/lib/forms/defaults";
 import { customFields, displayValue, getForm, validateSubmission } from "@/src/lib/forms/server";
 import { prisma } from "@/src/lib/prisma";
 import { escapeHtml, textToHtml, ValidationError } from "@/src/lib/server/forms";
-import { mailRecipient, mailTransport, verifyCaptcha } from "@/src/lib/server/services";
+import { mailRecipient, mailTransport, sendConfirmation, verifyCaptcha } from "@/src/lib/server/services";
 
 export const runtime = "nodejs";
 
@@ -39,6 +39,14 @@ export async function POST(request: Request) {
       replyTo: address,
       subject: `New About Us Enquiry${name ? ` — ${name}` : ""}`,
       html: `<div style="font-family:Arial,sans-serif"><h2>New About Us Enquiry</h2><table cellpadding="8" cellspacing="0" border="1" style="border-collapse:collapse"><tr><td><strong>Name</strong></td><td>${escapeHtml(name)}</td></tr><tr><td><strong>Email</strong></td><td>${escapeHtml(address)}</td></tr><tr><td><strong>Phone</strong></td><td>${escapeHtml(phone)}</td></tr><tr><td><strong>Message</strong></td><td>${textToHtml(message)}</td></tr>${extraRows}</table></div>`,
+    });
+
+    await sendConfirmation({
+      to: address,
+      name,
+      subject: "We've received your message — Visualytes",
+      intro: "We've received your message and a member of our team will get back to you shortly.",
+      rows: [["Phone", phone], ["Message", message]],
     });
 
     return NextResponse.json({ success: true, message: "Message sent successfully." });
