@@ -115,7 +115,7 @@ export default function TestimonialsSection() {
                 <motion.article
                   whileHover={{ scale: 1.02, y: -4 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className={`relative mx-2 p-8 text-center ${BRAND_SURFACE.glassCard} ${BRAND_HOVER.card}`}
+                  className={`relative mx-2 h-full w-full p-8 text-center ${BRAND_SURFACE.glassCard} ${BRAND_HOVER.card}`}
                 >
                   <div className="relative mx-auto mb-6 w-fit">
                     <div className="relative h-[80px] w-[80px] overflow-hidden rounded-full border-2 border-cyan-300/40 bg-slate-900">
