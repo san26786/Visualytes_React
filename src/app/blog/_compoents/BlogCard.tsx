@@ -84,7 +84,7 @@ export default function BlogCard({
             <span className="text-xs font-semibold uppercase tracking-widest text-slate-300">{author}</span>
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-slate-400">
+          <div className="flex items-center gap-1 text-xs text-slate-400">
             <FaCalendarAlt className="text-cyan-400" />
             {formattedDate}
           </div>
