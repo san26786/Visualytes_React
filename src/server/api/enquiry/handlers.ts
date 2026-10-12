@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { email, escapeHtml, requiredText, textToHtml, ValidationError } from "@/src/lib/server/forms";
+import { email, escapeHtml, phone as phoneNumber, requiredText, textToHtml, ValidationError } from "@/src/lib/server/forms";
 import { mailRecipient, mailTransport, verifyCaptcha } from "@/src/lib/server/services";
 
 export const runtime = "nodejs";
@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     const payload = body as Record<string, unknown>;
 
     const name = requiredText(payload.name, "Full name", { max: 200 });
-    const phone = requiredText(payload.phone, "Phone number", { max: 40 });
+    const phone = phoneNumber(payload.phone);
     const address = email(payload.email);
     const service = requiredText(payload.service, "Service", { max: 120 });
     const message = requiredText(payload.message, "Enquiry details", { max: 4_000 });

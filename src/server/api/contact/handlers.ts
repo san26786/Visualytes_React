@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { CONTACT_FORM_KEY } from "@/src/lib/forms/defaults";
 import { customFields, displayValue, getForm, validateSubmission } from "@/src/lib/forms/server";
 import { escapeHtml, textToHtml, ValidationError } from "@/src/lib/server/forms";
-import { mailRecipient, mailTransport, verifyCaptcha } from "@/src/lib/server/services";
+import { mailRecipient, mailTransport, sendConfirmation, verifyCaptcha } from "@/src/lib/server/services";
 import { prisma } from "@/src/lib/prisma";
 
 export const runtime = "nodejs";
@@ -39,6 +39,14 @@ export async function POST(request: Request) {
       replyTo: address,
       subject: `New Contact Form — ${contactTopic || "General Enquiry"}`,
       html: `<div style="font-family:Arial,sans-serif"><h2>New Contact Form Submission</h2><table cellpadding="8" cellspacing="0" border="1" style="border-collapse:collapse"><tr><td><strong>Name</strong></td><td>${escapeHtml(contactName)}</td></tr><tr><td><strong>Email</strong></td><td>${escapeHtml(address)}</td></tr><tr><td><strong>Phone</strong></td><td>${escapeHtml(contactPhone)}</td></tr><tr><td><strong>Topic</strong></td><td>${escapeHtml(contactTopic)}</td></tr><tr><td><strong>Message</strong></td><td>${textToHtml(contactMessage)}</td></tr>${extraRows}</table></div>`,
+    });
+
+    await sendConfirmation({
+      to: address,
+      name: contactName,
+      subject: "We've received your message — Visualytes",
+      intro: "We've received your message and a member of our team will get back to you shortly.",
+      rows: [["Topic", contactTopic], ["Phone", contactPhone], ["Message", contactMessage]],
     });
 
     return NextResponse.json({ success: true, message: "Message sent successfully." });

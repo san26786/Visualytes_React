@@ -5,6 +5,7 @@ import { z } from "zod";
 import { prisma } from "@/src/lib/prisma";
 import { email, optionalText, requiredText, ValidationError } from "@/src/lib/server/forms";
 import { DEFAULT_FORMS, EMAIL_REQUIRED_FORMS } from "./defaults";
+import { fieldError } from "./validation";
 import { FIELD_TYPES, humanize, type FormField, type PublicForm } from "./types";
 
 const fieldSchema = z
@@ -124,7 +125,11 @@ export function validateSubmission(fields: FormField[], body: Record<string, unk
       if (value && !field.options?.includes(value)) throw new ValidationError(`Choose a valid option for ${field.label}.`);
       values[field.name] = value;
     } else {
-      values[field.name] = text(field, raw);
+      const value = text(field, raw);
+      // Phone digits and numeric-only fields (e.g. the estimate budget).
+      const message = value ? fieldError(field, value) : "";
+      if (message) throw new ValidationError(message);
+      values[field.name] = value;
     }
   }
   return values;

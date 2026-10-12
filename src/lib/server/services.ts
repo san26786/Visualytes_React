@@ -2,7 +2,7 @@
 import "server-only";
 
 import nodemailer from "nodemailer";
-import { ValidationError, requiredText } from "./forms";
+import { ValidationError, escapeHtml, requiredText, textToHtml } from "./forms";
 
 const CAPTCHA_VERIFY_URL =
   "https://www.google.com/recaptcha/api/siteverify";
@@ -46,6 +46,42 @@ export function mailTransport() {
 
 export function mailRecipient() {
   return requiredEnv("EMAIL_USER");
+}
+
+/**
+ * Acknowledgement sent to the visitor after a public form is submitted. A failure here is logged,
+ * not thrown: the submission itself has already been stored and delivered to the team.
+ */
+export async function sendConfirmation({
+  to,
+  name,
+  subject,
+  intro,
+  rows = [],
+}: {
+  to: string;
+  name: string;
+  subject: string;
+  /** Plain text, e.g. "We've received your message and will be in touch shortly." */
+  intro: string;
+  /** Copy of what they sent, as label / value pairs (empty values are skipped). */
+  rows?: [string, string][];
+}) {
+  const summary = rows
+    .filter(([, value]) => value.trim())
+    .map(([label, value]) => `<tr><td style="padding:6px 12px 6px 0;vertical-align:top"><strong>${escapeHtml(label)}</strong></td><td style="padding:6px 0">${textToHtml(value)}</td></tr>`)
+    .join("");
+
+  try {
+    await mailTransport().sendMail({
+      from: `"Visualytes" <${mailRecipient()}>`,
+      to,
+      subject,
+      html: `<div style="font-family:Arial,sans-serif;color:#0f172a"><h2>Thanks for reaching out${name ? `, ${escapeHtml(name)}` : ""}!</h2><p>${escapeHtml(intro)}</p>${summary ? `<p><strong>Here is a copy of what you sent us:</strong></p><table cellpadding="0" cellspacing="0" style="border-collapse:collapse">${summary}</table>` : ""}<p>Best regards,<br />Visualytes Team</p></div>`,
+    });
+  } catch (error) {
+    console.error(`Unable to send confirmation email to ${to}`, error);
+  }
 }
 
 export function applicationUrl() {

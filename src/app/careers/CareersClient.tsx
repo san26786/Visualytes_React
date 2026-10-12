@@ -14,6 +14,16 @@ import {
 import toast from "react-hot-toast";
 import type { CareersContent } from "@/src/lib/page-content/types";
 import { isRemoteImage } from "@/src/lib/page-content/image";
+import { emailError } from "@/src/lib/forms/validation";
+
+type CareerField = "name" | "email" | "designation" | "message" | "resume";
+const REQUIRED_MESSAGES: Record<CareerField, string> = {
+  name: "Full name is required.",
+  email: "Email address is required.",
+  designation: "Preferred role is required.",
+  message: "Please tell us about yourself.",
+  resume: "Please upload your resume.",
+};
 const accents = [
   "group-hover:border-cyan-300/40",
   "group-hover:border-fuchsia-300/40",
@@ -40,17 +50,57 @@ export default function CareersClient({ content }: { content: CareersContent }) 
     message: "",
   });
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Partial<Record<CareerField, string>>>({});
   const maxResumeBytes = 5 * 1024 * 1024;
+
+  const errorFor = (name: CareerField, values = form, file = resume): string => {
+    if (name === "resume") {
+      if (!file) return REQUIRED_MESSAGES.resume;
+      return file.size > maxResumeBytes ? "Your resume must be 5 MB or smaller." : "";
+    }
+    const value = values[name].trim();
+    if (!value) return REQUIRED_MESSAGES[name];
+    return name === "email" ? emailError(value) : "";
+  };
+
+  const setError = (name: CareerField, message: string) =>
+    setErrors((prev) => ({ ...prev, [name]: message || undefined }));
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const name = e.target.name as CareerField;
+    const next = { ...form, [name]: e.target.value };
+    setForm(next);
+    if (errors[name]) setError(name, errorFor(name, next));
   };
+
+  const handleBlur = (
+    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const name = e.target.name as CareerField;
+    setError(name, errorFor(name));
+  };
+
+  const errorText = (name: CareerField) =>
+    errors[name] ? (
+      <p id={`career-${name}-error`} role="alert" className="mt-2 pl-2 text-xs font-medium text-red-400">
+        {errors[name]}
+      </p>
+    ) : null;
+
+  const fieldProps = (name: CareerField) => ({
+    onBlur: handleBlur,
+    "aria-invalid": !!errors[name],
+    "aria-describedby": errors[name] ? `career-${name}-error` : undefined,
+  });
+
+  const invalidClass = (name: CareerField) => (errors[name] ? " border-red-500/70!" : "");
 
   const resetForm = () => {
     setForm({ name: "", email: "", designation: "", message: "" });
     setResume(null);
+    setErrors({});
     if (fileRef.current) fileRef.current.value = "";
     setCaptchaToken("");
     recaptchaRef.current?.reset();
@@ -59,16 +109,19 @@ export default function CareersClient({ content }: { content: CareersContent }) 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!captchaToken) {
-      toast.error("Please verify reCAPTCHA.");
-            return;
-    }
-    if (!resume) {
-      toast.error("Please upload your resume.");
+    const found = Object.fromEntries(
+      (Object.keys(REQUIRED_MESSAGES) as CareerField[])
+        .map((name) => [name, errorFor(name)])
+        .filter(([, message]) => message)
+    ) as Partial<Record<CareerField, string>>;
+    setErrors(found);
+    if (Object.keys(found).length > 0) {
+      toast.error("Please correct the highlighted fields.");
       return;
     }
-    if (resume.size > maxResumeBytes) {
-      toast.error("Your resume must be 5 MB or smaller.");
+
+    if (!captchaToken || !resume) {
+      toast.error("Please verify reCAPTCHA.");
       return;
     }
 
@@ -182,16 +235,20 @@ export default function CareersClient({ content }: { content: CareersContent }) 
 
            
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} noValidate className="space-y-5">
               <div className="grid gap-5 lg:grid-cols-2">
-                <input
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  placeholder="Full Name"
-                  className={inputClass}
-                  required
-                />
+                <div>
+                  <input
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    placeholder="Full Name"
+                    className={inputClass + invalidClass("name")}
+                    required
+                    {...fieldProps("name")}
+                  />
+                  {errorText("name")}
+                </div>
                 <div className="relative">
                   <input
                     type="email"
@@ -199,13 +256,15 @@ export default function CareersClient({ content }: { content: CareersContent }) 
                     value={form.email}
                     onChange={handleChange}
                     placeholder="Email Address"
-                    className={`${inputClass} pr-12`}
+                    className={`${inputClass} pr-12${invalidClass("email")}`}
                     required
+                    {...fieldProps("email")}
                   />
                   <Mail
                     size={18}
-                    className="absolute right-5 top-1/2 -translate-y-1/2 text-cyan-300"
+                    className="absolute right-5 top-7 -translate-y-1/2 text-cyan-300 sm:top-8"
                   />
+                  {errorText("email")}
                 </div>
               </div>
 
@@ -217,9 +276,11 @@ export default function CareersClient({ content }: { content: CareersContent }) 
                     value={form.designation}
                     onChange={handleChange}
                     placeholder="Preferred Role"
-                    className={inputClass}
+                    className={inputClass + invalidClass("designation")}
                     required
+                    {...fieldProps("designation")}
                   />
+                  {errorText("designation")}
                   <datalist id="designations">
                     {jobs.map((job) => (
                       <option key={job.title} value={job.title} />
@@ -227,28 +288,41 @@ export default function CareersClient({ content }: { content: CareersContent }) 
                   </datalist>
                 </div>
 
-                <div className={`flex h-14 items-center gap-3 rounded-2xl border border-white/10 bg-slate-900/60 px-5 sm:h-16 sm:px-6 ${BRAND_MOTION.softTransition} focus-within:border-cyan-300/40`}>
+                <div>
+                <div className={`flex h-14 items-center gap-3 rounded-2xl border border-white/10 bg-slate-900/60 px-5 sm:h-16 sm:px-6 ${BRAND_MOTION.softTransition} focus-within:border-cyan-300/40${invalidClass("resume")}`}>
                   <Upload size={18} className="shrink-0 text-cyan-300" />
                   <input
                     ref={fileRef}
                     type="file"
                     accept=".pdf,.doc,.docx"
-                    onChange={(e) => setResume(e.target.files?.[0] || null)}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0] || null;
+                      setResume(file);
+                      setError("resume", errorFor("resume", form, file));
+                    }}
+                    aria-invalid={!!errors.resume}
+                    aria-describedby={errors.resume ? "career-resume-error" : undefined}
                     className="w-full cursor-pointer text-sm text-slate-400 file:mr-4 file:cursor-pointer file:rounded-full file:border-0 file:bg-cyan-300/15 file:px-4 file:py-2 file:text-xs file:font-semibold file:uppercase file:tracking-wider file:text-cyan-300 hover:file:bg-cyan-300/25"
                     required
                   />
                 </div>
+                {errorText("resume")}
+                </div>
               </div>
 
+              <div>
               <textarea
                 rows={5}
                 name="message"
                 value={form.message}
                 onChange={handleChange}
                 placeholder="Tell us about yourself..."
-                className={`${inputClass} resize-none py-4`}
+                className={`${inputClass} resize-none py-4${invalidClass("message")}`}
                 required
+                {...fieldProps("message")}
               />
+              {errorText("message")}
+              </div>
 
               <div className="flex flex-col items-center justify-between gap-6 pt-4 lg:flex-row">
                 <ReCAPTCHA

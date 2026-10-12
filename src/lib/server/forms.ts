@@ -1,6 +1,6 @@
 import "server-only";
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+import { emailError, phoneError } from "@/src/lib/forms/validation";
 
 export class ValidationError extends Error {}
 
@@ -28,10 +28,16 @@ export function optionalText(value: unknown, field: string, max = 2_000) {
 
 export function email(value: unknown) {
   const address = requiredText(value, "Email address", { max: 254 }).toLowerCase();
-  if (!EMAIL_PATTERN.test(address)) {
-    throw new ValidationError("Enter a valid email address.");
-  }
+  const message = emailError(address);
+  if (message) throw new ValidationError(message);
   return address;
+}
+
+export function phone(value: unknown, field = "Phone number") {
+  const number = requiredText(value, field, { max: 40 });
+  const message = phoneError(number);
+  if (message) throw new ValidationError(message);
+  return number;
 }
 
 export function escapeHtml(value: string) {

@@ -868,7 +868,7 @@ export const SECTION_DEFS: SectionDef[] = [
     defaults: { eyebrow: "From Our Blog", heading: "From Our Blog", limit: 3, buttonText: "Go To Blog", buttonLink: "/blog" },
   },
   {
-    type: "embed.process",
+        type: "embed.process",
     label: "Our process (live)",
     description: "The process steps managed in the Process admin tab.",
     group: "Live data",

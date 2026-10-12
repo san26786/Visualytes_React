@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { emptyValues, type FormField, type PublicForm } from "@/src/lib/forms/types";
+import { PHONE_DIGITS, digitsOnly, fieldError, formErrors, isNumericFieldName } from "@/src/lib/forms/validation";
 
 const controlClass =
   "w-full rounded-md border border-gray-300 bg-white px-4 outline-none focus:border-blue-500";
@@ -14,12 +15,45 @@ export default function EstimateProjectClient({ form }: { form: PublicForm }) {
   const fields = form.fields;
   const [formData, setFormData] = useState<Record<string, string | boolean>>(() => emptyValues(fields));
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const setValue = (name: string, value: string | boolean) =>
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const setError = (name: string, message: string) =>
+    setErrors((prev) => {
+      if ((prev[name] ?? "") === message) return prev;
+      const next = { ...prev };
+      if (message) next[name] = message;
+      else delete next[name];
+      return next;
+    });
+
+  const setValue = (field: FormField, raw: string | boolean) => {
+    let value = raw;
+    // Phone and budget keep digits only; tell the visitor why a key was ignored.
+    if (typeof value === "string" && (field.type === "tel" || isNumericFieldName(field.name))) {
+      const digits = digitsOnly(value);
+      if (digits !== value) {
+        setError(field.name, `${field.label} must contain numbers only.`);
+        value = digits;
+      } else if (errors[field.name]) {
+        setError(field.name, fieldError(field, value));
+      }
+    } else if (errors[field.name]) {
+      setError(field.name, fieldError(field, value));
+    }
+    setFormData((prev) => ({ ...prev, [field.name]: value }));
+  };
+
+  const handleBlur = (field: FormField) => setError(field.name, fieldError(field, formData[field.name]));
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const found = formErrors(fields, formData);
+    setErrors(found);
+    if (Object.keys(found).length > 0) {
+      toast.error("Please fill in all mandatory fields correctly.");
+      return;
+    }
 
     try {
       setLoading(true);
@@ -35,6 +69,7 @@ export default function EstimateProjectClient({ form }: { form: PublicForm }) {
       if (result.success) {
         toast.success(result.message || "Project estimate submitted successfully!");
         setFormData(emptyValues(fields));
+        setErrors({});
       } else {
         toast.error(result.message || "Something went wrong!");
       }
@@ -70,7 +105,7 @@ export default function EstimateProjectClient({ form }: { form: PublicForm }) {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="rounded-xl bg-gray-50 p-10 shadow-sm">
+        <form onSubmit={handleSubmit} noValidate className="rounded-xl bg-gray-50 p-10 shadow-sm">
           {!form.isActive ? (
             <p className="py-10 text-center text-sm font-semibold text-blue-900">
               This form is currently unavailable. Please contact us directly.
@@ -83,13 +118,16 @@ export default function EstimateProjectClient({ form }: { form: PublicForm }) {
                     key={field.name}
                     field={field}
                     value={String(formData[field.name] ?? "")}
-                    onChange={(value) => setValue(field.name, value)}
+                    error={errors[field.name]}
+                    onChange={(value) => setValue(field, value)}
+                    onBlur={() => handleBlur(field)}
                   />
                 ))}
               </div>
 
               {checkboxes.map((field) => (
-                <label key={field.name} className="mt-6 flex cursor-pointer items-center gap-3 text-sm text-gray-500">
+                <div key={field.name}>
+                <label className="mt-6 flex cursor-pointer items-center gap-3 text-sm text-gray-500">
                   <div
                     className={`flex h-6 w-6 items-center justify-center rounded-md border-2 transition-all duration-200 ${
                       formData[field.name] ? "border-emerald-500 bg-emerald-500" : "border-gray-300 bg-white"
@@ -102,12 +140,14 @@ export default function EstimateProjectClient({ form }: { form: PublicForm }) {
                     type="checkbox"
                     checked={formData[field.name] === true}
                     required={field.required}
-                    onChange={(e) => setValue(field.name, e.target.checked)}
+                    onChange={(e) => setValue(field, e.target.checked)}
                     className="hidden"
                   />
 
                   <span>{field.label}</span>
                 </label>
+                {errors[field.name] && <p role="alert" className="mt-1 text-xs font-medium text-red-500">{errors[field.name]}</p>}
+                </div>
               ))}
 
               <div className="mt-8 text-center">
@@ -139,12 +179,21 @@ export default function EstimateProjectClient({ form }: { form: PublicForm }) {
 function Field({
   field,
   value,
+  error,
   onChange,
+  onBlur,
 }: {
   field: FormField;
   value: string;
+  error?: string;
   onChange: (value: string) => void;
+  onBlur: () => void;
 }) {
+  const errorId = `${field.name}-error`;
+  const a11y = { "aria-invalid": !!error, "aria-describedby": error ? errorId : undefined, onBlur };
+  const invalid = error ? " border-red-500! focus:border-red-500!" : "";
+  const numeric = field.type === "tel" || isNumericFieldName(field.name);
+
   return (
     <div className={field.width === "full" ? "md:col-span-2" : ""}>
       <label className="mb-1 block text-sm text-gray-500">
@@ -159,14 +208,16 @@ function Field({
           placeholder={field.placeholder}
           maxLength={field.maxLength}
           onChange={(e) => onChange(e.target.value)}
-          className={`${controlClass} h-24 py-3`}
+          className={`${controlClass} h-24 py-3${invalid}`}
+          {...a11y}
         />
       ) : field.type === "select" ? (
         <select
           required={field.required}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`${controlClass} h-10 text-gray-600`}
+          className={`${controlClass} h-10 text-gray-600${invalid}`}
+          {...a11y}
         >
           <option value="" disabled>
             {field.placeholder || "Select Option"}
@@ -180,13 +231,21 @@ function Field({
       ) : (
         <input
           type={field.type}
+          inputMode={numeric ? "numeric" : undefined}
           required={field.required}
           value={value}
           placeholder={field.placeholder}
-          maxLength={field.maxLength}
+          maxLength={field.type === "tel" ? PHONE_DIGITS : field.maxLength}
           onChange={(e) => onChange(e.target.value)}
-          className={`${controlClass} h-10`}
+          className={`${controlClass} h-10${invalid}`}
+          {...a11y}
         />
+      )}
+
+      {error && (
+        <p id={errorId} role="alert" className="mt-1 text-xs font-medium text-red-500">
+          {error}
+        </p>
       )}
     </div>
   );
