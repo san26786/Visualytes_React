@@ -8,8 +8,8 @@ export default function Map({ content }: { content: AboutContent["maps"] }) {
 
         {/* Heading */}
         <div className="flex justify-center mt-7">
-          <div className="rounded-full border border-fuchsia-300/30 bg-fuchsia-300/10 px-10 py-3">
-            <h3 className="text-1xl md:text-5xl font-medium text-fuchsia-300">
+          <div className="rounded-full border border-fuchsia-300/30 bg-fuchsia-300/10 px-5 py-2 md:px-10 md:py-3">
+            <h3 className="text-2xl md:text-5xl font-medium text-fuchsia-300">
             {content.clientTitle}
             </h3>
           </div>
@@ -45,8 +45,8 @@ export default function Map({ content }: { content: AboutContent["maps"] }) {
 
         {/* Heading */}
         <div className="flex justify-center">
-          <div className="rounded-full border border-orange-300/30 bg-orange-300/10 px-10 py-3">
-            <h3 className="text-1xl md:text-5xl font-medium text-orange-300">
+          <div className="rounded-full border border-orange-300/30 bg-orange-300/10 px-5 py-2 md:px-10 md:py-3">
+            <h3 className="text-2xl md:text-5xl font-medium text-orange-300">
             {content.presenceTitle}
             </h3>
           </div>
