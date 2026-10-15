@@ -47,7 +47,7 @@ export default function Footer() {
         {/* Content */}
         <div className="relative z-10 max-w-[970px] mx-auto px-6 pt-[40px] pb-[30px] text-center">
           {/* Logo */}
-          <div className="flex justify-center -mt-[60px] md:-mt-[85px] sm:-mt-[80px]">
+          <div className="flex justify-center -mt-[80px] sm:-mt-[100px]">
             <Image
               src="/assets/png/footer_logo2.png"
               alt={settings.general.siteName}
