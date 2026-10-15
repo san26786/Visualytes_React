@@ -204,7 +204,7 @@ export default function ContactForm({ form: definition, content, endpoint = "/ap
           <form
             onSubmit={handleSubmit}
             noValidate
-            className="relative z-10 space-y-5 rounded-[2.25rem] border border-white/10 bg-slate-950/95 p-6 shadow-[0_40px_100px_rgba(0,0,0,0.6)] backdrop-blur-xl md:p-10 lg:p-14"
+            className="mb-20 relative z-10 space-y-5 rounded-[2.25rem] border border-white/10 bg-slate-950/95 p-6 shadow-[0_40px_100px_rgba(0,0,0,0.6)] backdrop-blur-xl md:p-10 lg:p-14"
           >
 
             <div className="pointer-events-none absolute left-0 top-0 h-60 w-60 rounded-full bg-cyan-400/8 blur-3xl" />
