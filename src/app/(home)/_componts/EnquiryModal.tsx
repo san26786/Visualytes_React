@@ -4,6 +4,8 @@ import { useRef, useState } from "react";
 import { X } from "lucide-react";
 import ReCAPTCHA from "react-google-recaptcha";
 import toast from "react-hot-toast";
+import PhoneField from "@/src/common/components/form/PhoneField";
+import { phoneError as phoneRuleError } from "@/src/lib/forms/validation";
 
 const SERVICES = [
   "Web Development",
@@ -46,25 +48,20 @@ const [phoneError, setPhoneError] = useState("");
     >
   ) => {
     const { name, value } = e.target;
-  
-    if (name === "phone") {
-      // Allow only numeric digits
-      if (!/^\d*$/.test(value)) {
-        setPhoneError("Phone number must contain numbers only.");
-        return;
-      }
-  
-      setPhoneError("");
-  
-      if (value.length > 10) {
-        setPhoneError("Phone number must be exactly 10 digits.");
-        return;
-      }
-    }
-  
     setForm((prev) => ({ ...prev, [name]: value }));
   };
   
+
+  const handlePhoneChange = (value: string) => {
+    if (phoneError) setPhoneError(phoneRuleError(value));
+    setForm((prev) => ({ ...prev, phone: value }));
+  };
+
+  const validatePhone = () => {
+    const message = form.phone ? phoneRuleError(form.phone) : "Phone number is required.";
+    setPhoneError(message);
+    return !message;
+  };
 
   const resetForm = () => {
     setForm({ name: "", phone: "", email: "", service: "", message: "" });
@@ -77,10 +74,7 @@ const [phoneError, setPhoneError] = useState("");
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!/^\d{10}$/.test(form.phone)) {
-      setPhoneError("Please enter a valid 10-digit phone number.");
-      return;
-    }
+    if (!validatePhone()) return;
     
     if (!captchaToken) {
       toast.error("Please verify that you are not a robot.");
@@ -150,27 +144,17 @@ const [phoneError, setPhoneError] = useState("");
         />
 
         <div>
-          <input
-            type="tel"
+          <PhoneField
             name="phone"
             value={form.phone}
-            onChange={handleChange}
-            onBlur={() => {
-              if (!form.phone) {
-                setPhoneError("Phone number is required.");
-              } else if (form.phone.length !== 10) {
-                setPhoneError("Phone number must be exactly 10 digits.");
-              }
-            }}
-            placeholder="Phone Number"
-            className={`${inputClass} ${
-              phoneError ? "ring-2 ring-red-500" : ""
-            }`}
-            inputMode="numeric"
-            maxLength={10}
+            onChange={handlePhoneChange}
+            onBlur={validatePhone}
+            onNonDigit={() => setPhoneError("Phone number must contain numbers only.")}
+            boxClassName={inputClass}
+            inputClassName={phoneError ? "ring-2 ring-red-500" : ""}
             required
-            aria-invalid={!!phoneError}
-            aria-describedby="phone-error"
+            invalid={!!phoneError}
+            describedBy="phone-error"
           />
 
           {phoneError && (

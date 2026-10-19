@@ -6,7 +6,6 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Download, X } from "lucide-react";
 import { createPortal } from "react-dom";
-import toast from "react-hot-toast";
 import HomeSection from "./shared/HomeSection";
 import { popIn, staggerContainer } from "./shared/motion";
 import { BRAND_HOVER, BRAND_SURFACE } from "@/src/common/components/ui/brand/theme";
@@ -53,19 +52,25 @@ const items: Resource[] = [
   },
 ];
 
-/** Downloads the file in place (no new tab); tells the visitor if it is not available. */
-async function downloadFile(file: string, fileName: string, label: string) {
-  try {
-    const response = await fetch(file, { method: "HEAD" });
-    if (!response.ok) throw new Error(String(response.status));
-    const link = document.createElement("a");
-    link.href = file;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  } catch {
-    toast.error(`The ${label.toLowerCase()} is not available right now. Please contact us and we will send it to you.`);
+function triggerDownload(href: string, fileName: string) {
+  const link = document.createElement("a");
+  link.href = href;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
+/** Downloads the PDF in place (no new tab); falls back to the cover image until the PDF is added. */
+async function downloadResource(item: Resource) {
+  if (item.file) {
+    const response = await fetch(item.file, { method: "HEAD" }).catch(() => null);
+    if (response?.ok) return triggerDownload(item.file, item.fileName ?? item.file);
+  }
+  if (item.image) {
+    const extension = item.image.split(".").pop();
+    const baseName = (item.fileName ?? item.label).replace(/\.pdf$/i, "");
+    triggerDownload(item.image, `${baseName}.${extension}`);
   }
 }
 
@@ -213,7 +218,7 @@ export default function BooksSection() {
               <button
                 type="button"
                 onClick={() =>
-                  item.isSlider ? setViewerOpen(true) : item.file && downloadFile(item.file, item.fileName ?? item.file, item.label)
+                  item.isSlider ? setViewerOpen(true) : downloadResource(item)
                 }
                 className="mt-4 inline-flex cursor-pointer items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-300/5 px-8 py-3 text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-200 transition-all duration-300 hover:scale-105 hover:border-cyan-300 hover:bg-cyan-300/15"
               >

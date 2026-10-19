@@ -7,7 +7,8 @@ import { motion, type BezierDefinition } from "framer-motion";
 import toast from "react-hot-toast";
 import type { ContactContent } from "@/src/lib/contact-page";
 import { emptyValues, type FormField, type PublicForm } from "@/src/lib/forms/types";
-import { PHONE_DIGITS, digitsOnly, fieldError, formErrors, isNumericFieldName } from "@/src/lib/forms/validation";
+import PhoneField from "@/src/common/components/form/PhoneField";
+import { digitsOnly, fieldError, formErrors, isNumericFieldName } from "@/src/lib/forms/validation";
 
 const EASE: BezierDefinition = [0.22, 1, 0.36, 1];
 
@@ -74,8 +75,8 @@ export default function ContactForm({ form: definition, content, endpoint = "/ap
         ? e.target.checked
         : e.target.value;
 
-    // Phone and numeric fields keep digits only; tell the visitor why a key was ignored.
-    if (field && typeof value === "string" && (field.type === "tel" || isNumericFieldName(field.name))) {
+    // Numeric fields keep digits only; tell the visitor why a key was ignored.
+    if (field && typeof value === "string" && isNumericFieldName(field.name)) {
       const digits = digitsOnly(value);
       if (digits !== value) {
         setError(name, `${field.label} must contain numbers only.`);
@@ -88,6 +89,11 @@ export default function ContactForm({ form: definition, content, endpoint = "/ap
     }
 
     setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handlePhoneChange = (field: FormField, value: string) => {
+    if (errors[field.name]) setError(field.name, fieldError(field, value));
+    setForm((prev) => ({ ...prev, [field.name]: value }));
   };
 
   const handleBlur = (field: FormField) => setError(field.name, fieldError(field, form[field.name]));
@@ -295,17 +301,38 @@ export default function ContactForm({ form: definition, content, endpoint = "/ap
                     );
                   }
 
+                  if (field.type === "tel") {
+                    return (
+                      <div key={field.name} className={wrapper}>
+                        <PhoneField
+                          name={field.name}
+                          value={String(value ?? "")}
+                          onChange={(next) => handlePhoneChange(field, next)}
+                          onBlur={() => handleBlur(field)}
+                          onNonDigit={() => setError(field.name, `${field.label} must contain numbers only.`)}
+                          placeholder={field.placeholder || field.label}
+                          required={field.required}
+                          invalid={!!error}
+                          describedBy={error ? errorId : undefined}
+                          boxClassName={inputClass}
+                          inputClassName={invalid}
+                        />
+                        {message}
+                      </div>
+                    );
+                  }
+
                   return (
                     <div key={field.name} className={wrapper}>
                       <Icon size={15} className="absolute left-5 top-[31px] -translate-y-1/2 text-slate-500" />
                       <input
                         type={field.type}
-                        inputMode={field.type === "tel" || isNumericFieldName(field.name) ? "numeric" : undefined}
+                        inputMode={isNumericFieldName(field.name) ? "numeric" : undefined}
                         name={field.name}
                         placeholder={field.placeholder || field.label}
                         value={String(value ?? "")}
                         onChange={handleChange}
-                        maxLength={field.type === "tel" ? PHONE_DIGITS : field.maxLength}
+                        maxLength={field.maxLength}
                         className={`${inputClass} pl-11${invalid}`}
                         required={field.required}
                         {...a11y}

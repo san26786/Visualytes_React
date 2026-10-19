@@ -7,7 +7,7 @@ import type { QField, QStep } from "@/src/lib/seo-questionnaire/config";
 import { conditionMet, singular, visibleFields, type RepeaterRow } from "@/src/lib/seo-questionnaire/schema";
 
 import AccountCard from "./AccountCard";
-import { Callout, CheckCard, PasswordField, SectionTitle, SelectField, TagInput, TextAreaField, TextField, YesNo, bind, type StepProps } from "./fields";
+import { Callout, CheckCard, PasswordField, PhoneInput, SectionTitle, SelectField, TagInput, TextAreaField, TextField, YesNo, bind, type StepProps } from "./fields";
 import PlanPicker, { type PlanOption } from "./PlanPicker";
 
 type Props = StepProps & { step: QStep; plans: PlanOption[] };
@@ -62,7 +62,6 @@ function FieldView({ field, plans, ...props }: StepProps & { field: QField; plan
       return <Callout tone={field.tone ?? "info"}>{field.label}</Callout>;
     case "text":
     case "email":
-    case "tel":
     case "url":
       return (
         <TextField
@@ -72,10 +71,12 @@ function FieldView({ field, plans, ...props }: StepProps & { field: QField; plan
           placeholder={field.placeholder}
           hint={field.hint}
           maxLength={field.maxLength}
-          autoComplete={field.type === "email" ? "email" : field.type === "tel" ? "tel" : undefined}
+          autoComplete={field.type === "email" ? "email" : undefined}
           {...f()}
         />
       );
+    case "tel":
+      return <PhoneInput label={field.label} required={field.required} placeholder={field.placeholder} hint={field.hint} {...f()} />;
     case "textarea":
       return <TextAreaField label={field.label} required={field.required} placeholder={field.placeholder} hint={field.hint} rows={field.rows ?? 4} maxLength={field.maxLength} {...f()} />;
     case "select":

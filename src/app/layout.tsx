@@ -5,7 +5,7 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import ConditionalSiteChrome from "../common/components/layouts/ConditionalSiteChrome";
 import { SiteDataProvider } from "../common/components/layouts/SiteDataProvider";
-import { getSiteData } from "../lib/site/server";
+import { getSiteData } from "../lib/site/server"; 
 // import LenisProvider from "../common/animations/LenisProvider";
 
 

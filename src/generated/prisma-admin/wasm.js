@@ -667,7 +667,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Sibi Sanju\\Desktop\\Personal\\Sibi\\Geecon\\Geecon projects\\Visualytes_React\\src\\generated\\prisma-admin",
+      "value": "/home/nandu/projects/visualyte/src/generated/prisma-admin",
       "fromEnvVar": null
     },
     "config": {
@@ -676,12 +676,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-1.1.x",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\Sibi Sanju\\Desktop\\Personal\\Sibi\\Geecon\\Geecon projects\\Visualytes_React\\prisma\\schema.prisma",
+    "sourceFilePath": "/home/nandu/projects/visualyte/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
