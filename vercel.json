@@ -2,5 +2,17 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
   "installCommand": "npm install",
-  "buildCommand": "npm run build"
+  "buildCommand": "npm run build",
+  "redirects": [
+    {
+      "source": "/webmail",
+      "destination": "https://13-42-138-192.cprapid.com:2096/",
+      "permanent": false
+    },
+    {
+      "source": "/webmail/",
+      "destination": "https://13-42-138-192.cprapid.com:2096/",
+      "permanent": false
+    }
+  ]
 }
