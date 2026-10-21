@@ -6,7 +6,8 @@ import Image from "next/image";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { emptyValues, type FormField, type PublicForm } from "@/src/lib/forms/types";
-import { PHONE_DIGITS, digitsOnly, fieldError, formErrors, isNumericFieldName } from "@/src/lib/forms/validation";
+import PhoneField from "@/src/common/components/form/PhoneField";
+import { digitsOnly, fieldError, formErrors, isNumericFieldName } from "@/src/lib/forms/validation";
 
 const controlClass =
   "w-full rounded-md border border-gray-300 bg-white px-4 outline-none focus:border-blue-500";
@@ -28,8 +29,8 @@ export default function EstimateProjectClient({ form }: { form: PublicForm }) {
 
   const setValue = (field: FormField, raw: string | boolean) => {
     let value = raw;
-    // Phone and budget keep digits only; tell the visitor why a key was ignored.
-    if (typeof value === "string" && (field.type === "tel" || isNumericFieldName(field.name))) {
+    // Budget keeps digits only; tell the visitor why a key was ignored (phone does this in PhoneField).
+    if (typeof value === "string" && isNumericFieldName(field.name)) {
       const digits = digitsOnly(value);
       if (digits !== value) {
         setError(field.name, `${field.label} must contain numbers only.`);
@@ -121,6 +122,7 @@ export default function EstimateProjectClient({ form }: { form: PublicForm }) {
                     error={errors[field.name]}
                     onChange={(value) => setValue(field, value)}
                     onBlur={() => handleBlur(field)}
+                    onNonDigit={() => setError(field.name, `${field.label} must contain numbers only.`)}
                   />
                 ))}
               </div>
@@ -182,17 +184,19 @@ function Field({
   error,
   onChange,
   onBlur,
+  onNonDigit,
 }: {
   field: FormField;
   value: string;
   error?: string;
   onChange: (value: string) => void;
   onBlur: () => void;
+  onNonDigit: () => void;
 }) {
   const errorId = `${field.name}-error`;
   const a11y = { "aria-invalid": !!error, "aria-describedby": error ? errorId : undefined, onBlur };
   const invalid = error ? " border-red-500! focus:border-red-500!" : "";
-  const numeric = field.type === "tel" || isNumericFieldName(field.name);
+  const numeric = isNumericFieldName(field.name);
 
   return (
     <div className={field.width === "full" ? "md:col-span-2" : ""}>
@@ -228,6 +232,20 @@ function Field({
             </option>
           ))}
         </select>
+      ) : field.type === "tel" ? (
+        <PhoneField
+          name={field.name}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          onNonDigit={onNonDigit}
+          placeholder={field.placeholder}
+          required={field.required}
+          invalid={!!error}
+          describedBy={error ? errorId : undefined}
+          boxClassName={`${controlClass} h-10`}
+          inputClassName={invalid}
+        />
       ) : (
         <input
           type={field.type}
@@ -235,7 +253,7 @@ function Field({
           required={field.required}
           value={value}
           placeholder={field.placeholder}
-          maxLength={field.type === "tel" ? PHONE_DIGITS : field.maxLength}
+          maxLength={field.maxLength}
           onChange={(e) => onChange(e.target.value)}
           className={`${controlClass} h-10${invalid}`}
           {...a11y}

@@ -4,6 +4,7 @@ import { useId, useState, type KeyboardEvent, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertCircle, Check, ChevronDown, Eye, EyeOff, Info, Plus, X } from "lucide-react";
 
+import PhoneField from "@/src/common/components/form/PhoneField";
 import { cn } from "@/src/common/utils/cn";
 import type { FieldErrors, Values } from "@/src/lib/seo-questionnaire/schema";
 
@@ -136,6 +137,31 @@ export function TextField({ label, value, onValue, error, required, hint, placeh
         aria-describedby={describedBy(id, error, hint)}
         inputMode={type === "tel" ? "tel" : type === "email" ? "email" : type === "url" ? "url" : undefined}
         className={cn(control, "h-12", error ? controlBad : controlOk)}
+      />
+    </FieldShell>
+  );
+}
+
+type PhoneInputProps = Omit<TextFieldProps, "type" | "autoComplete" | "maxLength">;
+
+/** Flag + country code picker and a digits-only number; the value is "+<dial> <digits>". */
+export function PhoneInput({ label, value, onValue, error, required, hint, placeholder, className }: PhoneInputProps) {
+  const id = useId();
+  // Older configs ask for "+44 ..." in the box and say "include your country code"; the picker now does that.
+  const ownHint = hint && !/country code/i.test(hint) ? hint : undefined;
+  return (
+    <FieldShell id={id} label={label} required={required} hint={ownHint} error={error} className={className}>
+      <PhoneField
+        id={id}
+        name={id}
+        value={value}
+        onChange={onValue}
+        placeholder={placeholder && !placeholder.startsWith("+") ? placeholder : "Phone number"}
+        required={required}
+        invalid={!!error}
+        describedBy={describedBy(id, error, ownHint)}
+        boxClassName={cn(control, "h-12", controlOk)}
+        inputClassName={error ? controlBad : ""}
       />
     </FieldShell>
   );

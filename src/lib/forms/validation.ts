@@ -1,12 +1,12 @@
 /**
  * Field rules shared by the public forms (browser) and their API handlers (server), so a visitor
- * sees the same message inline that the server would return. Pure TypeScript, no imports.
+ * sees the same message inline that the server would return. Pure TypeScript.
  */
+
+import { internationalPhoneError } from "./phone";
 
 /** Requires a dot-separated domain with a 2+ letter TLD, e.g. "name@company.com" (not "name@company"). */
 export const EMAIL_PATTERN = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)*\.[A-Za-z]{2,}$/;
-export const PHONE_DIGITS = 10;
-const PHONE_PATTERN = new RegExp(`^\\d{${PHONE_DIGITS}}$`);
 const NUMBER_PATTERN = /^\d+$/;
 
 export function emailError(value: string) {
@@ -19,9 +19,9 @@ export function emailError(value: string) {
 export function phoneError(value: string) {
   const v = value.trim();
   if (!v) return "";
-  if (!/^\d+$/.test(v)) return "Phone number must contain numbers only.";
-  if (!PHONE_PATTERN.test(v)) return `Phone number must be exactly ${PHONE_DIGITS} digits.`;
-  return "";
+  // Phone fields send "+<country code> <number>" (see PhoneField); length is checked per country.
+  if (!v.startsWith("+")) return /^\d+$/.test(v) ? "Choose your country code." : "Phone number must contain numbers only.";
+  return internationalPhoneError(v);
 }
 
 export function numberError(value: string, label: string) {

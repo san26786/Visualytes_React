@@ -5,6 +5,7 @@
  */
 import { z } from "zod";
 
+import { internationalPhoneError } from "../forms/phone";
 import { isLayoutType, type Condition, type QConfig, type QField, type QStep } from "./config";
 
 export { FORM_KEY, COUNTRIES } from "./config";
@@ -154,6 +155,7 @@ function validateText(field: QField, value: unknown, path: string, errors: Field
   const max = textMax(field);
   if (v.length > max) errors[path] = `${label} must be ${max} characters or fewer.`;
   else if (field.type === "email" && !isEmail(v)) errors[path] = "Enter a valid email address.";
+  else if (field.type === "tel" && v.startsWith("+") && internationalPhoneError(v)) errors[path] = internationalPhoneError(v);
   else if (field.type === "tel" && !PHONE.test(v)) errors[path] = "Enter a valid phone number, e.g. +44 7700 900123.";
   else if (field.type === "url" && !isValidUrl(v)) errors[path] = "Enter a valid web address, e.g. https://example.com";
   else if (field.type === "select" && !(field.options ?? []).includes(v)) errors[path] = `Choose an option for ${label}.`;
