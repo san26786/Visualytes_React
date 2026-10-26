@@ -419,18 +419,32 @@ export type BlogCardsData = {
   buttonLink: string;
 };
 
+
 export function BlogCards({ data }: { data: BlogCardsData }) {
   return (
-    <section className="relative overflow-hidden bg-slate-900/30 py-10">
-      <HomeSection eyebrow={data.eyebrow} title={data.title} highlight={data.highlight} subtitle={data.subtitle}>
+    <section className="relative overflow-hidden bg-slate-900/30 py-8 sm:py-10">
+      <HomeSection
+        eyebrow={data.eyebrow}
+        title={data.title}
+        highlight={data.highlight}
+        subtitle={data.subtitle}
+      >
         <LatestBlogCards
           limit={data.limit || 4}
-          className="grid gap-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4"
+          className="
+            grid grid-cols-1 items-stretch gap-6
+            sm:grid-cols-2
+            lg:grid-cols-2
+            xl:grid-cols-4
+          "
         />
 
         {data.buttonText && (
-          <div className="mt-12 flex justify-center">
-            <HomeBrandButton href={data.buttonLink || "/blog"} variant="outline">
+          <div className="mt-8 flex justify-center sm:mt-10">
+            <HomeBrandButton
+              href={data.buttonLink || "/blog"}
+              variant="outline"
+            >
               {data.buttonText}
             </HomeBrandButton>
           </div>
