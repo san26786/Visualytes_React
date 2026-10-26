@@ -137,7 +137,7 @@ export default function ContactForm({ form: definition, content, endpoint = "/ap
               <Check className="h-7 w-7 text-emerald-600" strokeWidth={3} />
 
       
-                <p className="whitespace-nowrap text-sm font-medium text-gray-900">
+                <p className="text-center sm:text-left whitespace-nowrap text-sm font-medium text-gray-900">
                   Thank you! Your message has been sent successfully.
                 </p>
               </div>
